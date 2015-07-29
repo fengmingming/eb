@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.coupon.ICouponExt" >
+    <select id="queryCount" resultType="long">
+        SELECT count(id) from coupon
+        WHERE isDel != 127
+    </select>
+    <select id="queryCountByEntity" resultType="long">
+        SELECT count(id) from coupon
+        WHERE isDel != 127
+        <if test="c.name !=null and c.name!=''">
+            and name =#{c.name,jdbcType=VARCHAR}
+        </if>
+        <if test="c.minimum != null and c.minimum>0">
+            and minimum = #{c.minimum,jdbcType=INTEGER}
+        </if>
+        <if test="c.limitType !=null and c.limitType>0">
+            and limitType = #{c.limitType,jdbcType=INTEGER}
+        </if>
+        <if test="c.limitCat !=null and c.limitCat>0">
+            and limitCat = #{c.limitCat,jdbcType=INTEGER}
+        </if>
+    </select>
+
+     <select id="queryPageByEntity" resultType="net.sls.dto.activity.Coupon">
+          SELECT c.*,cg.name as limitCatName from coupon c left join category cg on c.limitCat = cg.id
+          WHERE c.isDel != 127
+
+         <if test="oiu">
+             <![CDATA[
+             and now()>c.validityStart and now()< c.validityEnd
+             ]]>
+         </if>
+
+         <if test="c.name !=null and c.name!=''">
+             and c.name =#{c.name,jdbcType=VARCHAR}
+         </if>
+         <if test="c.minimum != null and c.minimum>0">
+             and c.minimum = #{c.minimum,jdbcType=INTEGER}
+         </if>
+         <if test="c.limitType !=null and c.limitType>0">
+             and c.limitType = #{c.limitType,jdbcType=INTEGER}
+         </if>
+         <if test="c.limitCat !=null and c.limitCat>0">
+             and c.limitCat = #{c.limitCat,jdbcType=INTEGER}
+         </if>
+          ORDER  BY c.id DESC
+          LIMIT #{idxStart},#{pgSize}
+    </select>
+
+    <select id="queryPage" resultType="net.sls.dto.activity.Coupon">
+          SELECT c.*,cg.name as limitCatName from coupon c left join category cg on c.limitCat = cg.id 
+          WHERE c.isDel != 127
+          ORDER  BY c.id DESC
+          LIMIT #{idxStart},#{pgSize}
+    </select>
+    <select id="queryByIds">
+        select * from coupon
+        where  isDel != 127
+        <if test="ids !=null">
+            and id IN
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="queryFetchedCoupon">
+        SELECT * from coupon
+        WHERE isDel!=127 and coupon.total - coupon.num>0
+    </select>
+
+    <update id="deleteEntityInLogic">
+        update coupon set isDel=127
+        where 1=1
+        <if test="ids!=null">
+            and id in
+            <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+    </update>
+
+    <insert id="insertCoupon" parameterType="net.sls.dto.activity.Coupon" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into coupon (name, parValue,
+        minimum, total, num,
+        limitType, validityStart, validityEnd,
+        limitCat, genDate, isDel,
+        startdate, enddate, remark
+        )
+        values (#{name,jdbcType=VARCHAR}, #{parValue,jdbcType=INTEGER},
+        #{minimum,jdbcType=INTEGER}, #{total,jdbcType=INTEGER}, #{num,jdbcType=INTEGER},
+        #{limitType,jdbcType=INTEGER}, #{validityStart,jdbcType=DATE}, #{validityEnd,jdbcType=DATE},
+        #{limitCat,jdbcType=BIGINT}, #{genDate,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER},
+        #{startdate,jdbcType=TIMESTAMP}, #{enddate,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+</mapper>

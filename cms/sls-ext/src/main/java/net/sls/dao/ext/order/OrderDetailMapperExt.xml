@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.order.OrderDetailMapperExt">
+  <select id="selectOrderDetailList" parameterType="map" resultType="map">
+  	select 
+  	od.id AS id,  od.orderId, od.providerId, od.goodsId, od.price as orderPrice, od.marketPrice, od.number, od.isDelivery,
+  	p.providerName, g.goodsName, g.price as goodsPrice
+  	from  orderDetail od left join goods g on od.goodsId = g.id left join provider p on od.providerId = p.id
+  	where od.orderId = #{orderId,jdbcType=INTEGER}
+	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countOrderDetailsByFilter" parameterType="map" resultType="long">
+  	select count(1) from  orderDetail od where od.orderId = #{orderId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

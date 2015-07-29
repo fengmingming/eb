@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.user.PCUserMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.user.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="photo" property="photo" jdbcType="VARCHAR" />
+    <result column="rank" property="rank" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="lastLoginTime" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="district" property="district" jdbcType="INTEGER" />
+    <result column="community" property="community" jdbcType="INTEGER" />
+    <result column="pavilionId" property="pavilionId" jdbcType="INTEGER" />
+    <result column="pavilionCode" property="pavilionCode" jdbcType="VARCHAR" />
+    <result column="lastLoginip" property="lastLoginip" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="points" property="points" jdbcType="DECIMAL" />
+    <result column="totalConsume" property="totalConsume" jdbcType="DECIMAL" />
+    <result column="unionToken" property="unionToken" jdbcType="VARCHAR" />
+    <result column="memberType" property="memberType" jdbcType="INTEGER" />
+    <result column="unionType" property="unionType" jdbcType="INTEGER" />
+    <result column="channelId" property="channelId" jdbcType="INTEGER" />
+    <result column="payPassword" property="payPassword" jdbcType="VARCHAR" />
+    <result column="accountType" property="accountType" jdbcType="INTEGER" />
+    <result column="bindCardNum" property="bindCardNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, userName,sex, password, mobile, photo, rank, email, alias, createTime, lastLoginTime, 
+    modifyTime, province, city, district, community, pavilionId, pavilionCode,lastLoginip, amount, points, totalConsume, 
+    unionToken, memberType, unionType, channelId, payPassword,accountType,bindCardNum
+  </sql>
+  
+  <sql id="Column_list" >
+    userName,mobile, amount
+  </sql>
+  
+  <select id="selectUserByMobileOrPas" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+     <include refid="Base_Column_List" />
+    from user
+    where ( mobile = #{mobile,jdbcType=VARCHAR}
+    or userName = #{mobile,jdbcType=VARCHAR} )
+    	and password = #{password,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertUser" parameterType="net.sls.dto.pc.user.User" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into user (id, userName, password, 
+      mobile, photo,  
+      email, alias, createTime, 
+      lastLoginTime, modifyTime, province, 
+      city, district, community, pavilionId, pavilionCode,
+      lastLoginip, 
+      unionToken, memberType, 
+      unionType, channelId)
+    values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{community,jdbcType=INTEGER}, 
+       #{pavilionId,jdbcType=INTEGER}, #{pavilionCode,jdbcType=VARCHAR},
+      #{lastLoginip,jdbcType=VARCHAR}, 
+       #{unionToken,jdbcType=VARCHAR}, 1, 
+      #{unionType,jdbcType=INTEGER}, #{channelId,jdbcType=INTEGER})
+  </insert>
+  
+  <select id="countUserByMobile" parameterType="net.sls.dto.pc.user.User" resultType="java.lang.Integer" >
+    select count(*) from user
+    <where>1=1
+  		<if test="mobile != null and mobile != '' ">
+  			and	mobile = #{mobile,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  </select>
+  <select id="countUserByUserName" parameterType="net.sls.dto.pc.user.User" resultType="java.lang.Integer" >
+    select count(*) from user
+    <where>1=1
+  		<if test="userName != null and userName != '' ">
+  			and	userName = #{userName,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  </select>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.pc.user.User" >
+    update user
+    set userName = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      photo = #{photo,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      alias = #{alias,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
+      modifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
+      pavilionSn = #{pavilionSn,jdbcType=VARCHAR},
+      lastLoginip = #{lastLoginip,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      points = #{points,jdbcType=DECIMAL},
+      totalConsume = #{totalConsume,jdbcType=DECIMAL},
+      unionToken = #{unionToken,jdbcType=VARCHAR},
+      memberType = #{memberType,jdbcType=INTEGER},
+      unionType = #{unionType,jdbcType=INTEGER},
+      channelId = #{channelId,jdbcType=INTEGER},
+      payPassword = #{payPassword,jdbcType=VARCHAR},
+      accountType = #{accountType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updatePayPassword" parameterType="net.sls.dto.pc.user.User" >
+    update user
+    set payPassword = #{payPassword,jdbcType=VARCHAR},
+    accountType = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+ 
+    <select id="selectUserByPassword" parameterType="java.lang.Long" resultType="net.sls.dto.pc.user.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+    and password = #{password,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectUserByMobile" parameterType="java.lang.String" resultType="net.sls.dto.pc.user.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+   <select id="selectUserByid" parameterType="java.lang.Long" resultType="net.sls.dto.pc.user.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+   
+   <select id="selectUserByColumn"  resultType="net.sls.dto.pc.user.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from user 
+    <if test="_val != null" >
+       where ${colName} = #{_val}
+    </if>
+    <if test="_val == null or _val == ''" >
+       where 1 = 2
+    </if>
+  </select>
+  <update id="updatePassword" parameterType="net.sls.dto.pc.user.User" >
+    update user
+    set password = #{password,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateUser" parameterType="net.sls.dto.pc.user.User" >
+    update user
+    <set >
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bindCardNum != null" >
+        bindCardNum = #{bindCardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        alias = #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="community != null" >
+        community = #{community,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionCode != null" >
+        pavilionCode = #{pavilionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pavilionId != null" >
+        pavilionId = #{pavilionId,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginip != null" >
+        lastLoginip = #{lastLoginip,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="points != null" >
+        points = #{points,jdbcType=DECIMAL},
+      </if>
+      <if test="totalConsume != null" >
+        totalConsume = #{totalConsume,jdbcType=DECIMAL},
+      </if>
+      <if test="unionToken != null" >
+        unionToken = #{unionToken,jdbcType=VARCHAR},
+      </if>
+      <if test="memberType != null" >
+        memberType = #{memberType,jdbcType=INTEGER},
+      </if>
+      <if test="unionType != null" >
+        unionType = #{unionType,jdbcType=INTEGER},
+      </if>
+      <if test="channelId != null" >
+        channelId = #{channelId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateUserBalance" parameterType="map">
+  	update user set amount = amount - #{price,jdbcType=DECIMAL} where amount - #{price,jdbcType=DECIMAL} <![CDATA[ >= ]]> 0 and id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateUserAmount" parameterType="map" >
+    update user
+    set amount = amount + #{price,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+    and amount = #{amount,jdbcType=DECIMAL}
+  </update>
+  <select id="countConsumerByPavilionId" parameterType="Long" resultType="Long" >
+    select count(*) from user
+    where
+  	pavilionId = #{pid,jdbcType=BIGINT}
+  	and memberType = 1
+  </select>
+  <select id="getConsumerByPavilionId" parameterType="java.lang.Long" resultType="net.sls.dto.pc.user.User">
+  	select <include refid="Column_list" />
+  	from user where
+  	pavilionId = #{pid,jdbcType=BIGINT}
+  	and memberType = 1
+  	<if test="start != null and number != null">
+		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+	</if> 	
+  </select>
+  <select id="getConsumerByNameMobile" parameterType="map" resultType="net.sls.dto.pc.user.User" >
+    select <include refid="Column_list" />
+    from user    
+    where memberType = 1
+    and pavilionId = #{pid,jdbcType=BIGINT}
+    <if test="nameMobile != null">
+		and (userName = #{nameMobile,jdbcType=VARCHAR} or mobile = #{nameMobile,jdbcType=VARCHAR})
+	</if>
+	<if test="nameMobile == null">
+		and 1=2 
+	</if>	
+  </select>
+</mapper>

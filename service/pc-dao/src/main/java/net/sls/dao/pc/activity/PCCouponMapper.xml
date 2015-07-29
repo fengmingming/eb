@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.activity.PCCouponMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.act.Coupon" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parValue" property="parValue" jdbcType="INTEGER" />
+    <result column="minimum" property="minimum" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="limitType" property="limitType" jdbcType="INTEGER" />
+    <result column="validityStart" property="validityStart" jdbcType="DATE" />
+    <result column="validityEnd" property="validityEnd" jdbcType="DATE" />
+    <result column="limitCat" property="limitCat" jdbcType="BIGINT" />
+    <result column="limitCatName" property="limitCatName" jdbcType="VARCHAR" />
+    <result column="genDate" property="genDate" jdbcType="TIMESTAMP" />
+    <result column="startdate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="enddate" property="enddate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectRegisterCoupon" resultType="map">
+  	select 
+  		c.id,
+  		c.total  		
+  	from 
+  		coupon c
+  	where 
+  		c.isDel = 1
+  		and c.limitType = 1
+  		and if(total > 0, num > 0, 1 = 1)  			 			
+  		<![CDATA[ AND c.startdate < NOW() AND c.enddate > NOW() ]]>
+  	order by
+  		c.genDate
+  	asc
+  	limit 1
+  </select>
+  
+  <update id="updateCouponById" parameterType="long" >
+  	update coupon 
+  		set num = num -1
+  	where 
+  		id = #{id,jdbcType=BIGINT}
+  		and num > 0 		 
+  </update>
+</mapper>

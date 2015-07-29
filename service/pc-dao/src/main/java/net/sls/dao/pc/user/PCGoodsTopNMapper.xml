@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.user.PCGoodsTopNMapper" >
+  
+  <sql id="Base_Column_List" >
+    areaCode
+  </sql>
+  
+  <select id="selectTopNGoodsByCityId" resultType="map" parameterType="java.lang.String" >
+  	select 
+  		gt.goodsId, 
+  		g.goodsName, 
+  		g.price,
+  		g.marketPrice,
+  		gd.photoUrl,
+  		ag.actPrice,
+  		a.actType  		
+  	from 
+  		goodsTop  gt
+		left join goods g on gt.goodsId = g.id
+  		left join goodsDetail gd on gd.goodsId = g.id
+  		left join activityGoods ag on ag.goodsId = g.id <![CDATA[ AND ag.startTime < NOW() AND ag.endTime > NOW() ]]>
+  		left join activities a on a.id = ag.actId AND a.state = 1 AND a.isDel = 1 
+  	<where>
+  		gt.isDel = 1 		
+  		and gt.areaCode = #{areaCode,jdbcType=VARCHAR}	  	
+  		order by sort
+  		asc
+  	</where>
+  </select>
+</mapper>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.programManage.MethodsMapperExt">
+  <sql id="Base_Column_List" >
+    id,Iid, methodName,methodEn, remark,model
+  </sql>
+  <insert id="insertMethodsReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="net.sls.dto.programManage.Methods">
+ 	insert into methods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="Iid != null" >
+        Iid,
+      </if>
+      <if test="methodName != null" >
+        methodName,
+      </if>
+      <if test="methodEn != null" >
+        methodEn,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="model != null" >
+        model,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="Iid != null" >
+        #{Iid,jdbcType=INTEGER},
+      </if>
+      <if test="methodName != null" >
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="methodEn != null" >
+        #{methodEn,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+    </trim>
+ </insert>
+ <update id="updateMethodsByPrimaryKey" parameterType="net.sls.dto.programManage.Methods" >
+	 update methods
+	    <set >
+	      <if test="Iid != null" >
+        	Iid = #{Iid,jdbcType=INTEGER},
+	      </if>
+	      <if test="methodName != null" >
+	        methodName = #{methodName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="methodEn != null" >
+	        methodEn = #{methodEn,jdbcType=VARCHAR},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark,jdbcType=VARCHAR},
+	      </if>
+	      <if test="model != null" >
+	        model = #{model,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	   where id = #{id,jdbcType=INTEGER}
+ </update>
+  <select id="selectMethodsList" parameterType="map" resultType="net.sls.dto.programManage.Methods">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from methods
+  	<where>1=1
+  		<if test="Iid != null and Iid !='' ">
+  			and Iid = #{Iid,jdbcType=INTEGER}
+  		</if>
+  		
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="selectMethodInfo" parameterType="map" resultType="net.sls.dto.programManage.Methods">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from methods
+  	<where>1=1
+  		<if test="id != null and id !='' ">
+  			and id = #{id,jdbcType=INTEGER}
+  		</if>
+  		
+  	</where>
+  </select>
+  <select id="selectMethods" parameterType="map" resultType="net.sls.dto.programManage.Methods">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from methods
+  	<where>1=1
+  		<if test="Iid != null and Iid !='' ">
+  			and Iid = #{Iid,jdbcType=INTEGER}
+  		</if>
+  		<if test="methodName != null" >
+	        and methodName = #{methodName,jdbcType=VARCHAR}
+	    </if>
+	    <if test="methodEn != null" >
+	        and methodEn = #{methodEn,jdbcType=VARCHAR}
+	    </if>
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="countMethodsByFilter" parameterType="map" resultType="long">
+  	select count(1) from methods
+  	<where>1=1
+  		<if test="Iid != null and Iid !='' ">
+  			and Iid = #{Iid,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  <select id="countMethodsByFilters" parameterType="map" resultType="long">
+  	select count(1) from methods
+  	<where>1=1
+  		<if test="Iid != null and Iid !='' ">
+  			and Iid = #{Iid,jdbcType=INTEGER}
+  		</if>
+  		<if test="methodName != null" >
+	        and methodName = #{methodName,jdbcType=VARCHAR}
+	    </if>
+	    <if test="methodEn != null" >
+	        and methodEn = #{methodEn,jdbcType=VARCHAR}
+	    </if>
+  	</where>
+  </select>
+</mapper>

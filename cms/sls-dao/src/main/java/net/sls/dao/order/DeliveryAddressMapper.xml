@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.order.DeliveryAddressMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.order.DeliveryAddress" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="orderId" property="orderId" jdbcType="BIGINT" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="district" property="district" jdbcType="INTEGER" />
+    <result column="community" property="community" jdbcType="INTEGER" />
+    <result column="provinceName" property="provinceName" jdbcType="VARCHAR" />
+    <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    <result column="districtName" property="districtName" jdbcType="VARCHAR" />
+    <result column="communityName" property="communityName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="receiver" property="receiver" jdbcType="VARCHAR" />
+    <result column="postcode" property="postcode" jdbcType="VARCHAR" />
+    <result column="pavilionId" property="pavilionId" jdbcType="INTEGER" />
+    <result column="pavilionCode" property="pavilionCode" jdbcType="VARCHAR" />
+    <result column="pavilionName" property="pavilionName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="startdate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="enddate" property="enddate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderId, province, city, district, community, provinceName, cityName, districtName, 
+    communityName, mobile, phone, receiver, postcode, pavilionId, pavilionCode, pavilionName, 
+    remark, startdate, enddate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.order.DeliveryAddressExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from deliveryAddress
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from deliveryAddress
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from deliveryAddress
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.order.DeliveryAddressExample" >
+    delete from deliveryAddress
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.order.DeliveryAddress" >
+    insert into deliveryAddress (id, orderId, province, 
+      city, district, community, 
+      provinceName, cityName, districtName, 
+      communityName, mobile, phone, 
+      receiver, postcode, pavilionId, 
+      pavilionCode, pavilionName, remark, 
+      startdate, enddate)
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{community,jdbcType=INTEGER}, 
+      #{provinceName,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{districtName,jdbcType=VARCHAR}, 
+      #{communityName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{receiver,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{pavilionId,jdbcType=INTEGER}, 
+      #{pavilionCode,jdbcType=VARCHAR}, #{pavilionName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{startdate,jdbcType=TIMESTAMP}, #{enddate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.order.DeliveryAddress" >
+    insert into deliveryAddress
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="community != null" >
+        community,
+      </if>
+      <if test="provinceName != null" >
+        provinceName,
+      </if>
+      <if test="cityName != null" >
+        cityName,
+      </if>
+      <if test="districtName != null" >
+        districtName,
+      </if>
+      <if test="communityName != null" >
+        communityName,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="receiver != null" >
+        receiver,
+      </if>
+      <if test="postcode != null" >
+        postcode,
+      </if>
+      <if test="pavilionId != null" >
+        pavilionId,
+      </if>
+      <if test="pavilionCode != null" >
+        pavilionCode,
+      </if>
+      <if test="pavilionName != null" >
+        pavilionName,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="startdate != null" >
+        startdate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=INTEGER},
+      </if>
+      <if test="community != null" >
+        #{community,jdbcType=INTEGER},
+      </if>
+      <if test="provinceName != null" >
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null" >
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="communityName != null" >
+        #{communityName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null" >
+        #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="pavilionId != null" >
+        #{pavilionId,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionCode != null" >
+        #{pavilionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pavilionName != null" >
+        #{pavilionName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.order.DeliveryAddressExample" resultType="java.lang.Integer" >
+    select count(*) from deliveryAddress
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update deliveryAddress
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderId != null" >
+        orderId = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=INTEGER},
+      </if>
+      <if test="record.community != null" >
+        community = #{record.community,jdbcType=INTEGER},
+      </if>
+      <if test="record.provinceName != null" >
+        provinceName = #{record.provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityName != null" >
+        cityName = #{record.cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.districtName != null" >
+        districtName = #{record.districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.communityName != null" >
+        communityName = #{record.communityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiver != null" >
+        receiver = #{record.receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postcode != null" >
+        postcode = #{record.postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pavilionId != null" >
+        pavilionId = #{record.pavilionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pavilionCode != null" >
+        pavilionCode = #{record.pavilionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pavilionName != null" >
+        pavilionName = #{record.pavilionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startdate != null" >
+        startdate = #{record.startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.enddate != null" >
+        enddate = #{record.enddate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update deliveryAddress
+    set id = #{record.id,jdbcType=BIGINT},
+      orderId = #{record.orderId,jdbcType=BIGINT},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      district = #{record.district,jdbcType=INTEGER},
+      community = #{record.community,jdbcType=INTEGER},
+      provinceName = #{record.provinceName,jdbcType=VARCHAR},
+      cityName = #{record.cityName,jdbcType=VARCHAR},
+      districtName = #{record.districtName,jdbcType=VARCHAR},
+      communityName = #{record.communityName,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      receiver = #{record.receiver,jdbcType=VARCHAR},
+      postcode = #{record.postcode,jdbcType=VARCHAR},
+      pavilionId = #{record.pavilionId,jdbcType=INTEGER},
+      pavilionCode = #{record.pavilionCode,jdbcType=VARCHAR},
+      pavilionName = #{record.pavilionName,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      startdate = #{record.startdate,jdbcType=TIMESTAMP},
+      enddate = #{record.enddate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.order.DeliveryAddress" >
+    update deliveryAddress
+    <set >
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="community != null" >
+        community = #{community,jdbcType=INTEGER},
+      </if>
+      <if test="provinceName != null" >
+        provinceName = #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        cityName = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null" >
+        districtName = #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="communityName != null" >
+        communityName = #{communityName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        receiver = #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null" >
+        postcode = #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="pavilionId != null" >
+        pavilionId = #{pavilionId,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionCode != null" >
+        pavilionCode = #{pavilionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pavilionName != null" >
+        pavilionName = #{pavilionName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        startdate = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.order.DeliveryAddress" >
+    update deliveryAddress
+    set orderId = #{orderId,jdbcType=BIGINT},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
+      community = #{community,jdbcType=INTEGER},
+      provinceName = #{provinceName,jdbcType=VARCHAR},
+      cityName = #{cityName,jdbcType=VARCHAR},
+      districtName = #{districtName,jdbcType=VARCHAR},
+      communityName = #{communityName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      receiver = #{receiver,jdbcType=VARCHAR},
+      postcode = #{postcode,jdbcType=VARCHAR},
+      pavilionId = #{pavilionId,jdbcType=INTEGER},
+      pavilionCode = #{pavilionCode,jdbcType=VARCHAR},
+      pavilionName = #{pavilionName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      startdate = #{startdate,jdbcType=TIMESTAMP},
+      enddate = #{enddate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

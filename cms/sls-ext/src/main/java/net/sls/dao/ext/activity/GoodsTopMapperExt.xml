@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.activity.GoodsTopMapperExt" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.activity.GoodsTop" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="cmsUserId" property="cmsUserId" jdbcType="BIGINT" />
+    <result column="areaCode" property="areaCode" jdbcType="VARCHAR" />
+    <result column="isDel" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, goodsId, sort, cmsUserId, areaCode,isDel
+  </sql>
+  
+  <insert id="insertGoodsTop" parameterType="java.util.List" useGeneratedKeys="true" >
+    insert into goodsTop ( goodsId, sort, cmsUserId, areaCode,isDel)
+    values 
+    <foreach collection="list" item="item" index="index" separator="," >  
+        (#{item.goodsId,jdbcType=BIGINT},#{item.sort,jdbcType=INTEGER},#{item.cmsUserId,jdbcType=BIGINT},#{item.areaCode,jdbcType=VARCHAR},#{item.isDel,jdbcType=INTEGER})  
+    </foreach>  
+  </insert>
+  
+  <select id="countGoodsTopByFilter" parameterType="net.sls.dto.activity.GoodsTop" resultType="long" >
+    select count(gt.id) from goodsTop gt
+    <where>gt.isDel = 1
+	    <if test="areaCode != null ">
+	  		and gt.areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+	  	</if>
+  	</where>
+  </select>
+  <select id="selectGoodsTopListByFilter" parameterType="map" resultType="map">
+  	select 
+  	gt.id, gt.goodsId, g.goodsName, gt.sort, gt.cmsUserId, gt.areaCode,gt.isDel
+  	from 
+  	goodsTop gt left join goods g 
+  	on gt.goodsId=g.id 
+  	<where>gt.isDel = 1
+  		<if test="areaCode != null ">
+  			and gt.areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  		</if>
+  	</where>
+  	order by gt.sort DESC
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <update id="updateGoodsTop" parameterType="net.sls.dto.activity.GoodsTop" >
+    update goodsTop
+    <set >
+      <if test="goodsId != null" >
+        goodsId = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="cmsUserId != null" >
+        cmsUserId = #{cmsUserId,jdbcType=BIGINT},
+      </if>
+      <if test="areaCode != null" >
+        areaCode = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        isDel = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update> 
+  
+  <update id="updateGoodsTopIsDel" parameterType="java.util.List" >
+  	update goodsTop set isDel=127 where id in 
+    <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id,jdbcType=BIGINT}
+    </foreach>
+  </update> 
+</mapper>

@@ -1,0 +1,185 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<servlet>
+		<servlet-name>imgupload</servlet-name>
+		<servlet-class>imgupload.ImgUploadServlet</servlet-class>
+		<init-param>
+			<param-name>maxbytes</param-name>
+			<param-value>1024000</param-value>
+			<description>上传文件的最大字节数 默认 500kb</description>
+		</init-param>
+		<init-param>
+			<param-name>token</param-name>
+			<param-value>cms-token</param-value>
+		</init-param>
+		<init-param>
+			<param-name>tmpbytes</param-name>
+			<param-value>716800</param-value>
+			<description>缓存限制，超过这个值将图片将首先在硬盘缓存 默认100kb</description>
+		</init-param>
+		<init-param>
+			<param-name>tmpDir</param-name>
+			<param-value>/tmp</param-value>
+			<description>缓存文件目录</description>
+		</init-param>
+		<init-param>
+			<param-name>product</param-name>
+			<param-value>product</param-value>
+			<description>上传图片使用的路径前缀</description>
+		</init-param>
+		<init-param>
+			<param-name>logo</param-name>
+			<param-value>logo</param-value>
+		</init-param>
+		<init-param>
+			<param-name>licence</param-name>
+			<param-value>licence</param-value>
+		</init-param>
+		<init-param>
+			<param-name>handler</param-name>
+			<param-value>imgupload.DefaultImgUploadResponseHandler</param-value>
+			<description>图片上传或者失败处理handler</description>
+		</init-param>
+		<init-param>
+			<param-name>relDir</param-name>
+			<param-value>/home/slsImg</param-value>
+			<description>图片放置路径</description>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>goodsdescriptimgupload</servlet-name>
+		<servlet-class>imgupload.ImgUploadServlet</servlet-class>
+		<init-param>
+			<param-name>maxbytes</param-name>
+			<param-value>2048000</param-value>
+			<description>上传文件的最大字节数 默认 500kb</description>
+		</init-param>
+		<init-param>
+			<param-name>token</param-name>
+			<param-value>cms-token</param-value>
+		</init-param>
+		<init-param>
+			<param-name>tmpbytes</param-name>
+			<param-value>1024000</param-value>
+			<description>缓存限制，超过这个值将图片将首先在硬盘缓存 默认100kb</description>
+		</init-param>
+		<init-param>
+			<param-name>tmpDir</param-name>
+			<param-value>/tmp</param-value>
+			<description>缓存文件目录</description>
+		</init-param>
+		<init-param>
+			<param-name>goodsdescript</param-name>
+			<param-value>goodsdescript</param-value>
+			<description>上传图片使用的路径前缀</description>
+		</init-param>
+		<init-param>
+			<param-name>handler</param-name>
+			<param-value>imgupload.KindEditorImgUploadResponseHandler</param-value>
+			<description>图片上传或者失败处理handler</description>
+		</init-param>
+		<init-param>
+			<param-name>relDir</param-name>
+			<param-value>/home/slsImg</param-value>
+			<description>图片放置路径</description>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>refundServlet</servlet-name>
+		<servlet-class>imgupload.ImgUploadServlet</servlet-class>
+		<init-param>
+			<param-name>maxbytes</param-name>
+			<param-value>2048000</param-value>
+			<description>上传文件的最大字节数 默认 500kb</description>
+		</init-param>
+		<init-param>
+			<param-name>token</param-name>
+			<param-value>pc-token</param-value>
+		</init-param>
+		<init-param>
+			<param-name>tmpbytes</param-name>
+			<param-value>1024000</param-value>
+			<description>缓存限制，超过这个值将图片将首先在硬盘缓存 默认100kb</description>
+		</init-param>
+		<init-param>
+			<param-name>tmpDir</param-name>
+			<param-value>/tmp</param-value>
+			<description>缓存文件目录</description>
+		</init-param>
+		<init-param>
+			<param-name>refund</param-name>
+			<param-value>refund</param-value>
+			<description>上传图片使用的路径前缀</description>
+		</init-param>
+		<init-param>
+			<param-name>handler</param-name>
+			<param-value>imgupload.DefaultImgUploadResponseHandler</param-value>
+			<description>图片上传或者失败处理handler</description>
+		</init-param>
+		<init-param>
+			<param-name>relDir</param-name>
+			<param-value>/home/slsImg</param-value>
+			<description>图片放置路径</description>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>list</servlet-name>
+		<servlet-class>imgupload.LookUpServlet</servlet-class>
+		<init-param>
+			<param-name>relDir</param-name>
+			<param-value>/home/slsImg</param-value>
+		</init-param>
+		<init-param>
+			<param-name>token</param-name>
+			<param-value>cms-token</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet>
+		<servlet-name>delete</servlet-name>
+		<servlet-class>imgupload.DeleteServlet</servlet-class>
+		<init-param>
+			<param-name>relDir</param-name>
+			<param-value>/home/slsImg</param-value>
+		</init-param>
+		<init-param>
+			<param-name>token</param-name>
+			<param-value>cms-token</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>delete</servlet-name>
+		<url-pattern>/delete.htm</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>list</servlet-name>
+		<url-pattern>/list.htm</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>imgupload</servlet-name>
+		<url-pattern>/img/upload.htm</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>goodsdescriptimgupload</servlet-name>
+		<url-pattern>/goodsdescript/uploadimg.htm</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>refundServlet</servlet-name>
+		<url-pattern>/refund/uploadimg.htm</url-pattern>
+	</servlet-mapping>
+
+</web-app>

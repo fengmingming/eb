@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.order.OrderRefundMapperExt">
+  <select id="refunds" parameterType="map" resultType="map">
+  	select ore.id, ore.orderId, ore.state, ore.origin, ore.createTime, ore.type, ore.refundPrice, 
+    ore.moneyWay, ore.account, ore.remark, ore.photoUrl1, ore.photoUrl2, ore.photoUrl3, ore.pickupWay, ore.deliveryType, 
+    ore.provinceIdT, ore.cityIdT, ore.districtIdT, ore.communityIdT, ore.pavilionIdT, ore.remarkT, ore.receiverT, 
+    ore.mobileT, ore.provinceIdF, ore.cityIdF, ore.districtIdF, ore.communityIdF, ore.pavilionIdF, ore.remarkF, ore.receiverF, 
+    ore.mobileF,gd.photoUrl as goodsUrl,o.state as ostate,o.orderNum
+  	from orderRefund ore left join orders o on ore.orderId = o.id
+  	left join orderDetail od on ore.orderDetailId = od.id
+  	left join goodsDetail gd on od.goodsId = gd.goodsId
+  	<where>
+  		<if test="orderNum != null">
+  			and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+  		</if>
+  		<if test="type != null">
+  			and ore.type = #{type,jdbcType=INTEGER}
+  		</if>
+  		<if test="state != null">
+  			and ore.state = #{state,jdbcType=INTEGER}
+  		</if>
+  		<if test="startDate != null">
+  			<if test="endDate != null">
+  				and ore.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  			</if>
+  		</if>
+  	</where>
+  	order by ore.id desc 
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  <select id="countRefunds" parameterType="map" resultType="long">
+  	select count(1)
+  	from orderRefund ore left join orders o on ore.orderId = o.id
+  	left join orderDetail od on ore.orderDetailId = od.id
+  	left join goodsDetail gd on od.goodsId = gd.goodsId
+  	<where>
+  		<if test="orderNum != null">
+  			and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+  		</if>
+  		<if test="type != null">
+  			and ore.type = #{type,jdbcType=INTEGER}
+  		</if>
+  		<if test="state != null">
+  			and ore.state = #{state,jdbcType=INTEGER}
+  		</if>
+  		<if test="startDate != null">
+  			<if test="endDate != null">
+  				and ore.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  			</if>
+  		</if>
+  	</where>
+  </select>
+  <select id="refundExcel" parameterType="map" resultType="map">
+  	select ore.id, ore.orderId, ore.state, ore.origin, ore.createTime, ore.type, ore.refundPrice, 
+    ore.moneyWay, ore.account, ore.remark, ore.photoUrl1, ore.photoUrl2, ore.photoUrl3, ore.pickupWay, ore.deliveryType, 
+    ore.provinceIdT, ore.cityIdT, ore.districtIdT, ore.communityIdT, ore.pavilionIdT, ore.remarkT, ore.receiverT, 
+    ore.mobileT, ore.provinceIdF, ore.cityIdF, ore.districtIdF, ore.communityIdF, ore.pavilionIdF, ore.remarkF, ore.receiverF, 
+    ore.mobileF, g.goodsName, o.state as ostate,o.orderNum,p.providerName,od.number
+  	from orderRefund ore left join orders o on ore.orderId = o.id
+  	left join orderDetail od on ore.orderDetailId = od.id
+  	left join goods g on od.goodsId = g.id
+  	left join provider p on g.providerId = p.id
+  	<where>
+  		<if test="orderNum != null">
+  			and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+  		</if>
+  		<if test="type != null">
+  			and ore.type = #{type,jdbcType=INTEGER}
+  		</if>
+  		<if test="state != null">
+  			and ore.state = #{state,jdbcType=INTEGER}
+  		</if>
+  		<if test="startDate != null">
+  			<if test="endDate != null">
+  				and ore.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  			</if>
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="isExistRefund" parameterType="long" resultType="long">
+  	select count(1) from orderRefund where orderId = #{value,jdbcType=BIGINT} and state = 1
+  </select>
+  
+  <select id="hdExistRefund" parameterType="long" resultType="long">
+  	select count(1) from orderRefund where orderId = #{value,jdbcType=BIGINT} and state = 2
+  </select>
+</mapper>

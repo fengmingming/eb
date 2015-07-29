@@ -1,0 +1,48 @@
+@charset "utf-8";
+
+#gr_div { width: 980px; float: left; margin-left: 10px; background: #fff; padding-bottom: 20px;}
+	.gr_d_tit1 { font-size: 12px; color: #666; padding-top: 24px; padding-left: 42px;}
+		#gdt_num { padding: 0px 12px;}
+		#gdt_state { color: #ff9900;}
+	.gr_d_tit2 { margin: 24px 20px 0px 20px; background: #f5f5f5; font-size: 12px; color: #666; padding: 8px 0px;}
+		.gdt_img { padding-left: 20px;}
+		.gdt_nam { padding-left: 90px;}
+	.gr_d_tit3 { height: 90px; margin-top: 10px;}
+		#gt3_img { width: 75px; height: 75px; background: #e5e5e5; margin-left: 26px; margin-top: 2px;}
+		#gt3_name { font-size: 12px; color:#666; position: relative; top: -32px; left: 75px;}
+	.gr_d_tit4 { border: 1px solid #ccc; margin: 0px 20px; font-size: 14px; color: #666;}
+		.gt4_ul1 { margin-top: 32px; margin-left: 45px;}
+			.gt4_ul1 li { float: left;}
+			.gt4_ul1 li input { position: relative; top: 1px;}
+		.gt4_ul2 { margin-left: 45px; margin-top: 20px;}
+			.gt4_ul2 li { float: left;}
+			.gt4_ul2 textarea { resize: none; width: 600px; height: 120px; border: 1px solid #dcdcdc; margin-left: 20px; padding: 5px;}
+		.gt4_ul3 { margin-left: 45px; margin-top: 25px;}
+			.gt4_ul3 li { float: left;}
+			#g43_imgs { position: relative; top: -8px; left: 20px;}
+				#s_file { display: inline-block; width: 85px; height: 32px; line-height: 32px; border: 1px solid #dcdcdc; color: #666; text-align: center;}
+				/*#s_inp_file { position: absolute; top: 0px; left: 0px; width: 86px; height: 33px; font-size: 22px; overflow: hidden; opacity: 0; filter: alpha(opacity=0); cursor: pointer;}*/
+				#g43_imgs_div { width: 350px; height: 80px; position: absolute; left: 115px; top: 0px;}
+					.gidv { display: inline-block; position: relative; width: 112px;}
+						.gidv .gidvIg { background: #e5e5e5; width: 75px; height: 75px;}
+						.gidv img { position: absolute; display: none; cursor: url(../../images/zoom/big.cur), auto;}
+							.gidv_d { display: block; background: url("../../images/index.png") no-repeat scroll 0 -72px; width: 21px; height: 22px; position: absolute; left: 85px; top: 0px;}
+		.gt4_ul4 { margin-left: 45px; margin-top: 50px;}
+			.gt4_ul4 li { float: left;}
+				.gt4_ul4 li input { position: relative; top: 1px;}
+		.gt4_ul5 { margin-left: 45px; margin-top: 25px;}
+			.r_star { display: none;}
+			.gt4_ul5 tr { height: 50px;}
+			.td_fs { padding-right: 18px;}
+			.r_slt_w { width: 119px;}
+			.r_slt_w0 { width: 181px;}
+			.r_slt { border: 1px solid #e1e1e1; padding: 6px;}
+			#g45_detail, #g45_detail_d { width: 598px; border: 1px solid #e1e1e1; padding: 6px; margin-left: 92px; margin-top: 8px;}
+		.gt4_ul6, .gt4_ul7 { margin-left: 45px;}
+			.gt4_ul6 li, .gt4_ul7 li { float: left; margin-top: 18px;}
+			.gt4_ul6 li input, .gt4_ul7 li input { width: 178px; border: 1px solid #e1e1e1; padding: 6px;}
+		.shdfwt_cx, .dfwtzt_cx { margin-left: 138px; margin-top: 15px;}
+			.shdfwt_cx input, .dfwtzt_cx input { position: relative; top: 1px;}
+			.shdfwt_cx label, .dfwtzt_cx label { margin-left: 10px;}
+		.gt4_d_op { text-align: center; padding: 20px 0px 15px 0px;}
+			.gt4p_a { display: inline-block; width: 85px; height: 30px; line-height: 30px; color: #fff; text-align: center; background: #ff9900; margin: 0px 25px;}

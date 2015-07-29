@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.product.PCPavilionInfoMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.product.PavilionInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pavilionCode" property="pavilionCode" jdbcType="VARCHAR" />
+    <result column="pavilionSn" property="pavilionSn" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="district" property="district" jdbcType="INTEGER" />
+    <result column="community" property="community" jdbcType="INTEGER" />
+    <result column="coordinate" property="coordinate" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="cartId" property="cartId" jdbcType="VARCHAR" />
+    <result column="detailHome" property="detailHome" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, pavilionCode, pavilionSn, province, city, district, community, coordinate, mobile, email, name, 
+    sex, cartId, detailHome, createTime, modifyTime
+  </sql>
+  
+  <select id="selectPavilionInfoByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from pavilionInfo
+    where pavilionCode = #{pavilionCode,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

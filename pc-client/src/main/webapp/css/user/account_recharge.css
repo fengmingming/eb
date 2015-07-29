@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+#zhyecz { width: 980px; height: 446px; float: left; margin-left: 10px; background: #fff;}
+	/*#zhyecz_txt { color: #666; padding-top: 22px; padding-left: 18px;}*/
+	#tab_txt { border-bottom: solid 2px #dadada; padding: 10px 0px;}
+		#tab_txt li { float: left; width: 125px; font-size: 14px; color: #666; border-right: solid 1px #dadada; text-align: center; cursor: pointer;}
+			#tab_txt li:hover { color: #ff7f00;}
+			#tab_txt .tab_txt_cur { color: #ff7f00;}
+		#zhyecz_tb { font-size: 14px; color: #666; margin-left: 68px; margin-top: 30px;}
+			#zhyecz_tb tr { height: 70px;}
+				#zt_inp { border: solid 1px #ddd; width: 168px; padding: 6px 5px;}
+				#zt_tta { width: 358px; height: 56px; font-size: 14px; color: #666; padding: 5px; border: solid 1px #ddd; resize: none;}
+				#zfbzf { position: relative; top: 2px; margin-right: 2px;}
+				#zfbzf_ll { font-size: 12px; color: #333;}
+				#zfbzf_opa a { display: block; width: 88px; height: 30px; text-align: center; line-height: 30px; color: #fff; float: left;}
+					#tjsq { background: #ff7f00; margin-right: 20px;}
+					#czbd { background: #ff9900;}
+		
+		#czkcz_tb { font-size: 14px; color: #666; margin-left: 68px; margin-top: 30px;}
+			#czkcz_tb tr { height: 50px;}
+				.right_td { text-align: right; padding-right: 16px;}
+				.czk_pwd { width: 88px; padding: 6px 5px; border: solid 1px #ddd;}
+				#czk_vcode { width: 168px; padding: 6px 5px; border: solid 1px #ddd; float: left;}
+				#czk_vimg { width: 98px; height: 32px; border: solid 1px #ddd; float: left; margin-left: 14px; cursor: pointer;}
+				#czk_ex { float: left; padding: 8px 0px; margin-left: 14px;}
+				#czk_ex a { color: #005aa4;}
+				#czk_ex a:hover { text-decoration: underline;}
+				#czk_sub { display: block; width: 87px; height: 30px; line-height: 30px; color: #fff; background: #ff7f00; text-align: center;}
+			
+/*消息提示样式*/
+#recharge_form .focus_eor_ipt { border: solid 1px red;}
+#re_card_form .lb_eor_msg { float: left; color: red; padding: 8px 0px; margin-left: 14px;}

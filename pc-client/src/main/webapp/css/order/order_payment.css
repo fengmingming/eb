@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+#order { width: 1200px; margin: auto; padding-bottom: 40px;}
+	#ck_order_tit { }
+		#cot_txt { color: #999; float: left; font-size: 28px; margin-left: 8px;}
+		#cart_flow { float: right; width: 483px;}
+			#cart_flow li { float: left; font-size: 14px; color: #888;}
+			#cart_flow .c_f_li { width: 160px; text-align: center; padding: 10px 0px;}
+			#cart_flow .c_f_li_cur { color: #ff9900;}
+			#cart_flow #c_f_img { background: url(../../images/index.png) no-repeat 0px -326px; height: 23px; width: 483px;}
+
+#od_description { font-size: 14px; color: #666; margin-left: 40px; line-height: 100px; height: 100px;}
+	#od_description li { float: left;}
+		#odd_con { width: 755px;}
+		#odd_price_txt { width: 120px;}
+		#odd_price { font-size: 30px; color: #fc461e;}
+		#oddn_num { color: #333;}
+		
+#srzfmm { border: solid 1px #ddd; font-size: 14px; padding-bottom: 50px;}
+	#sm_txt { height: 36px; line-height: 36px; color: #666; background: #f7f7f7; font-size: 18px; font-weight: bold; text-indent: 22px; border-bottom: solid 1px #ddd;}
+		.sm_inp { width: 168px; border: solid 1px #ddd; padding: 6px 5px;}
+		#sm_img { width: 98px; height: 33px; border: solid 1px #ddd; background: #ccc; margin-left: 18px;}
+		#qdzf { display: inline-block; width: 134px; height: 34px; border: solid 1px #d15f5d; background: #ffeded; line-height: 34px; text-align: center; color: #d15f5d; border-radius: 3px;}
+		#wjzfmm { font-size: 12px; color: #658cb2; margin-left: 20px;}
+	.sm_td { width: 85px; text-align: right; padding-right: 20px; color: #333;}
+	
+#srzfmm table { margin-top: 45px; margin-left: 215px;}
+#srzfmm tr { height: 50px;}
+	

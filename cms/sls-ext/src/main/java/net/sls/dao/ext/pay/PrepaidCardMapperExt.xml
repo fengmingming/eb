@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.pay.PrepaidCardMapperExt" >
+
+	<select id="queryMaxId"  resultType="long" >
+ 		select max(id) from prepaidCard   
+  	</select>
+  	
+  	<select id="queryCount"  resultType="long" >
+ 		select count(id) from prepaidCard   
+ 		WHERE 1=1
+ 		<if test="pc.batch !=null and pc.batch!='' ">			and batch = #{pc.batch,jdbcType=VARCHAR}					</if>
+		<if test="pc.cardNum !=null and pc.cardNum !='' ">			and batch = #{pc.cardNum,jdbcType=VARCHAR}					</if>
+		<if test="pc.parValue != null">			and parValue = #{pc.parValue,jdbcType=INTEGER}				</if>		
+		<if test="pc.checkStatus != null">		and checkStatus = #{pc.checkStatus}							</if>
+		<if test="pc.cardStatus != null">		and cardStatus = #{pc.cardStatus}							</if>
+		<if test="pc.remark != null and pc.remark !=null">
+			and cardStatus = #{CONCAT(pc.cardStatus,"%")}			
+		</if>
+		
+		<if test="pc.validityStart != null and pc.validityEnd == null">
+			and validityStart &gt;= #{pc.validityStart,jdbcType=DECIMAL}	
+		</if>
+		<if test="pc.validityStart == null and pc.validityEnd != null">
+			and validityEnd &lt;= #{pc.validityEnd,jdbcType=DECIMAL}
+		</if>
+		<if test="pc.validityStart !=null and pc.validityEnd != null">
+			AND validityStart BETWEEN #{pc.validityStart,jdbcType=DECIMAL}
+			AND #{pc.validityEnd,jdbcType=DECIMAL}
+		</if>
+  	</select>
+  	
+  	<select id="queryBatchCount" resultType="long">
+  		SELECT COUNT(*) FROM (
+  			SELECT `batch` 
+ 			FROM `slsdb`.`prepaidCard` 
+ 			WHERE 1=1
+ 			
+			<if test="pc.batch !=null and pc.batch!=''">	and batch = #{pc.batch,jdbcType=VARCHAR}					</if>
+			<if test="pc.parValue != null">			and parValue = #{pc.parValue,jdbcType=INTEGER}				</if>		
+			<if test="pc.checkStatus != null">		and checkStatus = #{pc.checkStatus}							</if>
+			<if test="pc.remark != null and pc.remark !=null">
+				and cardStatus = #{CONCAT(pc.cardStatus,"%")}			
+			</if>
+		
+			<if test="pc.validityStart != null and pc.validityEnd == null">
+				and validityStart &gt;= #{pc.validityStart,jdbcType=DECIMAL}	
+			</if>
+			<if test="pc.validityStart == null and pc.validityEnd != null">
+				and validityEnd &lt;= #{pc.validityEnd,jdbcType=DECIMAL}
+			</if>
+			<if test="pc.validityStart !=null and pc.validityEnd != null">
+				AND validityStart BETWEEN #{pc.validityStart,jdbcType=DECIMAL}
+				AND #{pc.validityEnd,jdbcType=DECIMAL}
+			</if>	
+			GROUP BY batch	
+			order by id DESC
+		) as batchCount			
+  	</select>
+  	
+  	
+  	<select id="queryBatchMaxNum" resultType="String">
+  		select substring(cardNum,7,1) 
+  		from prepaidCard
+  		where id = (select max(id) 
+  						from prepaidCard 
+  						where substring(cardNum,1,6)=#{date})		
+  	</select>
+  	
+  	
+  	
+  	<select id="queryAllBatch" resultType="net.sls.dto.pay.PrepaidCard">
+  			SELECT    `batch`,    `parValue`,  `validityStart`,  `validityEnd`,  
+ 				`checkStatus`,  LEFT(`remark`, 256) 
+ 			FROM `slsdb`.`prepaidCard` 
+ 			WHERE 1=1
+ 			
+		<if test="pc.batch !=null and pc.batch!=''">	and batch = #{pc.batch,jdbcType=VARCHAR}					</if>
+		<if test="pc.parValue != null">			and parValue = #{pc.parValue,jdbcType=INTEGER}				</if>		
+		<if test="pc.checkStatus != null">		and checkStatus = #{pc.checkStatus}							</if>
+		<if test="pc.remark != null and pc.remark !=null">
+			and cardStatus = #{CONCAT(pc.cardStatus,"%")}			
+		</if>
+		
+		<if test="pc.validityStart != null and pc.validityEnd == null">
+			and validityStart &gt;= #{pc.validityStart,jdbcType=DECIMAL}	
+		</if>
+		<if test="pc.validityStart == null and pc.validityEnd != null">
+			and validityEnd &lt;= #{pc.validityEnd,jdbcType=DECIMAL}
+		</if>
+		<if test="pc.validityStart !=null and pc.validityEnd != null">
+			AND validityStart BETWEEN #{pc.validityStart,jdbcType=DECIMAL}
+			AND #{pc.validityEnd,jdbcType=DECIMAL}
+		</if>	
+		GROUP BY batch	
+		order by id DESC
+		limit #{start},#{end}		
+  	</select>
+  	
+  	<select id="queryPrepaidCard" resultType="net.sls.dto.pay.PrepaidCard" >
+  
+ 		SELECT  `id`,  `batch`,  `cardNum`, `password`,  `parValue`,  `validityStart`,  `validityEnd`,  
+ 				`checkStatus`,  `cardStatus`,  LEFT(`remark`, 256) 
+ 		FROM `slsdb`.`prepaidCard` 
+		WHERE 1=1
+		<if test="IdStart != null">		and id &gt;= #{IdStart}			</if>
+		<if test="IdEnd != null">		and id &lt;= #{IdEnd}			</if>
+		
+		<if test="pc.batch !=null and pc.batch!='' ">	and batch = #{pc.batch,jdbcType=VARCHAR}			</if>
+		<if test="pc.cardNum !=null and pc.cardNum !=''">			and batch = #{pc.cardNum,jdbcType=VARCHAR}		</if>
+		<if test="pc.parValue != null">			and parValue = #{pc.parValue,jdbcType=INTEGER}				</if>		
+		<if test="pc.checkStatus != null">		and checkStatus = #{pc.checkStatus}							</if>
+		<if test="pc.cardStatus != null">		and cardStatus = #{pc.cardStatus}							</if>
+		<if test="pc.remark != null and pc.remark !=null">
+			and cardStatus = #{CONCAT(pc.cardStatus,"%")}			
+		</if>
+		
+		<if test="pc.validityStart != null and pc.validityEnd == null">
+			and validityStart &gt;= #{pc.validityStart,jdbcType=DECIMAL}	
+		</if>
+		<if test="pc.validityStart == null and pc.validityEnd != null">
+			and validityEnd &lt;= #{pc.validityEnd,jdbcType=DECIMAL}
+		</if>
+		<if test="pc.validityStart !=null and pc.validityEnd != null">
+			AND validityStart BETWEEN #{pc.validityStart,jdbcType=DECIMAL}
+			AND #{pc.validityEnd,jdbcType=DECIMAL}
+		</if>		
+		order by id DESC
+		limit #{start},#{end}
+  	</select>    
+
+	
+
+	<insert id="insertPrepaidCard" parameterType="net.sls.dto.pay.PrepaidCard">
+		insert into prepaidCard(batch,cardNum,password,parValue,validityStart,validityEnd,checkStatus,cardStatus,remark)
+		values		
+		<foreach collection="ppc" item="pc" separator=",">
+			(
+			#{pc.batch},
+			#{pc.cardNum},
+			#{pc.password},
+			#{pc.parValue},
+			#{pc.validityStart},
+			#{pc.validityEnd},
+			#{pc.checkStatus},
+			#{pc.cardStatus},
+			#{pc.remark}			
+			)	
+		</foreach>	
+	</insert>
+	
+	
+	<update id="updatePrepaidCardCheckStatus">
+		update prepaidCard set checkStatus=#{status} 
+		where 1=1 
+		<if test="batch !=null">and batch=#{batch}</if>
+		<if test="ids!=null">
+			and id in 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		
+		</if> 
+	</update>
+		
+	<update id="updatePrepaidCardStatus">
+		update prepaidCard set cardStatus=#{status} where id=#{id}
+	</update>	
+	
+	<select id="selectPrepaidCardCount" resultType="long">
+		select count(1) from prepaidCard
+	</select>
+	
+	<select id="selectPrepaidCardActivated" resultType="long">
+		select count(1) from prepaidCard where cardStatus = 1
+	</select>
+	
+	<select id="selectPrepaidCardInvalid" resultType="long">
+		select count(1) from prepaidCard where cardStatus = 2
+	</select>
+	
+	<select id="selectPrepaidCardRecharged" resultType="long">
+		select count(1) from prepaidCard where cardStatus = 3
+	</select>
+	
+	<select id="selectPrepaidCardRechargedInfoCount" parameterType="map" resultType="long">
+		select count(1) from prepaidCard where cardStatus = 3 
+		<if test="startDate != null">
+			and reChangeDate <![CDATA[ >= ]]> #{startDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDate != null">
+			and reChangeDate <![CDATA[ <= ]]> #{endDate,jdbcType=TIMESTAMP}
+		</if>
+	</select>	
+	
+	<select id="selectPrepaidCardRechargedInfo" parameterType="map" resultType="map">
+		select p.*,u.username,u.mobile 
+		from prepaidCard p
+		left join user u on p.userId = u.id
+		where p.cardStatus = 3 
+		<if test="startDate != null">
+			and p.reChangeDate <![CDATA[ >= ]]> #{startDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDate != null">
+			and p.reChangeDate <![CDATA[ <= ]]> #{endDate,jdbcType=TIMESTAMP}
+		</if>
+		order by p.reChangeDate desc
+		limit #{start},#{end}
+	</select>
+</mapper>

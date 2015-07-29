@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+#u_info_r { width: 980px; float: left; margin-left: 10px; background: #fff; padding-bottom: 224px; position: relative; overflow: hidden;}
+	#u_i_tit { height: 34px; line-height: 34px; font-size: 14px; color: #666; padding-left: 32px; border-bottom: solid 2px #ddd;}
+		#u_i_tit span { margin-left: 32px; color: #ddd;}
+		
+		table tr { height: 50px;}
+			table { margin-left: 85px; font-size: 14px; color: #666; margin-top: 28px;}
+			.td_fs { text-align: right; padding-right: 18px;}
+			.r_star { color: red; margin-right: 2px; display: none;}
+			.r_ipt { width: 168px; padding: 6px 5px; border: solid 1px #e1e1e1;}
+			.r_slt { padding: 6px 6px; border: solid 1px #e1e1e1;}
+			.r_slt_w { width: 119px;}
+			.r_slt_w0 { width: 181px;}
+			
+			.ro_inp { position: relative; top: 1px; margin-right: 2px;}
+			table label { margin-right: 20px;}
+			
+			#sub_btn { display: block; width: 73px; height: 34px; line-height: 34px; color: #fff; text-align: center; background: #ff9900;}
+		
+		#u_i_icon { width: 400px; height: 80px; background: url(../../images/inner.png) no-repeat 0px -376px; position: absolute; top: 76px; right: -15px;}
+			#u_i_icon ul { font-size: 14px; color: #666; line-height: 30px; margin-top: 10px; margin-left: 100px;}
+				#uii_mk { color: #a5a5a5;}
+				#uii_ph { color: #ff7f00; margin-right: 25px;}
+			

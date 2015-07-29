@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.pay.PCPrepaidCardMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.pay.PrepaidCard" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="batch" property="batch" jdbcType="VARCHAR" />
+    <result column="cardNum" property="cardNum" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="parValue" property="parValue" jdbcType="INTEGER" />
+    <result column="validityStart" property="validityStart" jdbcType="DATE" />
+    <result column="validityEnd" property="validityEnd" jdbcType="DATE" />
+    <result column="checkStatus" property="checkStatus" jdbcType="TINYINT" />
+    <result column="cardStatus" property="cardStatus" jdbcType="TINYINT" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="reChangeDate" property="reChangeDate" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, batch, cardNum, password, parValue, validityStart, validityEnd, checkStatus, 
+    cardStatus
+  </sql>
+  <select id="selectPrepaidCard" resultMap="BaseResultMap" parameterType="net.sls.dto.pc.pay.PrepaidCard" >
+    select
+    <include refid="Base_Column_List" />
+    from prepaidCard
+    WHERE cardStatus = 1
+    <if test="password != null and password != '' ">
+		AND password = #{password,jdbcType=VARCHAR}
+  	</if>
+  	 AND checkStatus = 3  
+  	<![CDATA[ AND validityStart < NOW() AND validityEnd > NOW() ]]>    
+  </select>
+  <update id="updateCardStatus" parameterType="map" >
+    update prepaidCard
+    set 
+      cardStatus = #{cardStatus,jdbcType=TINYINT},
+      userId = #{userId,jdbcType=BIGINT},
+      reChangeDate = NOW()
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

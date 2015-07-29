@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.activity.PCActivitiesMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.act.Activities" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="actType" property="actType" jdbcType="INTEGER" />
+    <result column="actName" property="actName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="createUserId" property="createUserId" jdbcType="BIGINT" />
+    <result column="verifyUserId" property="verifyUserId" jdbcType="BIGINT" />
+    <result column="verifyTime" property="verifyTime" jdbcType="TIMESTAMP" />
+    <result column="isVerify" property="isVerify" jdbcType="BIT" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="isDel" property="isDel" jdbcType="INTEGER" />
+    <result column="areaCode" property="areaCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, actType, actName, remark, startTime, endTime, createTime, modifyTime, createUserId, 
+    verifyUserId, verifyTime, isVerify, state, isDel, areaCode
+  </sql>
+  <select id="selectActivities" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from activities
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+</mapper>

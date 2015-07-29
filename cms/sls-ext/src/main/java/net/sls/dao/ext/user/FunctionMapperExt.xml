@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.user.FunctionMapperExt" >
+  <sql id="Base_Column_List" >
+    id, name, url, fatherId, createTime, isUse, isLog, isLeaf
+  </sql>
+  
+  <insert id="insertSelective" parameterType="net.sls.dto.user.Function" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into function
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="fatherId != null" >
+        fatherId,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="isUse != null" >
+        isUse,
+      </if>
+      <if test="isLog != null" >
+        isLog,
+      </if>
+      <if test="isLeaf != null" >
+        isLeaf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="fatherId != null" >
+        #{fatherId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isUse != null" >
+        #{isUse,jdbcType=BIT},
+      </if>
+      <if test="isLog != null" >
+        #{isLog,jdbcType=BIT},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectFunctionByPId" parameterType="java.lang.Integer" resultType="net.sls.dto.user.Function" >
+  	SELECT id, fatherId, name, url, createTime, isLog, isUse, isLeaf
+	FROM function
+	WHERE
+	fatherId = #{fatherId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectFunctionByFilter" parameterType="map" resultType="net.sls.dto.user.Function" >
+  	select 
+  	id, name, url, fatherId , createTime, isUse, isLog
+  	from function
+  	<where>
+  		1=1
+  		<if test="name != null">
+  			AND name like CONCAT ('%' , #{name,jdbcType=VARCHAR}, '%')
+  		</if>
+  		<if test="url != null">
+  			AND	url like CONCAT ('%' , #{url,jdbcType=VARCHAR}, '%')
+  		</if>
+  		<if test="fatherId != null and fatherId != ''">
+  			AND	fatherId = #{ fatherId,jdbcType=INTEGER}
+  		</if>
+  		<if test="fatherId == 0">
+  			AND	fatherId = #{ fatherId,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="countFunctionByFilter" parameterType="net.sls.dto.user.Function" resultType="java.lang.Integer">
+  	select count(1)
+  	from function
+  	<where>
+  		1=1
+  		<if test="name != null">
+  			AND name like CONCAT ('%' , #{name,jdbcType=VARCHAR}, '%')
+  		</if>
+  		<if test="url != null">
+  			AND	url like CONCAT ('%' , #{url,jdbcType=VARCHAR}, '%')
+  		</if>
+  		<if test="fatherId != null and fatherId != ''">
+  			AND	fatherId = #{ fatherId,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  
+  <insert id="insertBatchRoleFun" parameterType="int">
+  	insert into roleFunction (functionId,roleId,createTime,isUse) 
+  	select distinct #{value,jdbcType=INTEGER} as functionId,roleId as roleId,now() as createTime,0 as isUse
+  	from roleFunction
+  </insert>
+  
+  <select id="selectFunctionByUrl" parameterType="string" resultType="net.sls.dto.user.Function">
+  	select 
+  	id, name, url, fatherId , createTime, isUse, isLog
+  	from function
+  	where url = #{value,jdbcType=VARCHAR} order by isLog desc limit 1
+  </select>
+  
+</mapper>

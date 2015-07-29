@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.order.OrdersMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.order.Orders" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="orderNum" property="orderNum" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="orderPrice" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="payPrice" property="payPrice" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="paidPrice" property="paidPrice" jdbcType="DECIMAL" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="payTime" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="deliveryTime" property="deliveryTime" jdbcType="TIMESTAMP" />
+    <result column="receiveTime" property="receiveTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="cart" property="cart" jdbcType="VARCHAR" />
+    <result column="discutPrice" property="discutPrice" jdbcType="DECIMAL" />
+    <result column="useBalancePrice" property="useBalancePrice" jdbcType="DECIMAL" />
+    <result column="deliveryType" property="deliveryType" jdbcType="INTEGER" />
+    <result column="isPaid" property="isPaid" jdbcType="INTEGER" />
+    <result column="deliverCode" property="deliverCode" jdbcType="VARCHAR" />
+    <result column="channelId" property="channelId" jdbcType="INTEGER" />
+    <result column="createUserId" property="createUserId" jdbcType="BIGINT" />
+    <result column="shopType" property="shopType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderNum, status, state, orderPrice, payPrice, amount, paidPrice, userId, createTime, 
+    modifyTime, payTime, deliveryTime, receiveTime, remark, cart, discutPrice, useBalancePrice, 
+    deliveryType, isPaid, deliverCode, channelId, createUserId, shopType
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.order.OrdersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from orders
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.order.OrdersExample" >
+    delete from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.order.Orders" >
+    insert into orders (id, orderNum, status, 
+      state, orderPrice, payPrice, 
+      amount, paidPrice, userId, 
+      createTime, modifyTime, payTime, 
+      deliveryTime, receiveTime, remark, 
+      cart, discutPrice, useBalancePrice, 
+      deliveryType, isPaid, deliverCode, 
+      channelId, createUserId, shopType
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderNum,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER}, #{orderPrice,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=DECIMAL}, #{paidPrice,jdbcType=DECIMAL}, #{userId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{deliveryTime,jdbcType=TIMESTAMP}, #{receiveTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{cart,jdbcType=VARCHAR}, #{discutPrice,jdbcType=DECIMAL}, #{useBalancePrice,jdbcType=DECIMAL}, 
+      #{deliveryType,jdbcType=INTEGER}, #{isPaid,jdbcType=INTEGER}, #{deliverCode,jdbcType=VARCHAR}, 
+      #{channelId,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT}, #{shopType,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.order.Orders" >
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNum != null" >
+        orderNum,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="orderPrice != null" >
+        orderPrice,
+      </if>
+      <if test="payPrice != null" >
+        payPrice,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="paidPrice != null" >
+        paidPrice,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="modifyTime != null" >
+        modifyTime,
+      </if>
+      <if test="payTime != null" >
+        payTime,
+      </if>
+      <if test="deliveryTime != null" >
+        deliveryTime,
+      </if>
+      <if test="receiveTime != null" >
+        receiveTime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="cart != null" >
+        cart,
+      </if>
+      <if test="discutPrice != null" >
+        discutPrice,
+      </if>
+      <if test="useBalancePrice != null" >
+        useBalancePrice,
+      </if>
+      <if test="deliveryType != null" >
+        deliveryType,
+      </if>
+      <if test="isPaid != null" >
+        isPaid,
+      </if>
+      <if test="deliverCode != null" >
+        deliverCode,
+      </if>
+      <if test="channelId != null" >
+        channelId,
+      </if>
+      <if test="createUserId != null" >
+        createUserId,
+      </if>
+      <if test="shopType != null" >
+        shopType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payPrice != null" >
+        #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="paidPrice != null" >
+        #{paidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryTime != null" >
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null" >
+        #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cart != null" >
+        #{cart,jdbcType=VARCHAR},
+      </if>
+      <if test="discutPrice != null" >
+        #{discutPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="useBalancePrice != null" >
+        #{useBalancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryType != null" >
+        #{deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="isPaid != null" >
+        #{isPaid,jdbcType=INTEGER},
+      </if>
+      <if test="deliverCode != null" >
+        #{deliverCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="shopType != null" >
+        #{shopType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.order.OrdersExample" resultType="java.lang.Integer" >
+    select count(*) from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orders
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderNum != null" >
+        orderNum = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderPrice != null" >
+        orderPrice = #{record.orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payPrice != null" >
+        payPrice = #{record.payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paidPrice != null" >
+        paidPrice = #{record.paidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userId != null" >
+        userId = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null" >
+        modifyTime = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payTime != null" >
+        payTime = #{record.payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deliveryTime != null" >
+        deliveryTime = #{record.deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.receiveTime != null" >
+        receiveTime = #{record.receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cart != null" >
+        cart = #{record.cart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.discutPrice != null" >
+        discutPrice = #{record.discutPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.useBalancePrice != null" >
+        useBalancePrice = #{record.useBalancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliveryType != null" >
+        deliveryType = #{record.deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="record.isPaid != null" >
+        isPaid = #{record.isPaid,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliverCode != null" >
+        deliverCode = #{record.deliverCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelId != null" >
+        channelId = #{record.channelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createUserId != null" >
+        createUserId = #{record.createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopType != null" >
+        shopType = #{record.shopType,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orders
+    set id = #{record.id,jdbcType=BIGINT},
+      orderNum = #{record.orderNum,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=INTEGER},
+      orderPrice = #{record.orderPrice,jdbcType=DECIMAL},
+      payPrice = #{record.payPrice,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      paidPrice = #{record.paidPrice,jdbcType=DECIMAL},
+      userId = #{record.userId,jdbcType=BIGINT},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      modifyTime = #{record.modifyTime,jdbcType=TIMESTAMP},
+      payTime = #{record.payTime,jdbcType=TIMESTAMP},
+      deliveryTime = #{record.deliveryTime,jdbcType=TIMESTAMP},
+      receiveTime = #{record.receiveTime,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      cart = #{record.cart,jdbcType=VARCHAR},
+      discutPrice = #{record.discutPrice,jdbcType=DECIMAL},
+      useBalancePrice = #{record.useBalancePrice,jdbcType=DECIMAL},
+      deliveryType = #{record.deliveryType,jdbcType=INTEGER},
+      isPaid = #{record.isPaid,jdbcType=INTEGER},
+      deliverCode = #{record.deliverCode,jdbcType=VARCHAR},
+      channelId = #{record.channelId,jdbcType=INTEGER},
+      createUserId = #{record.createUserId,jdbcType=BIGINT},
+      shopType = #{record.shopType,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.order.Orders" >
+    update orders
+    <set >
+      <if test="orderNum != null" >
+        orderNum = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null" >
+        orderPrice = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payPrice != null" >
+        payPrice = #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="paidPrice != null" >
+        paidPrice = #{paidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryTime != null" >
+        deliveryTime = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null" >
+        receiveTime = #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cart != null" >
+        cart = #{cart,jdbcType=VARCHAR},
+      </if>
+      <if test="discutPrice != null" >
+        discutPrice = #{discutPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="useBalancePrice != null" >
+        useBalancePrice = #{useBalancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryType != null" >
+        deliveryType = #{deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="isPaid != null" >
+        isPaid = #{isPaid,jdbcType=INTEGER},
+      </if>
+      <if test="deliverCode != null" >
+        deliverCode = #{deliverCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        channelId = #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="createUserId != null" >
+        createUserId = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="shopType != null" >
+        shopType = #{shopType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.order.Orders" >
+    update orders
+    set orderNum = #{orderNum,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      orderPrice = #{orderPrice,jdbcType=DECIMAL},
+      payPrice = #{payPrice,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      paidPrice = #{paidPrice,jdbcType=DECIMAL},
+      userId = #{userId,jdbcType=BIGINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      modifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      payTime = #{payTime,jdbcType=TIMESTAMP},
+      deliveryTime = #{deliveryTime,jdbcType=TIMESTAMP},
+      receiveTime = #{receiveTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      cart = #{cart,jdbcType=VARCHAR},
+      discutPrice = #{discutPrice,jdbcType=DECIMAL},
+      useBalancePrice = #{useBalancePrice,jdbcType=DECIMAL},
+      deliveryType = #{deliveryType,jdbcType=INTEGER},
+      isPaid = #{isPaid,jdbcType=INTEGER},
+      deliverCode = #{deliverCode,jdbcType=VARCHAR},
+      channelId = #{channelId,jdbcType=INTEGER},
+      createUserId = #{createUserId,jdbcType=BIGINT},
+      shopType = #{shopType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

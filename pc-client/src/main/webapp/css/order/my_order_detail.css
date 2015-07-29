@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+#order_detail { width: 980px; padding-bottom: 20px; float: left; background: #fff; margin-left: 10px;}
+	#ord_tit { height: 59px; border-bottom: solid 1px #bbbbbb; line-height: 59px; padding-left: 20px;}
+		.odt_l { float: left; font-size: 14px; color: #666;}
+			#odr_id { padding-right: 10px; display: inline-block;}
+			#odr_state { color: #ff7f00;}
+		.odt_r { float: right;}
+			#to_myorders { font-size: 12px; color: #4c79a5; margin-right: 20px;}
+			.qx_order { font-size: 12px; color: #4c79a5; margin-right: 20px;}
+			.qo_txt_btn { display: inline-block; width: 75px; height: 26px; background: #ff7f00; line-height: 26px; text-align: center; color: #fff;}
+			
+	#od_info_tit { height: 35px; border-bottom: solid 1px #bbbbbb; line-height: 35px; font-size: 12px; color: #333; padding-left: 20px;}
+	
+	.consignee_info { height: 35px; line-height: 35px; font-size: 12px; color: #666; padding-left: 20px;}
+	
+	#address_info { font-size: 12px; color: #666; border-bottom: solid 1px #bbbbbb; padding-left: 40px; padding-top: 15px;}
+		#address_info li { float: left;}
+ 		#address_info .da_tit { margin-right: 20px; text-align: right; width: 80px;}
+ 		#address_info .da_detail { width: 400px; word-break: break-all;}
+		#address_info .da_eskp { padding: 14px 0;}
+		#address_info ul { padding: 3px 0px;}
+	
+	#pay_info { font-size: 12px; color: #666; border-bottom: solid 1px #bbbbbb; padding-left: 40px; padding-top: 15px;}	
+		#pay_info li { float: left; margin-bottom: 12px;}
+		#pay_info .da_tit { margin-right: 20px; text-align: right; width: 80px;}
+		#pay_info .da_eskp { padding: 14px 0;}
+		
+	#detail_list_th { height: 36px; font-size: 12px; background: #f5f5f5; color: #333; line-height: 36px; margin: 0px 20px;}
+		#detail_list_th li { float: left; text-align: center;}
+		#detail_list_th .dlt_num { width: 145px; text-align: left; text-indent: 18px;}
+		.dlt_img { width: 130px;}
+		.dlt_name { width: 240px;}
+		.dlt_price { width: 160px;}
+		.dlt_sl { width: 105px;}
+		.dlt_state { width: 80px;}
+		.dlt_ope { width: 80px;}
+			#detail_list_td .dlt_ope_tb { display: table; line-height: normal;}
+			.dlt_ope_td { display: table-cell; vertical-align: middle;}
+		.dlt_ope a { color: #4c79a5; display: block;}
+		
+	#detail_list_td { margin: 0px 20px; font-size: 12px;}
+		#detail_list_td li { float: left; border-bottom: solid 1px #f5f5f5; height: 79px; line-height: 79px; text-align: center; color: #666;}
+		#detail_list_td .dlt_num { width: 145px; text-align: left; text-indent: 18px;}
+		.dltr_name { width: 240px;}
+			.dltr_name_div { height: 79px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; word-wrap: normal;}
+		.dltr_img { width: 130px; position: relative;}
+			.dltr_img img { width: 60px; height: 60px; position: absolute; top: 50%; margin-top: -30px; display: block; left: 50%; margin-left: -30px; background: #ccc;}
+		#detail_list_td .dltr_price { width: 160px; color: #ff0000; font-weight: bold;}
+		
+	
+	#detail_list_tl { font-size: 12px; color: #666; padding-top: 52px;}
+		#detail_list_tl li { float: right;}
+		#dltl_total { width: 105px; color: #ff7f00; margin-left: 20px;}
+		#dltl_jf { padding: 0px 50px 0px 10px;}
+		
+	#detail_list_tq { font-size: 12px; color: #ccc; padding-top: 26px;}
+		#detail_list_tq li { float: right;}
+		#dltl_yf { width: 105px; margin-left: 20px;}
+		
+	#detail_list_tf { font-size: 12px; color: #666; border: solid 1px #ddd; border-left: 0px; border-right: 0px; margin: 0px 20px; margin-top: 12px;}
+		#detail_list_tf li { float: right; height: 60px; line-height: 60px;}
+		#dltf_total { width: 85px; margin-left: 20px; color: #ff0000; font-size: 20px; font-weight: bold;}
+		#dltf_txt { font-size: 14px;}
+		

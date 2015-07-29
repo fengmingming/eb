@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        				http://www.springframework.org/schema/beans/spring-beans.xsd
+        				http://www.springframework.org/schema/mvc
+        				http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       					http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean name="hessianServiceExporter" abstract="true" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="serializerFactory">
+			<bean class="framework.remote.hessian.ExtendSerializerFactory"/>
+		</property>
+	</bean>
+	<bean name="/userService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="userService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.user.IUserService"/>
+	</bean>
+	<bean name="/areaService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="areaService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.product.IAreaService"/>
+	</bean>
+	<bean name="/userAddressService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="userAddressService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.user.IUserAddressService"/>
+	</bean>
+	<bean name="/categoryService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="categoryService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.product.ICategoryService"/>
+	</bean>
+	<bean name="/shopCartService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="shopCartService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.product.IShopCartService"/>
+	</bean>
+		<bean name="/goodsService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="goodsService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.product.IGoodsService"/>
+	</bean>
+	<bean name="/myFavoriteService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="myFavoriteService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.user.IMyFavoriteService"/>
+	</bean>
+	<bean name="/orderService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="orderService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.order.IOrderService"/>
+	</bean>
+	<bean name="/amountLogService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="amountLogService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.user.IAmountLogService"/>
+	</bean>
+	<bean name="/pavilionInfoService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="pavilionInfoService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.product.IPavilionInfoService"/>
+	</bean>
+	<bean name="/smsSenderSvc.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="smsSenderService"/>
+	    <property name="serviceInterface" value="net.sls.service.tpi.ISmsSenderService"/>
+	</bean>
+	<bean name="/amountOrderService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="amountOrderService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.user.IAmountOrderService"/>
+	</bean>
+	<bean name="/topNService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="topNService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.user.ITopNService"/>
+	</bean>
+	<bean name="/broadcastService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="broadcastService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.product.IBroadcastService"/>
+	</bean>
+	<bean name="/activityService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="activityService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.act.IActivityService"/>
+	</bean>
+	<bean name="/dynpageService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="dynpageService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.act.IDynpageService"/>
+	</bean>
+	<bean name="/couponService.ser" parent="hessianServiceExporter">
+	    <property name="service" ref="couponService"/>
+	    <property name="serviceInterface" value="net.sls.service.pc.act.ICouponService"/>
+	</bean>
+</beans>

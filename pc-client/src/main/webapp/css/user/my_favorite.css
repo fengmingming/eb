@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+#mf_div { width: 980px; float: left; margin-left: 10px; background: #fff; padding-bottom: 10px;}	
+	#mf_div_tit { border-bottom: 1px solid #bbb; height: 59px;}
+		#md_txt { color: #666; float: left; height: 59px; line-height: 59px; margin-left: 20px;}
+		#md_search { float: right; margin-top: 16px;}
+			#md_search li { float: left;}
+			#md_search input { border: 1px solid #ddd; color: #666; font-size: 12px; padding: 3px 5px; width: 200px;}
+			#md_search a { border: 1px solid #ddd; border-radius: 2px; display: block; font-size: 12px; height: 23px; line-height: 23px; margin-left: 3px; margin-right: 20px; text-align: center; width: 55px;}
+	#mf_th { height: 36px; line-height: 36px; background: #f5f5f5; margin: 0px 20px; margin-top: 10px;}
+		#mf_th li { float: left; text-align: center; font-size: 12px; color: #333;}
+			.mh_img { width: 95px;}
+			.mh_name { width: 265px;}
+			.mh_price { width: 140px;}
+			.mh_kc { width: 160px;}
+			.mh_sj { width: 120px;}
+			.mh_ope { width: 160px;}
+			#mf_th .mh_rig { text-align: left; text-indent: 8px;}
+			
+		#mf_tb {}
+			.mf_tr {  border-bottom: 1px solid #f5f5f5; font-size: 12px; margin: 0 20px 1px;}
+				.mf_tr li { float: left;}
+				.mf_h { color: #666; height: 78px; line-height: 78px; text-align: center;}
+				.mhp_col { color: #ff3f3f; font-weight: bold;}
+					.mh_img img { background: none repeat scroll 0 0 #ccc; display: block; float: left; height: 60px; margin-left: 30px; margin-top: -30px; position: relative; top: 50%; width: 60px;}
+					.mh_name div { width: 265px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; word-wrap: normal; text-align: left; text-indent: 8px;}
+					.mh_ope { display: table;}
+					.mh_ope a { color: #1f47bb; display: block; width: 70px; height: 26px; line-height: 26px; text-align: center; margin: auto;}
+					.mh_oe_div { display: table-cell; vertical-align: middle;}
+			

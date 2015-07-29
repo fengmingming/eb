@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+#mo_list_th { background: #f5f5f5; font-size: 12px; color: #3e3e3e; margin: 0px 20px;}
+	#mo_list_th li { float: left; height: 36px; line-height: 36px; text-align: center;}
+		#mo_list_th .mlt_spxx { width: 420px; text-align: left; text-indent: 15px;}
+		.mlt_name { width: 80px;}
+		.mlt_ddje { width: 105px;}
+		.mlt_xdsj { width: 120px;}
+		.mlt_ddzt { width: 120px;}
+		.mlt_operate { width: 95px;}
+			.mlt_o_p { display: table;}
+				.mlt_o_c { display: table-cell; vertical-align: middle;}
+		
+.mo_list_tr { margin: 0px 20px; font-size: 12px; border-bottom: solid 1px #f5f5f5; margin-bottom: 1px;}
+	.mo_list_tr li { float: left;}
+		.mlt_img { width: 210px;}
+			.mlt_img img { float: left; display: block; position: relative; top: 50%; margin-top: -30px; width: 60px; height: 60px; background: #ccc; margin-left: 20px;}
+		.mlt_orderId { width: 940px; height: 32px; line-height: 32px; background: #fffcee; text-indent: 15px;}
+		.mlt_h { height: 78px; line-height: 78px; text-align: center; color: #666;}
+		.mlt_state { color: #ff7f00;}
+			.mlt_o_a { color: #3f658c; line-height: normal; width: 95px; display: block; margin-bottom: 5px;}
+		.mlt_all { width: 210px;}
+			.mlt_all_a { color: #3f658c;}
+			

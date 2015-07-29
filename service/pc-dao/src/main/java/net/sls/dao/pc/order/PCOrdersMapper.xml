@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.order.PCOrdersMapper">
+	<resultMap id="BaseResultMap" type="net.sls.dto.pc.order.Orders">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="orderNum" property="orderNum" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="payPrice" property="payPrice" jdbcType="DECIMAL" />
+		<result column="amount" property="amount" jdbcType="DECIMAL" />
+		<result column="paidPrice" property="paidPrice" jdbcType="DECIMAL" />
+		<result column="userId" property="userId" jdbcType="BIGINT" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+		<result column="payTime" property="payTime" jdbcType="TIMESTAMP" />
+		<result column="deliveryTime" property="deliveryTime" jdbcType="TIMESTAMP" />
+		<result column="receiveTime" property="receiveTime" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="cart" property="cart" jdbcType="VARCHAR" />
+		<result column="discutPrice" property="discutPrice" jdbcType="DECIMAL" />
+		<result column="useBalancePrice" property="useBalancePrice"
+			jdbcType="DECIMAL" />
+		<result column="deliveryType" property="deliveryType" jdbcType="INTEGER" />
+		<result column="isPaid" property="isPaid" jdbcType="INTEGER" />
+		<result column="deliverCode" property="deliverCode" jdbcType="VARCHAR" />
+		<result column="channelId" property="channelId" jdbcType="INTEGER" />
+		<result column="createUserId" property="createUserId" jdbcType="BIGINT" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, orderNum, status, state, payPrice, amount, paidPrice,orderPrice,
+		userId,
+		createTime, modifyTime,
+		payTime, deliveryTime, receiveTime,
+		remark, cart, discutPrice,
+		useBalancePrice, deliveryType,
+		isPaid,isCardBuy,
+		deliverCode, channelId,createUserId
+	</sql>
+
+	<select id="selectOrdersListsByUserId" resultType="java.util.Map"
+		parameterType="map">
+		select
+		o.id, o.orderNum, o.status, o.orderPrice,o.payPrice, o.amount,
+		o.paidPrice,o.state,
+		o.userId,
+		o.createTime, o.deliveryType,
+		o.isPaid, o.shopType,
+		da.receiver,da.phone,
+		op.payCode,op.payName
+		from
+		orders o
+		left join deliveryAddress da on da.orderId = o.id
+		left join orderPay op on op.orderId = o.id
+		<where>
+			o.state != 127
+			<if test="userId != null and userId != '' ">
+				and o.userId = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="orderNum != null and orderNum != '' ">
+				and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null ">
+				and o.status in
+				<foreach item="statu" collection="status" open="("
+					separator="," close=")">
+					#{statu}
+				</foreach>
+			</if>
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+		<choose>
+			<when test="sort== 'asc' and column == 'createTime' ">
+				ORDER BY o.createTime ASC
+			</when>
+			<when test="sort== 'desc' and column == 'createTime'">
+				ORDER BY o.createTime DESC
+			</when>
+		</choose>
+		<if test="start != null and number != null">
+			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from orders
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<select id="countOrdersByFilter" parameterType="java.util.Map"
+		resultType="long">
+		select count(o.id) 
+		from orders o
+		left join deliveryAddress da on da.orderId = o.id
+		<where>
+			o.state != 127
+			<if test="userId != null and userId != '' ">
+				and o.userId = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="orderNum != null and orderNum != '' ">
+				and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null  ">
+				and o.status in
+				<foreach item="statu" collection="status" open="("
+					separator="," close=")">
+					#{statu}
+				</foreach>
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+	</select>
+	<select id="selectPurchasAgentsOrders" resultType="map"
+		parameterType="map">
+		SELECT t.*
+		FROM
+		(SELECT
+		o.id, o.orderNum, o.status, o.orderPrice,o.payPrice,
+		o.amount,o.state,
+		o.paidPrice, o.userId,
+		o.createTime, o.deliveryType,
+		o.isPaid,
+		o.shopType,
+		da.receiver,da.phone,da.mobile
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		<where>
+			o.state != 127
+			and o.id IN (SELECT od.id FROM
+			orders od
+			WHERE
+			od.createUserId=#{pavilionId,jdbcType=BIGINT})
+			<if test="mobile != null and mobile != '' ">
+				AND da.mobile=#{mobile,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNum != null and orderNum != '' ">
+				AND o.orderNum=#{orderNum,jdbcType=VARCHAR}
+			</if>
+			AND o.shopType = 2
+			<if test="status != null ">
+				and o.status in
+				<foreach item="statu" collection="status" open="("
+					separator="," close=")">
+					#{statu}
+				</foreach>
+			</if>			
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+		) AS t
+		<choose>
+			<when test="sort== 'asc' and column == 'createTime' ">
+				ORDER BY t.createTime ASC
+			</when>
+			<when test="sort== 'desc' and column == 'createTime'">
+				ORDER BY t.createTime DESC
+			</when>
+		</choose>
+		<if test="start != null and number != null">
+			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="countPurchasAgentsOrders" resultType="long"
+		parameterType="map">
+		SELECT count(ord.id)
+		FROM
+		(
+		SELECT
+		o.id, o.orderNum, o.status, o.orderPrice, o.payPrice,
+		o.amount, o.paidPrice, o.userId,
+		o.createTime, o.deliveryType,
+		o.isPaid, da.receiver,da.phone
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		<where>
+			o.state != 127
+			and o.id IN (SELECT od.id FROM
+			orders od
+			WHERE
+			od.createUserId=#{pavilionId,jdbcType=BIGINT})
+			<if test="mobile != null and mobile != '' ">
+				AND da.mobile=#{mobile,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNum != null and orderNum != '' ">
+				AND o.orderNum=#{orderNum,jdbcType=VARCHAR}
+			</if>
+			AND o.shopType = 2
+			<if test="status != null and status != '' ">
+				and o.status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+		) AS ord
+	</select>
+	<select id="selectPavilionOrders" resultType="map"
+		parameterType="map">
+		SELECT t.*
+		FROM
+		(SELECT
+		o.id, o.orderNum, o.status, o.orderPrice,o.payPrice,
+		o.amount,o.state,
+		o.paidPrice, o.userId,
+		o.createTime, o.deliveryType,
+		o.isPaid,
+		o.shopType,
+		da.receiver,da.phone,da.mobile,
+		op.payCode,op.payName
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		left join orderPay op on op.orderId = o.id
+		<where>
+			o.state != 127
+			and o.id IN (SELECT od.id FROM orders od where od.createUserId=#{userId,jdbcType=BIGINT} UNION SELECT d.orderId FROM
+			deliveryAddress d
+			WHERE
+			d.pavilionId=#{pavilionId,jdbcType=INTEGER})
+			<if test="mobile != null and mobile != '' ">
+				AND da.mobile=#{mobile,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNum != null and orderNum != '' ">
+				AND o.orderNum=#{orderNum,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null ">
+				and o.status in
+				<foreach item="statu" collection="status" open="("
+					separator="," close=")">
+					#{statu}
+				</foreach>
+			</if>			
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+		) AS t
+		<choose>
+			<when test="sort== 'asc' and column == 'createTime' ">
+				ORDER BY t.createTime ASC
+			</when>
+			<when test="sort== 'desc' and column == 'createTime'">
+				ORDER BY t.createTime DESC
+			</when>
+		</choose>
+		<if test="start != null and number != null">
+			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="countPavilionOrders" resultType="long"
+		parameterType="map">
+		SELECT count(ord.id)
+		FROM
+		(
+		SELECT
+		o.id, o.orderNum, o.status, o.orderPrice, o.payPrice,
+		o.amount, o.paidPrice, o.userId,
+		o.createTime, o.deliveryType,
+		o.isPaid, da.receiver,da.phone
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		<where>
+			o.state != 127
+			and o.id IN (SELECT od.id FROM orders od where od.createUserId=#{userId,jdbcType=BIGINT} UNION SELECT d.orderId FROM
+			deliveryAddress d
+			WHERE
+			d.pavilionId=#{pavilionId,jdbcType=INTEGER})
+			<if test="mobile != null and mobile != '' ">
+				AND da.mobile=#{mobile,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNum != null and orderNum != '' ">
+				AND o.orderNum=#{orderNum,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null and status != '' ">
+				and o.status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+		) AS ord
+	</select>
+	
+	<select id="selectCollectOrders" resultType="map" parameterType="map">
+		SELECT t.*
+		FROM
+		(SELECT
+		o.id, o.orderNum, o.status, o.orderPrice, o.payPrice,
+		o.amount,o.state,
+		o.paidPrice, o.userId,
+		o.createTime, o.deliveryType,
+		o.isPaid,
+		o.shopType,
+		da.receiver,da.mobile
+		FROM
+		orders o
+		left join deliveryAddress da on da.orderId = o.id
+		<where>
+			o.state != 127
+			and o.id IN (SELECT d.orderId FROM
+			deliveryAddress d
+			WHERE
+			d.pavilionId=#{pavilionId,jdbcType=INTEGER}
+			<if test="mobile != null and mobile != '' ">
+				AND d.mobile =#{mobile,jdbcType=VARCHAR}
+			</if>
+			) AND o.shopType = 1
+			<if test="orderNum != null and orderNum != '' ">
+				AND o.orderNum =#{orderNum,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null ">
+				and o.status in
+				<foreach item="statu" collection="status" open="("
+					separator="," close=")">
+					#{statu}
+				</foreach>
+			</if>
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+		) AS t
+		<choose>
+			<when test="sort== 'asc' and column == 'createTime' ">
+				ORDER BY t.createTime ASC
+			</when>
+			<when test="sort== 'desc' and column == 'createTime'">
+				ORDER BY t.createTime DESC
+			</when>
+		</choose>
+		<if test="start != null and number != null">
+			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="countCollectOrders" resultType="long" parameterType="map">
+		SELECT count(ord.id)
+		FROM
+		(
+		SELECT
+		o.id, o.orderNum, o.status, o.payPrice,
+		o.amount, o.paidPrice, o.userId,
+		o.createTime, o.deliveryType,
+		o.isPaid, da.receiver,da.mobile
+		FROM
+		orders o
+		left join deliveryAddress da on da.orderId = o.id
+		<where>
+			o.state != 127
+			and o.id IN (SELECT d.orderId FROM
+			deliveryAddress d
+			WHERE
+			d.pavilionId=#{pavilionId,jdbcType=INTEGER}
+			<if test="mobile != null and mobile != '' ">
+				AND d.mobile =#{mobile,jdbcType=VARCHAR}
+			</if>
+			) AND o.shopType = 1
+			<if test="orderNum != null and orderNum != '' ">
+				AND o.orderNum=#{orderNum,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null and status != '' ">
+				and o.status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="state != null ">
+				and o.state = #{state,jdbcType=INTEGER}
+			</if>
+			<if test="isPaid != null and isPaid != '' ">
+				and o.isPaid = #{isPaid,jdbcType=INTEGER}
+			</if>
+			<if test="timeType == 1  ">
+				and o.createTime BETWEEN DATE_SUB(NOW(),INTERVAL 3 MONTH)
+				AND NOW()
+			</if>
+			<if test="timeType == 2  ">
+				and YEAR(o.createTime) =YEAR(NOW())
+			</if>
+			<if test="timeType == 3 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-1)
+			</if>
+			<if test="timeType == 4 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-2)
+			</if>
+			<if test="timeType == 5 ">
+				and YEAR(o.createTime) =(YEAR(NOW())-3)
+			</if>
+			<if test="timeType == 6 ">
+  		<![CDATA[and YEAR(o.createTime) <=(YEAR(NOW())-4)  ]]>
+			</if>
+		</where>
+		) AS ord
+	</select>
+
+	<select id="selectOrderInfo" resultType="map" parameterType="map">
+		select
+		o.id,
+		o.orderNum,
+		o.status,
+		o.orderPrice,
+		o.payPrice,
+		o.amount,
+		o.paidPrice,
+		o.userId,
+		o.createTime,
+		o.deliveryType,
+		o.isPaid,
+		o.state,
+		o.amount,
+		o.payPrice,
+		o.createUserId,
+		o.shopType,
+		da.mobile,
+		da.receiver,da.pavilionId,
+		da.phone,da.remark,
+		op.payCode,op.payName
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		left join orderPay op on op.orderId = o.id
+		<where>
+			1=1
+			<if test="userId != null and userId != '' ">
+				and o.userId = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="id != null  ">
+				and o.id = #{id,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+<select id="getPavilionOrderInfo" resultType="map" parameterType="map">
+		select
+		o.id,
+		o.orderNum,
+		o.status,
+		o.orderPrice,
+		o.payPrice,
+		o.amount,
+		o.paidPrice,
+		o.userId,
+		o.createTime,
+		o.deliveryType,
+		o.isPaid,
+		o.state,
+		o.amount,
+		o.payPrice,
+		o.createUserId,
+		o.shopType,
+		da.mobile,
+		da.receiver,da.pavilionId,
+		da.phone,da.remark,
+		op.payCode,op.payName
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		left join orderPay op on op.orderId = o.id
+		<where>
+			<if test="id != null  ">
+				and o.id = #{id,jdbcType=BIGINT}
+			</if>			
+		</where>
+	</select>
+	<!-- 
+	<select id="selectCollectOrderInfo" resultType="map" parameterType="map">
+		select
+		o.id,
+		o.orderNum,
+		o.status,
+		o.orderPrice,
+		o.payPrice,
+		o.amount,
+		o.paidPrice,
+		o.userId,
+		o.createTime,
+		o.deliveryType,
+		o.isPaid,
+		o.state,
+		o.amount,
+		o.payPrice,
+		o.createUserId,
+		da.mobile,
+		da.receiver,da.pavilionId,
+		da.phone,da.remark,
+		op.payCode,op.payName
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		left join orderPay op on op.orderId = o.id
+		<where>
+			1=1
+			<if test="userId != null and userId != '' ">
+				and o.userId = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="id != null  ">
+				and o.id = #{id,jdbcType=BIGINT}
+			</if>
+			<if test="pavilionId != null  ">
+				and da.pavilionId = #{pavilionId,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	<select id="selectPurchasAgentsOrderInfo" resultType="map" parameterType="map">
+		select
+		o.id,
+		o.orderNum,
+		o.status,
+		o.orderPrice,
+		o.payPrice,
+		o.amount,
+		o.paidPrice,
+		o.userId,
+		o.createTime,
+		o.deliveryType,
+		o.isPaid,
+		o.state,
+		o.amount,
+		o.payPrice,
+		o.createUserId,
+		da.mobile,
+		da.receiver,da.pavilionId,
+		da.phone,da.remark,
+		op.payCode,op.payName
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		left join orderPay op on op.orderId = o.id
+		<where>
+			1=1
+			<if test="userId != null and userId != '' ">
+				and o.createUserId = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="id != null  ">
+				and o.id = #{id,jdbcType=BIGINT}
+			</if>
+			<if test="pavilionId != null  ">
+				and da.pavilionId = #{pavilionId,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	 -->
+	<select id="selectOrderByIsPaid1" resultType="INTEGER"
+		parameterType="map">
+		SELECT COUNT(*)
+		FROM orders o
+		<where>
+			o.isPaid = 1
+			AND o.state=1
+			<if test="userId != null  ">
+				and o.userId = #{userId,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	<select id="selectOrderByStatus4" resultType="INTEGER"
+		parameterType="map">
+		SELECT COUNT(*)
+		FROM orders o
+		<where>
+			o.status = 4
+			AND o.state=1
+			<if test="userId != null  ">
+				and o.userId = #{userId,jdbcType=BIGINT}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="net.sls.dto.pc.order.Orders"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into orders
+		(orderNum, status,
+		payPrice,
+		orderPrice,
+		paidPrice,
+		userId, createTime,
+		payTime,
+		deliveryTime,
+		receiveTime, remark, cart, amount,
+		discutPrice,
+		useBalancePrice,
+		deliveryType,
+		isCardBuy,
+		isPaid, deliverCode, channelId,
+		createUserId, shopType
+		)
+		values (#{orderNum,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{payPrice,jdbcType=DECIMAL},
+		#{orderPrice,jdbcType=DECIMAL},
+		#{paidPrice,jdbcType=DECIMAL},
+		#{userId,jdbcType=BIGINT},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{payTime,jdbcType=TIMESTAMP},
+		#{deliveryTime,jdbcType=TIMESTAMP},
+		#{receiveTime,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=VARCHAR},
+		#{cart,jdbcType=VARCHAR},
+		#{amount,jdbcType=DECIMAL},
+		#{discutPrice,jdbcType=DECIMAL},
+		#{useBalancePrice,jdbcType=DECIMAL},
+		#{deliveryType,jdbcType=INTEGER},
+		#{isCardBuy,jdbcType=INTEGER},
+		#{isPaid,jdbcType=INTEGER},
+		#{deliverCode,jdbcType=VARCHAR},
+		#{channelId,jdbcType=INTEGER},
+		#{createUserId,jdbcType=BIGINT},
+		#{shopType,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<update id="updateOrderState" parameterType="map">
+		update orders set
+		state = #{state,jdbcType=INTEGER} where id =
+		#{orderId,jdbcType=BIGINT}
+	</update>
+
+	<update id="cancelOrder" parameterType="long">
+		update orders set state =
+		2 where id = #{value,jdbcType=BIGINT} and status in (1,2) and state = 1
+	</update>
+
+	<update id="updateOrderStatus" parameterType="map">
+		update orders set
+		status = #{status,jdbcType=INTEGER} where id =
+		#{orderId,jdbcType=BIGINT}
+	</update>
+	<select id="selectOrdersByOrderNum" parameterType="java.lang.String"
+		resultType="net.sls.dto.pc.order.Orders">
+		select
+		<include refid="Base_Column_List" />
+		from orders
+		where orderNum = #{orderNum,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectOrdersByOrderId" parameterType="long"
+		resultType="net.sls.dto.pc.order.Orders">
+		select
+		<include refid="Base_Column_List" />
+		from orders
+		where id = #{value,jdbcType=BIGINT}
+	</select>
+	
+	<update id="updateConfirmPaid" parameterType="map">
+		update orders set payPrice = payPrice - #{price,jdbcType=DECIMAL},paidPrice = paidPrice + #{price,jdbcType=DECIMAL},isPaid = 2,payTime = NOW() 
+		where id = #{orderId,jdbcType=BIGINT} and payPrice = #{price,jdbcType=DECIMAL} and isPaid = 1
+	</update>
+	
+	<select id="getTodayDsOrders" resultType="map" parameterType="java.lang.Integer">
+		select
+			o.id,
+			o.orderNum,
+			o.state,
+			o.status,
+			o.orderPrice,
+			o.createTime,
+			o.isPaid,
+			o.shopType,
+			da.mobile,
+			da.receiver
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		where o.state != 127
+			and o.shopType = 1
+			<if test="pavilionId != null  ">
+				and da.pavilionId = #{pavilionId,jdbcType=INTEGER}
+			</if>
+			and o.createTime between 
+				STR_TO_DATE(CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY), ' ', '19:00:00'), '%Y-%m-%d %H:%i:%s') and now()
+	</select>
+	
+	<select id="getTodayDgOrders" resultType="map" parameterType="java.lang.Long">
+		select
+			o.id,
+			o.orderNum,
+			o.state,
+			o.status,
+			o.orderPrice,
+			o.createTime,
+			o.isPaid,
+			o.shopType,
+			da.mobile,
+			da.receiver
+		FROM orders o
+		left join deliveryAddress da on da.orderId = o.id
+		where o.state != 127
+			and o.shopType = 2
+			<if test="userId != null  ">
+				and o.createUserId = #{userId,jdbcType=BIGINT}
+			</if>
+			and o.createTime between 
+				STR_TO_DATE(CONCAT(DATE_SUB(CURDATE(),INTERVAL 1 DAY), ' ', '19:00:00'), '%Y-%m-%d %H:%i:%s') and now()
+	</select>
+	
+	<select id="selectTodayTotalByUserId" parameterType="map" resultType="java.math.BigDecimal">
+		SELECT sum(useBalancePrice) as todayTotal
+		FROM orders 
+		WHERE state=1 AND ispaid = 2 AND shopType = 2 AND useBalancePrice > 0
+		<if test="userId != null ">
+			AND createUserId = #{userId,jdbcType=BIGINT}
+		</if>
+		AND isCardBuy = 0
+		AND  DateDiff(createTime,now())=0
+  </select>
+</mapper>

@@ -1,0 +1,8 @@
+@charset "utf-8";
+
+.pl_obj { border-bottom: solid 1px #cdcdcd; color: #666; position: relative;}
+	.pl_obj_txt { float: left; font-size: 14px; margin-left: 20px; margin-top: 16px; font-weight: bold; margin-bottom: 6px; width: 200px; word-break: break-all;}
+	.pl_obj_num { float: right; font-size: 20px; position: absolute; top: 50%; margin-top: -14px; right: 15px;}
+		.num_a { color: #1abb0a;}
+		.num_s { color: #e60012;}
+	.pl_obj_time { display: block; clear: both; font-size: 12px; color: #a1a1a1; margin-left: 20px; margin-bottom: 10px;}

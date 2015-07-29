@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.activity.DetailTipRelMapperExt" >
+  <insert id="insertBatch" parameterType="map">
+  	insert into detailTipRel (detailTipId,activityId)
+  	values
+  	<foreach collection="ids" item="id" separator=",">
+  		(#{tipId,jdbcType=BIGINT},#{id,jdbcType=BIGINT})
+  	</foreach>
+  </insert>
+  
+  <select id="selectDetailTipRel" parameterType="map" resultType="map">
+  	select 
+  	rel.id as id,tip.startdate,tip.enddate,tip.type,rel.activityId,
+  	<choose>
+  		<when test="type == 1">
+  			g.goodsName as name
+  		</when>
+  		<when test="type == 2">
+  			b.name as name
+  		</when>
+  		<when test="type == 3">
+  			p.providerName as name
+  		</when>
+  		<when test="type == 4">
+  			c.name as name
+  		</when>
+  	</choose>
+  	from detailTip tip
+  	left join detailTipRel rel on tip.id = rel.detailTipId
+  	<choose>
+  		<when test="type == 1">
+  			left join goods g on rel.activityId = g.id
+  		</when>
+  		<when test="type == 2">
+  			left join brand b on rel.activityId = b.id
+  		</when>
+  		<when test="type == 3">
+  			left join provider p on rel.activityId = p.id
+  		</when>
+  		<when test="type == 4">
+  			left join category c on rel.activityId = c.id
+  		</when>
+  	</choose>
+  	where tip.id = #{tipId,jdbcType=BIGINT} and rel.isDel = 1
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countDetailTipRel" parameterType="long" resultType="long">
+  	select count(1) from detailTipRel where detailTipId = #{value,jdbcType=BIGINT}
+  </select>
+</mapper>

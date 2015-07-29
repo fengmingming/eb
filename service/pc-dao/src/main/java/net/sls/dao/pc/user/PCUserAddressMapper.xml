@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.user.PCUserAddressMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.user.UserAddress" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="pavilionId" property="pavilionId" jdbcType="INTEGER" />
+    <result column="pavilionCode" property="pavilionCode" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="district" property="district" jdbcType="INTEGER" />
+    <result column="community" property="community" jdbcType="INTEGER" />
+    <result column="addressDetail" property="addressDetail" jdbcType="VARCHAR" />
+    <result column="isdel" property="isdel" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="postcode" property="postcode" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="receiver" property="receiver" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="isdefault" property="isdefault" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, pavilionId,pavilionCode, province, city, district, community, addressDetail, isdel, createTime, 
+    postcode, mobile, receiver, phone, isdefault
+  </sql>
+  <sql id="Example_Where_Clause" >
+    <where >
+      
+    </where>
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from userAddress
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectUserAddressLById" resultType="net.sls.dto.pc.user.UserAddress" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from userAddress
+    where id = #{id,jdbcType=BIGINT} and isDel = 1
+  </select>
+  <select id="selectUserAddressListsByUserId" parameterType="map" resultType="net.sls.dto.pc.user.UserAddress">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from userAddress
+  	<where>1=1
+  		<if test="userId != null and userId !=''">
+  			and userId = #{userId,jdbcType=VARCHAR}
+  		</if>
+  			and	isdel = 1
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="countUserAddressByFilter" parameterType="map" resultType="long">
+  	select count(1) from userAddress
+  	<where>1=1
+  		<if test="userId != null and userId !=''">
+  			and userId = #{userId,jdbcType=VARCHAR}
+  		</if>
+  			and	isdel = 1
+  	</where>
+  </select>
+  <select id="selectDefaultUserAddressLByUserId" resultMap="BaseResultMap" parameterType="net.sls.dto.pc.user.UserAddress" >
+    select 
+    <include refid="Base_Column_List" />
+    from userAddress
+    where userId = #{userId,jdbcType=VARCHAR}
+    	and isdefault = 1
+    	and isdel = 1
+  </select>
+  <update id="deleteUserAddressById" parameterType="net.sls.dto.pc.user.UserAddress" >
+    update userAddress
+    set isdel = 127
+    , isdefault = 0
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="insertUserAddress" parameterType="net.sls.dto.pc.user.UserAddress" useGeneratedKeys="true" keyProperty="id">
+    insert into userAddress (userId, pavilionId,pavilionCode, province, city, district,community, addressDetail, isdel, createTime, 
+    postcode, mobile, receiver, phone, isdefault)
+    values ( #{userId,jdbcType=BIGINT}, #{pavilionId,jdbcType=INTEGER}, #{pavilionCode,jdbcType=VARCHAR},
+      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{community,jdbcType=INTEGER}, 
+      #{addressDetail,jdbcType=VARCHAR}, '1', #{createTime,jdbcType=TIMESTAMP}, 
+      #{postcode,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{receiver,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, 
+      <if test="isdefault != null" >
+      #{isdefault,jdbcType=BIT}
+      </if>
+      <if test="isdefault == null" >
+      0
+      </if>
+      )
+  </insert>
+  
+  <update id="updateUserAddress" parameterType="map" >
+    update userAddress
+    set 
+      userId = #{userId,jdbcType=BIGINT},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
+      community = #{community,jdbcType=INTEGER},
+      pavilionId = #{pavilionId,jdbcType=INTEGER},
+      pavilionCode = #{pavilionCode,jdbcType=VARCHAR},
+      addressDetail = #{addressDetail,jdbcType=VARCHAR},
+      isdel = #{isdel,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      postcode = #{postcode,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      receiver = #{receiver,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
+      <if test="isdefault != null" >
+      ,
+      isdefault = #{isdefault,jdbcType=BIT}
+      </if>
+    where
+    	id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateUserAddressByUserId" parameterType="net.sls.dto.pc.user.UserAddress" >
+    update userAddress
+    set 
+      isdefault = 0
+    where userId = #{userId,jdbcType=BIGINT} 
+  </update>
+  <update id="updateDefaultUserAddressByUserId" parameterType="net.sls.dto.pc.user.UserAddress" >
+    update userAddress
+    set 
+      isdefault = 1
+    where id = #{id,jdbcType=BIGINT} 
+  </update>
+  <delete id="deleteByExample" parameterType="net.sls.dto.pc.user.UserAddress" >
+    delete from userAddress
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+</mapper>

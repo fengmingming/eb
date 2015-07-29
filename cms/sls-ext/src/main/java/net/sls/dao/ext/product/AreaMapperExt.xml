@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.product.AreaMapperExt" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.product.Area" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="isUse" property="isUse" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, name, pid, createtime, isUse
+  </sql>
+  
+  <select id="countSelectCode" resultType="java.lang.Long" parameterType="java.lang.String">
+  
+  	SELECT 
+	COUNT(*) 
+	FROM 
+	area 
+	WHERE 
+	code = #{code,jdbcType=VARCHAR} 
+  
+  </select>
+  
+  <select id="selectKey" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	SELECT 
+	id 
+	FROM 
+	area 
+	WHERE 
+	code = #{code,jdbcType=VARCHAR} 
+  </select>
+  
+  <select id="selectAreasByCodes" resultMap="BaseResultMap">
+  	SELECT 
+	id, code, name, pid
+	FROM 
+	area 
+	WHERE 
+	code in	 
+	<foreach collection="array" item="code" open="(" close=")" separator=",">
+  		#{code,jdbcType=VARCHAR}
+  	</foreach>
+  </select>
+  
+  <select id="selectAreaByPid" resultMap="BaseResultMap" parameterType="int" >
+    select
+    <include refid="Base_Column_List" />
+    from area
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAreaById" resultType="util.model.Area" parameterType="int">
+  	select id, code, name, pid, createtime, isUse from area where id = #{value,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAreaCodeByPid" resultMap="BaseResultMap" parameterType="net.sls.dto.product.Area" >
+    select
+    <include refid="Base_Column_List" />
+    from area
+    <where>1=1
+    <if test="pid != null" >
+    	and pid =  #{pid,jdbcType=INTEGER}
+    </if>
+    ORDER BY id DESC LIMIT 1
+    </where>
+  </select>
+  
+  <select id="selectAllArea" resultType="net.sls.dto.product.Area">
+  	select id,name,pid,code from area
+  </select>
+</mapper>

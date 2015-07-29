@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+#category { background: #f2f2f2;}
+	#category_con { width: 1200px; margin: auto; overflow: hidden; position: relative;}
+		#cgy_ul { width: 210px; position: relative; z-index: 1; float: left;}
+			#cgy_ul li { height: 62px; width: 210px; cursor: default; background: #75AE0F; text-align: center;}
+			.cgy_img { position: relative; background: url(../images/category_s.png) no-repeat; width: 28px; height: 27px; left: -48px; top: 8px; display: inline-block;}
+				#cgy_sc .cgy_img { background-position: 0px 0px;}
+				#cgy_rl .cgy_img { background-position: 0px -29px;}
+				#cgy_sg .cgy_img { background-position: 0px -57px;}
+				#cgy_ly .cgy_img { background-position: 0px -86px;}
+				#cgy_js .cgy_img { background-position: 0px -114px;}
+				#cgy_hx .cgy_img { background-position: 0px -142px;}
+				#cgy_ls .cgy_img { background-position: 0px -171px;}
+				.cgy_txt { height: 62px; line-height: 62px; font-size: 16px; margin-left: -30px; color: #fff;}
+					.cgy_txt a { color: #fff;}
+					.cgy_txt a:hover { text-decoration: underline;}
+				.cgy_div { /*width: 300px;*/ height: 434px; position: absolute; top: 0px; /*left: -90px;*/left: -240px; background: #fff; z-index: -2; /*opacity: 0; filter: alpha(opacity=0);*/}
+					.cgy_div_tit { font-size: 20px; height: 87px; line-height: 87px; padding-left: 48px; border-bottom: solid 1px #ddd;}
+						.cgy_div_tit a { color: #666;}
+						.cgy_div_tit a:hover { color: #ff7f00; text-decoration: underline;}
+					.cgy_div_tits { width: 150px; padding: 20px 0px; float: left; /*text-indent: 50px;*/ text-align: center;}
+						.cgy_div_tits a { color: #666;}
+						.cgy_div_tits a:hover { color: #ff7f00; text-decoration: underline;}
+				
+		#banners { float: left; width: 990px; height: 434px; background: #fff; position: relative; z-index: 0;}
+			.bn_ig { position: absolute; left: 0px; top: 0px; height: 434px; width: 990px; overflow: hidden;}
+			.bn_pg { float: right;  position: absolute; bottom: 20px; left: 50%; /*z-index: 4;*/}
+			.bn_pg li { float: left; width: 17px; height: 16px; margin-right: 11px; cursor: pointer; background: url(../images/index.png) no-repeat 0px -188px; font-size: 12px; color: #fff; font-weight: bold; text-align: center;}
+			.bn_pg li.cur { background: url(../images/index.png) no-repeat 0px -162px;}
+					

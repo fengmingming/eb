@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.dict.DictMapperExt">
+  <sql id="Base_Column_List" >
+    id, code, name, type, remark
+  </sql>
+  <select id="selectDictsByFilter" parameterType="map" resultType="net.sls.dto.product.Dict">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from dict
+  	<where>
+  		<if test="code != null">
+  			and code like concat('%',#{code,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="name != null">
+  			and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="type != null">
+  			and type = #{type,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="countDictsByFilter" parameterType="map" resultType="long">
+  	select count(1) from dict
+  	<where>
+  		<if test="code != null">
+  			and code like concat('%',#{code,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="name != null">
+  			and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="type != null">
+  			and type = #{type,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="selectDictCombox" resultType="util.model.ComboxDto">
+  	select id as v,name as k from dict where type = 1 order by id desc
+  </select>
+  
+  <select id="selectDictComboxByType" resultType="util.model.ComboxDto" parameterType="map">
+  	select id as v,name as k from dict
+  	where 1=1
+  	<if test="type != null">
+  		and type = #{type,jdbcType=INTEGER}
+  	</if>
+  	<if test="key != null">
+  		and name like concat('%',#{key,jdbcType=VARCHAR},'%')
+  	</if>
+  </select>
+</mapper>

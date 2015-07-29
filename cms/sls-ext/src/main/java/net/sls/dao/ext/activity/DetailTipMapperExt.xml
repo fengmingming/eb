@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.activity.DetailTipMapperExt">
+	<insert id="insert" parameterType="net.sls.dto.activity.DetailTip"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into
+		detailTip (type,startdate,enddate,remark,areaCode)
+		value
+		(#{type,jdbcType=INTEGER},#{startdate,jdbcType=TIMESTAMP},#{enddate,jdbcType=TIMESTAMP},#{remark,jdbcType=VARCHAR},#{areaCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectDetailTipPager" parameterType="map" resultType="map">
+		select
+		id,type,startdate,enddate,remark,areaCode,isDel
+		from detailTip
+		where areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%') and isDel = 1
+		<if test="type != null">
+			and type = #{type,jdbcType=INTEGER}
+		</if>
+		<if test="isAct != null">
+			<if test="isAct == 1">
+				and now() between startdate and enddate and isDel = 1
+			</if>
+			<if test="isAct == 2">
+				and (now() &gt; enddate or now() &lt; startdate or isDel = 127) 
+			</if>
+		</if>
+		order by id
+		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+	</select>
+	
+	<select id="countDetailTipPager" parameterType="map" resultType="long">
+		select count(1) from detailTip
+		where areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%') and isDel = 1
+		<if test="type != null">
+			and type = #{type,jdbcType=INTEGER}
+		</if>
+		<if test="isAct != null">
+			<if test="isAct == 1">
+				and now() between startdate and enddate and isDel = 1
+			</if>
+			<if test="isAct == 2">
+				and (now() &gt; enddate or now() &lt; startdate or isDel = 127) 
+			</if>
+		</if>
+	</select>
+</mapper>

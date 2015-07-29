@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.order.PCOrderPayMapper" >
+  <insert id="insert" parameterType="net.sls.dto.pc.order.OrderPay" >
+    insert into orderPay (orderId, userId, 
+      payCode, payName, createTime
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{payCode,jdbcType=INTEGER}, #{payName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <update id="updateOrderPayByOrderId" parameterType="map">
+  	update orderPay set account=#{account,jdbcType=VARCHAR} where orderId=#{orderId,jdbcType=BIGINT}
+  </update>
+</mapper>

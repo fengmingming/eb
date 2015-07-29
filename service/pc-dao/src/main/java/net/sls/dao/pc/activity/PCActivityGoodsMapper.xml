@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.activity.PCActivityGoodsMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.act.ActivityGoods" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="actId" property="actId" jdbcType="BIGINT" />
+    <result column="actType" property="actType" jdbcType="INTEGER" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="actPrice" property="actPrice" jdbcType="DECIMAL" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, actId, actType, goodsId, actPrice, startTime, endTime, number
+  </sql>
+  
+  <select id="selectActivityGoods" resultMap="BaseResultMap" parameterType="map" >
+    select ag.*
+    from activityGoods ag 
+    	LEFT JOIN activities a ON ag.actId = a.id
+    where 1=1
+    	<if test="goodsIds.size() != 0 ">
+			AND ag.goodsId in 
+			<foreach collection="goodsIds" item="id" open="(" close=")" separator=",">
+	 			#{id,jdbcType=BIGINT}
+	 		</foreach>
+	  	</if>
+	  	<if test="actType != null and actType != '' ">
+			AND ag.actType = #{actType,jdbcType=INTEGER}
+	  	</if>
+	  	<if test="areaCodeList != null ">
+	  		AND a.areaCode in
+		  	<foreach collection="areaCodeList" item="areaCode" open="(" close=")" separator=",">
+			  	<if test="areaCode != null and areaCode != '' ">
+					 #{areaCode,jdbcType=VARCHAR}
+			  	</if>
+		  	</foreach>
+	  	</if>
+	  	AND a.state = 1 AND a.isDel = 1 
+	  	<![CDATA[ AND ag.startTime < NOW() AND ag.endTime > NOW() ]]>     
+  </select>
+ 
+</mapper>

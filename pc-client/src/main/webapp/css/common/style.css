@@ -1,0 +1,15 @@
+@charset "utf-8";
+* { margin: 0px; padding: 0px; font-family: "Microsoft Yahei",verdana;}
+body { background: #fff;}
+li { list-style: none;}
+a { text-decoration: none; color: #000; outline: none;}
+img { border: 0px;}
+
+.clear { zoom: 1;}
+.clear:after { display: block; clear: both; content: '';}
+
+input, select { outline: none; background: white;}
+
+.r_star { color: red; margin-right: 2px;}
+
+#hint { color: red; margin-right: 2px; font-size: 12px;}

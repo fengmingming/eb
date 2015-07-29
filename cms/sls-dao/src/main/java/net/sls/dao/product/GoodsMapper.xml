@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.product.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.product.Goods" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="goodsName" property="goodsName" jdbcType="VARCHAR" />
+    <result column="isSale" property="isSale" jdbcType="INTEGER" />
+    <result column="standard" property="standard" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="marketPrice" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="barCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="operatorId" property="operatorId" jdbcType="BIGINT" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="providerId" property="providerId" jdbcType="BIGINT" />
+    <result column="brandId" property="brandId" jdbcType="INTEGER" />
+    <result column="isReal" property="isReal" jdbcType="INTEGER" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+    <result column="areaId" property="areaId" jdbcType="INTEGER" />
+    <result column="areaCode" property="areaCode" jdbcType="VARCHAR" />
+    <result column="limittype" property="limittype" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sku, goodsName, isSale, standard, price, marketPrice, barCode, createtime, operatorId, 
+    modifytime, providerId, brandId, isReal, place, areaId, areaCode, limittype, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.product.GoodsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.product.GoodsExample" >
+    delete from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.product.Goods" >
+    insert into goods (id, sku, goodsName, 
+      isSale, standard, price, 
+      marketPrice, barCode, createtime, 
+      operatorId, modifytime, providerId, 
+      brandId, isReal, place, 
+      areaId, areaCode, limittype, 
+      remark)
+    values (#{id,jdbcType=BIGINT}, #{sku,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
+      #{isSale,jdbcType=INTEGER}, #{standard,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{marketPrice,jdbcType=DECIMAL}, #{barCode,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{operatorId,jdbcType=BIGINT}, #{modifytime,jdbcType=TIMESTAMP}, #{providerId,jdbcType=BIGINT}, 
+      #{brandId,jdbcType=INTEGER}, #{isReal,jdbcType=INTEGER}, #{place,jdbcType=VARCHAR}, 
+      #{areaId,jdbcType=INTEGER}, #{areaCode,jdbcType=VARCHAR}, #{limittype,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.product.Goods" >
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sku != null" >
+        sku,
+      </if>
+      <if test="goodsName != null" >
+        goodsName,
+      </if>
+      <if test="isSale != null" >
+        isSale,
+      </if>
+      <if test="standard != null" >
+        standard,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="marketPrice != null" >
+        marketPrice,
+      </if>
+      <if test="barCode != null" >
+        barCode,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="operatorId != null" >
+        operatorId,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="providerId != null" >
+        providerId,
+      </if>
+      <if test="brandId != null" >
+        brandId,
+      </if>
+      <if test="isReal != null" >
+        isReal,
+      </if>
+      <if test="place != null" >
+        place,
+      </if>
+      <if test="areaId != null" >
+        areaId,
+      </if>
+      <if test="areaCode != null" >
+        areaCode,
+      </if>
+      <if test="limittype != null" >
+        limittype,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sku != null" >
+        #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSale != null" >
+        #{isSale,jdbcType=INTEGER},
+      </if>
+      <if test="standard != null" >
+        #{standard,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="providerId != null" >
+        #{providerId,jdbcType=BIGINT},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="isReal != null" >
+        #{isReal,jdbcType=INTEGER},
+      </if>
+      <if test="place != null" >
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null" >
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="limittype != null" >
+        #{limittype,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.product.GoodsExample" resultType="java.lang.Integer" >
+    select count(*) from goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update goods
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.sku != null" >
+        sku = #{record.sku,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsName != null" >
+        goodsName = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSale != null" >
+        isSale = #{record.isSale,jdbcType=INTEGER},
+      </if>
+      <if test="record.standard != null" >
+        standard = #{record.standard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.marketPrice != null" >
+        marketPrice = #{record.marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.barCode != null" >
+        barCode = #{record.barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operatorId != null" >
+        operatorId = #{record.operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifytime != null" >
+        modifytime = #{record.modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.providerId != null" >
+        providerId = #{record.providerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.brandId != null" >
+        brandId = #{record.brandId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isReal != null" >
+        isReal = #{record.isReal,jdbcType=INTEGER},
+      </if>
+      <if test="record.place != null" >
+        place = #{record.place,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null" >
+        areaId = #{record.areaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaCode != null" >
+        areaCode = #{record.areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limittype != null" >
+        limittype = #{record.limittype,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update goods
+    set id = #{record.id,jdbcType=BIGINT},
+      sku = #{record.sku,jdbcType=VARCHAR},
+      goodsName = #{record.goodsName,jdbcType=VARCHAR},
+      isSale = #{record.isSale,jdbcType=INTEGER},
+      standard = #{record.standard,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      marketPrice = #{record.marketPrice,jdbcType=DECIMAL},
+      barCode = #{record.barCode,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      operatorId = #{record.operatorId,jdbcType=BIGINT},
+      modifytime = #{record.modifytime,jdbcType=TIMESTAMP},
+      providerId = #{record.providerId,jdbcType=BIGINT},
+      brandId = #{record.brandId,jdbcType=INTEGER},
+      isReal = #{record.isReal,jdbcType=INTEGER},
+      place = #{record.place,jdbcType=VARCHAR},
+      areaId = #{record.areaId,jdbcType=INTEGER},
+      areaCode = #{record.areaCode,jdbcType=VARCHAR},
+      limittype = #{record.limittype,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.product.Goods" >
+    update goods
+    <set >
+      <if test="sku != null" >
+        sku = #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goodsName = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSale != null" >
+        isSale = #{isSale,jdbcType=INTEGER},
+      </if>
+      <if test="standard != null" >
+        standard = #{standard,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="marketPrice != null" >
+        marketPrice = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="barCode != null" >
+        barCode = #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorId != null" >
+        operatorId = #{operatorId,jdbcType=BIGINT},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="providerId != null" >
+        providerId = #{providerId,jdbcType=BIGINT},
+      </if>
+      <if test="brandId != null" >
+        brandId = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="isReal != null" >
+        isReal = #{isReal,jdbcType=INTEGER},
+      </if>
+      <if test="place != null" >
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        areaId = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaCode != null" >
+        areaCode = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="limittype != null" >
+        limittype = #{limittype,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.product.Goods" >
+    update goods
+    set sku = #{sku,jdbcType=VARCHAR},
+      goodsName = #{goodsName,jdbcType=VARCHAR},
+      isSale = #{isSale,jdbcType=INTEGER},
+      standard = #{standard,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      marketPrice = #{marketPrice,jdbcType=DECIMAL},
+      barCode = #{barCode,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      operatorId = #{operatorId,jdbcType=BIGINT},
+      modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      providerId = #{providerId,jdbcType=BIGINT},
+      brandId = #{brandId,jdbcType=INTEGER},
+      isReal = #{isReal,jdbcType=INTEGER},
+      place = #{place,jdbcType=VARCHAR},
+      areaId = #{areaId,jdbcType=INTEGER},
+      areaCode = #{areaCode,jdbcType=VARCHAR},
+      limittype = #{limittype,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

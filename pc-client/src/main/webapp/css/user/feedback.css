@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+#fb_div { width: 980px; float: left; margin-left: 10px; background: #fff; padding-bottom: 94px;}
+	#fb_div_tit { color: #666; padding-left: 18px; padding-top: 22px;}
+	
+	#fb_tb { color: #666; font-size: 14px; margin-left: 60px; margin-top: 8px;}
+		#fb_tb tr { height: 55px;}
+			.fb_td { width: 80px; text-align: right; padding-right: 25px;}
+			.lt_inp { position: relative; top: 1px; margin-right: 6px;}
+			.lt_lb { margin-right: 14px;}
+			#ft_zt { border: solid 1px #ddd; padding: 6px 5px; width: 168px;}
+			#ft_nr { width: 358px; height: 56px; padding: 5px; resize: none; border: solid 1px #ddd; color: #666;}
+			#fb_upfile { display: block; width: 85px; height: 32px; border: solid 1px #ddd; color: #666; text-align: center; line-height: 32px;}
+			#fb_sub { display: block; width: 85px; height: 32px; border: solid 1px #ddd; color: #fff; text-align: center; line-height: 32px; background: #ff7f00;}
+			#fb_sub_td { vertical-align: top;}
+			

@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.pth_operate a { display: block; width: 70px; height: 26px; line-height: 26px; text-align: center; color: #fff; float: right;}
+	.ptr_state1 { color: #ff7f00;}
+	.ptr_a_state1 { background: #ff7f00;}
+	.ptr_state2 { color: #85b200;}
+	.ptr_a_state2 { background: #85b200; cursor: default;}
+	.pth_operate .ptr_a_see { color: #4c79a5;}
+	.ptr_p { display: table;}
+		.ptr_c { display: table-cell; vertical-align: middle;}
+		

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.pc.product.PCGoodsAreaMapper">
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.product.GoodsArea" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="districtId" property="districtId" jdbcType="INTEGER" />
+    <result column="communityId" property="communityId" jdbcType="INTEGER" />
+    <result column="pavilionId" property="pavilionId" jdbcType="INTEGER" />
+    <result column="limitCode" property="limitCode" jdbcType="VARCHAR" />
+    <result column="isLimit" property="isLimit" jdbcType="BIT" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="virtualNumber" property="virtualNumber" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+<sql id="Base_Column_List" >
+    id, goodsId, provinceId, cityId, districtId, communityId, pavilionId, limitCode, 
+    isLimit, number, createTime
+  </sql>
+  <select id="selectGoodsAreaByFilter" parameterType="map" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List"/>
+		FROM
+			goodsArea 
+		<where> isLimit = 1
+	  		<if test="goodsId != null">
+	  			and goodsId = #{goodsId,jdbcType=INTEGER}
+	  		</if>
+	  		<if test="provinceId != null">
+	  			and provinceId = #{provinceId,jdbcType=INTEGER}
+	  		</if>
+	  		<if test="cityId != null">
+	  			and cityId = #{cityId,jdbcType=INTEGER}
+	  		</if>
+	  		<if test="districtId != null">
+	  			and districtId = #{districtId,jdbcType=INTEGER}
+	  		</if>
+	  		<if test="communityId != null">
+	  			and communityId = #{communityId,jdbcType=INTEGER}
+	  		</if>
+	  		<if test="pavilionId != null">
+	  			and pavilionId = #{pavilionId,jdbcType=INTEGER}
+	  		</if>
+	  	</where>
+	  	order by number desc
+	  	limit 0,1
+  </select>
+  <update id="updateGoodsArea" parameterType="map" >
+    update goodsArea set number = number - #{number,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT} and number <![CDATA[ >= ]]>#{number,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectSmallGoodsAreas" parameterType="map" resultType="net.sls.dto.pc.product.SmallGoodsArea">
+  	<if test="provinceIds != null">
+  		select id,goodsId,isLimit,number
+	  	from goodsArea
+	  	where isDel = 1
+	  	and goodsId in
+	  	<foreach collection="provinceIds" item="gId" open="(" close=")" separator=",">
+	  		#{gId,jdbcType=BIGINT}
+	  	</foreach>
+	  	and provinceId = #{provinceId,jdbcType=INTEGER} group by goodsId having number = min(number)
+	  	<choose>
+	  		<when test="cityIds != null">
+	  			union
+	  		</when>
+	  		<when test="districtIds != null">
+	  			union
+	  		</when>
+	  		<when test="communityIds != null">
+	  			union
+	  		</when>
+	  		<when test="pavilionIds != null">
+	  			union
+	  		</when>
+	  	</choose>
+  	</if>
+  	<if test="cityIds != null">
+  		select id,goodsId,isLimit,number
+	  	from goodsArea
+	  	where isDel = 1
+	  	and goodsId in
+	  	<foreach collection="cityIds" item="gId" open="(" close=")" separator=",">
+	  		#{gId,jdbcType=BIGINT}
+	  	</foreach>
+	  	and cityId = #{cityId,jdbcType=INTEGER} group by goodsId having number = min(number)
+	  	<choose>
+	  		<when test="districtIds != null">
+	  			union
+	  		</when>
+	  		<when test="communityIds != null">
+	  			union
+	  		</when>
+	  		<when test="pavilionIds != null">
+	  			union
+	  		</when>
+	  	</choose>
+  	</if>
+  	<if test="districtIds != null">
+  		select id,goodsId,isLimit,number
+	  	from goodsArea
+	  	where isDel = 1
+	  	and goodsId in
+	  	<foreach collection="districtIds" item="gId" open="(" close=")" separator=",">
+	  		#{gId,jdbcType=BIGINT}
+	  	</foreach>
+	  	and districtId = #{districtId,jdbcType=INTEGER} group by goodsId having number = min(number)
+	  	<choose>
+	  		<when test="communityIds != null">
+	  			union
+	  		</when>
+	  		<when test="pavilionIds != null">
+	  			union
+	  		</when>
+	  	</choose>
+  	</if>
+  	<if test="communityIds != null">
+  		select id,goodsId,isLimit,number
+	  	from goodsArea
+	  	where isDel = 1
+	  	and goodsId in
+	  	<foreach collection="communityIds" item="gId" open="(" close=")" separator=",">
+	  		#{gId,jdbcType=BIGINT}
+	  	</foreach>
+	  	and communityId = #{communityId,jdbcType=INTEGER} group by goodsId having number = min(number)
+	  	<choose>
+	  		<when test="pavilionIds != null">
+	  			union
+	  		</when>
+	  	</choose>
+  	</if>
+  	<if test="pavilionIds != null">
+  		select id,goodsId,isLimit,number
+	  	from goodsArea
+	  	where isDel = 1
+	  	and goodsId in
+	  	<foreach collection="pavilionIds" item="gId" open="(" close=")" separator=",">
+	  		#{gId,jdbcType=BIGINT}
+	  	</foreach>
+	  	and pavilionId = #{pavilionId,jdbcType=INTEGER} group by goodsId having number = min(number)
+  	</if>
+  </select>
+  
+  <update id="updateGoodsAreaBatch">
+  	<foreach collection="list" item="dto" separator=";">
+  		update goodsArea set number = number - #{dto.number,jdbcType=INTEGER} 
+  		where id = #{dto.id,jdbcType=BIGINT}
+  	</foreach>
+  </update>
+</mapper>

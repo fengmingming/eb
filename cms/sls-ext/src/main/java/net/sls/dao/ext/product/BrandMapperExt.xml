@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.product.BrandMapperExt" >
+  
+  <sql id="Base_Column_List" >
+    id, name, enName, description, spell, keyword, url, img, createTime
+  </sql>
+  
+  <select id="selectBySelective" parameterType="map" resultType="net.sls.dto.product.Brand" >
+    select 
+    <include refid="Base_Column_List" />
+    from brand
+    <where>
+    1=1 
+    <if test="id != null and id != ''">
+    	and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="name != null and name != ''">
+		and name = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="enName != null and enName != ''">
+		and enName = #{enName,jdbcType=VARCHAR}
+	</if>
+	<if test="description != null and description != ''">
+		and description = #{description,jdbcType=VARCHAR}
+	</if>
+	<if test="spell != null and spell != ''">
+		and spell = #{spell,jdbcType=VARCHAR}
+	</if>
+	<if test="keyword != null and keyword != ''">
+		and keyword = #{keyword,jdbcType=VARCHAR}
+	</if>
+	<if test="url != null and url != ''">
+		and url = #{url,jdbcType=VARCHAR}
+	</if>
+	<if test="img != null and img != ''">
+		and img = #{img,jdbcType=VARCHAR}
+	</if>
+	<if test="createTime != null and createTime != ''">
+		and createTime = #{createTime,jdbcType=TIMESTAMP}
+	</if>
+	</where>
+	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+	
+  </select>
+  
+  <select id="countBySelective" parameterType="map" resultType="java.lang.Long" >
+    select 
+    	count(*) 
+    from brand
+    <where> 
+    1=1 
+    <if test="id != null and id != ''">
+    	and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="name != null and name != ''">
+		and name = #{name,jdbcType=VARCHAR}
+	</if>
+	<if test="enName != null and enName != ''">
+		and enName = #{enName,jdbcType=VARCHAR}
+	</if>
+	<if test="description != null and description != ''">
+		and description = #{description,jdbcType=VARCHAR}
+	</if>
+	<if test="spell != null and spell != ''">
+		and spell = #{spell,jdbcType=VARCHAR}
+	</if>
+	<if test="keyword != null and keyword != ''">
+		and keyword = #{keyword,jdbcType=VARCHAR}
+	</if>
+	<if test="url != null and url != ''">
+		and url = #{url,jdbcType=VARCHAR}
+	</if>
+	<if test="img != null and img != ''">
+		and img = #{img,jdbcType=VARCHAR}
+	</if>
+	<if test="createTime != null and createTime != ''">
+		and createTime = #{createTime,jdbcType=TIMESTAMP}
+	</if>
+	</where>
+  </select>
+  
+  <select id="selectBrandCombobox" resultType="util.model.ComboxDto">
+  	select id as v,name as k
+  	from brand
+  </select>
+  
+  <select id="countByName" resultType="int" parameterType="string">
+  	select count(*) 
+  	from brand where name = #{name,jdbcType=VARCHAR}
+  </select>
+</mapper>

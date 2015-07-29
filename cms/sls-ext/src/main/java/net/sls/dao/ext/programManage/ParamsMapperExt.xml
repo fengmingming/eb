@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.programManage.ParamsMapperExt">
+  <sql id="Base_Column_List" >
+    id,methodId, paramsName, reqparams
+  </sql>
+  <select id="selectParamListBymethodId" parameterType="map" resultType="map">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from params
+  	<where>1=1
+  		<if test="methodId != null and methodId !='' ">
+  			and methodId = #{methodId,jdbcType=INTEGER}
+  		</if>
+  		
+  	</where>
+  </select>
+  <select id="selectParamsPagerBymethodId" parameterType="map" resultType="net.sls.dto.programManage.Params">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from params
+  	<where>1=1
+  		<if test="methodId != null and methodId !='' ">
+  			and methodId = #{methodId,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="countParamsByFilter" parameterType="map" resultType="long">
+  	select count(1) from params
+  	<where>1=1
+  		<if test="methodId != null and methodId !='' ">
+  			and methodId = #{methodId,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  <select id="selectParams" parameterType="map" resultType="net.sls.dto.programManage.Params">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from params
+  	<where>1=1
+  		<if test="methodId != null and methodId !='' ">
+  			and methodId = #{methodId,jdbcType=BIGINT }
+  		</if>
+  		<if test="paramsName != null and paramsName !='' ">
+  			and paramsName = #{paramsName,jdbcType=VARCHAR}
+  		</if>
+  		<if test="reqparams != null and reqparams !='' ">
+  			and reqparams = #{reqparams,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="countParamsByFilters" parameterType="map" resultType="long">
+  	select count(1) from params
+  	<where>1=1
+  		<if test="methodId != null and methodId !='' ">
+  			and methodId = #{methodId,jdbcType=BIGINT }
+  		</if>
+  		<if test="paramsName != null and paramsName !='' ">
+  			and paramsName = #{paramsName,jdbcType=VARCHAR}
+  		</if>
+  		<if test="reqparams != null and reqparams !='' ">
+  			and reqparams = #{reqparams,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  </select>
+  <insert id="insertParamsReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="net.sls.dto.programManage.Params">
+ 	insert into params
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="methodId != null" >
+        methodId,
+      </if>
+      <if test="reqparams != null" >
+        reqparams,
+      </if>
+      <if test="paramsName != null" >
+        paramsName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="methodId != null" >
+        #{methodId,jdbcType=INTEGER},
+      </if>
+      <if test="reqparams != null" >
+        #{reqparams,jdbcType=VARCHAR},
+      </if>
+      <if test="paramsName != null" >
+        #{paramsName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+ </insert>
+ <update id="updateParamsByPrimaryKey" parameterType="net.sls.dto.programManage.Params" >
+	 update params
+	    <set >
+	      <if test="methodId != null" >
+        	methodId = #{methodId,jdbcType=INTEGER},
+	      </if>
+	      <if test="reqparams != null" >
+	        reqparams = #{reqparams,jdbcType=VARCHAR},
+	      </if>
+	      <if test="paramsName != null" >
+	        paramsName = #{paramsName,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	   where id = #{id,jdbcType=INTEGER}
+ </update>
+</mapper>

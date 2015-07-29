@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.product.PavilionInfoMapperExt" >
+  
+  <sql id="Base_Column_List" >
+    id, pavilionCode, pavilionSn, province, city, district, community, coordinate, mobile, email, name, 
+    sex, cartId, detailHome, createTime, modifyTime
+  </sql>
+  
+  <select id="countSelectPavilionCode" resultType="java.lang.Long" parameterType="java.lang.String">
+  
+  	SELECT
+	COUNT(*)
+	FROM
+	pavilionInfo
+	WHERE
+	pavilionCode = #{pavilionCode,jdbcType=VARCHAR}
+  
+  </select>
+  
+  <select id="countSelectPavilionSn" resultType="java.lang.Long" parameterType="java.lang.String">
+  
+  	SELECT
+	COUNT(*)
+	FROM
+	pavilionInfo
+	WHERE
+	pavilionSn = #{pavilionSn,jdbcType=VARCHAR}
+  
+  </select>
+  <update id="updatePavilionInfo" parameterType="net.sls.dto.product.PavilionInfo">
+  
+  	UPDATE
+	pavilionInfo
+	<set >
+      <if test="pavilionSn != null" >
+        pavilionSn = #{pavilionSn,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="community != null" >
+        community = #{community,jdbcType=INTEGER},
+      </if>
+      <if test="coordinate != null" >
+        coordinate = #{coordinate,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="cartId != null" >
+        cartId = #{cartId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailHome != null" >
+        detailHome = #{detailHome,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  
+  </update>
+  
+  <insert id="insertPavilionInfo" parameterType="net.sls.dto.product.PavilionInfo">
+  
+  	INSERT
+	INTO
+	pavilionInfo
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pavilionCode != null" >
+        pavilionCode,
+      </if>
+      <if test="pavilionSn != null" >
+        pavilionSn,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="community != null" >
+        community,
+      </if>
+      <if test="coordinate != null" >
+        coordinate,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="cartId != null" >
+        cartId,
+      </if>
+      <if test="detailHome != null" >
+        detailHome,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="modifyTime != null" >
+        modifyTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pavilionCode != null" >
+        #{pavilionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pavilionSn != null" >
+        #{pavilionSn,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=INTEGER},
+      </if>
+      <if test="community != null" >
+        #{community,jdbcType=INTEGER},
+      </if>
+      <if test="coordinate != null" >
+        #{coordinate,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="cartId != null" >
+        #{cartId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailHome != null" >
+        #{detailHome,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  
+  </insert>
+  
+  <select id="selectPavilionInfo" resultType="map" parameterType="net.sls.dto.product.PavilionInfo">
+  	SELECT
+  	id, pavilionCode, pavilionSn, 
+	(SELECT name FROM area WHERE id = pavilionInfo.province ) provinceName,
+	(SELECT name FROM area WHERE id = pavilionInfo.city ) cityName, 
+	(SELECT name FROM area WHERE id = pavilionInfo.district ) districtName, 
+	(SELECT name FROM area WHERE id = pavilionInfo.community) communityName, 
+	coordinate, mobile, email, name, sex, cartId, detailHome, createTime, modifyTime
+  	FROM pavilionInfo
+  	<where>
+  		<if test="name != null">
+  			and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="mobile != null">
+  			and mobile = #{mobile,jdbcType=VARCHAR}
+  		</if>
+  		<if test="code != null">
+  			and pavilionCode like concat( #{code,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="pavilionCode != null">
+  			and pavilionCode like concat('%',#{pavilionCode,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="pavilionSn != null">
+  			and pavilionSn like concat('%',#{pavilionSn,jdbcType=VARCHAR},'%')
+  		</if>
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if> 
+  </select>
+  
+  <select id="countSelectPavilionInfo" resultType="java.lang.Long">
+  	SELECT
+  	count(*)
+  	FROM pavilionInfo
+  	<where>
+  		<if test="name != null">
+  			and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="mobile != null">
+  			and mobile = #{mobile,jdbcType=VARCHAR}
+  		</if>
+  		<if test="code != null">
+  			and pavilionCode like concat( #{code,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="pavilionCode != null">
+  			and pavilionCode like concat('%',#{pavilionCode,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="pavilionSn != null">
+  			and pavilionSn like concat('%',#{pavilionSn,jdbcType=VARCHAR},'%')
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="selectPavilionArea" parameterType="map" resultType="map">
+  	select pa.id,pa.pavilionId,pa.paName,a.name as pavilionName,pa.isUse,pa.isDel
+  	from pavilionArea pa left join area a on pa.pavilionId = a.id and a.isUse = 1 and pa.isDel = 1
+  	<where>
+  		<if test="community != null">
+  			and a.pid = #{community,jdbcType=INTEGER}
+  		</if>
+  		<if test="pavilion != null">
+  			and pa.pavilionId = #{pavilion,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  	limit #{start},#{number}
+  </select>
+  
+  <select id="countPavilionArea" parameterType="map" resultType="long">
+  	select count(1)
+  	from pavilionArea pa left join area a on pa.pavilionId = a.id and a.isUse = 1 and pa.isDel = 1
+  	<where>
+  		<if test="community != null">
+  			and a.pid = #{community,jdbcType=INTEGER}
+  		</if>
+  		<if test="pavilion != null">
+  			and pa.pavilionId = #{pavilion,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  
+  <insert id="insertPavilionArea" parameterType="list">
+  	insert into pavilionArea (pavilionId,paName,isUse) values 
+  	<foreach collection="list" item="pa" separator=",">
+  		(#{pa.pavilionId,jdbcType=INTEGER},#{pa.paName,jdbcType=VARCHAR},#{pa.isUse,jdbcType=INTEGER})
+  	</foreach>
+  </insert>
+</mapper>

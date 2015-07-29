@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.product.ProviderMapperExt">
+  <sql id="Base_Column_List" >
+    id, providerName, logo, address, tel,fax, contactName, licensePhoto, isVerify,areaCode, createTime,verifyTime,modifyTime
+  </sql>
+  <select id="selectProvidersByFilter" parameterType="map" resultType="net.sls.dto.product.Provider">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from provider
+  	<where>
+  		<if test="providerName != null">
+  			and providerName like concat('%',#{providerName,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="address != null">
+  			and address like concat('%',#{address,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="tel != null">
+  			and tel = #{tel,jdbcType=VARCHAR}
+  		</if>
+  		<if test="fax != null">
+  			and fax = #{fax,jdbcType=VARCHAR}
+  		</if>
+  		<if test="contactName != null">
+  			and contactName like concat('%',#{contactName,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="isVerify != null">
+  			and isVerify = #{isVerify,jdbcType=VARCHAR}
+  		</if>
+  		<if test="areaCode != null">
+  			and areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="createTime1 != null" >
+        	and createTime between #{createTime1,jdbcType=TIMESTAMP} and #{createTime2,jdbcType=TIMESTAMP},
+      	</if>
+  		<if test="modifyTime1 != null" >
+        	and modifyTime between #{modifyTime1,jdbcType=TIMESTAMP} and #{modifyTime2,jdbcType=TIMESTAMP},
+      	</if>
+  	</where>
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+ 
+  <select id="selectProviderList" parameterType="map" resultType="util.model.ComboxDto">
+ 	select id as v,providerName as k from provider 
+ 	where areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+ 	<if test="name != null">
+ 		and providerName like concat('%',#{name,jdbcType=VARCHAR},'%')
+ 	</if>
+ </select>
+  <select id="countProvidersByFilter" parameterType="map" resultType="long">
+  	select count(1) from provider
+  	<where>
+  		<if test="providerName != null">
+  			and providerName like concat('%',#{providerName,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="address != null">
+  			and address like concat('%',#{address,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="tel != null">
+  			and tel = #{tel,jdbcType=VARCHAR}
+  		</if>
+  		<if test="fax != null">
+  			and fax = #{fax,jdbcType=VARCHAR}
+  		</if>
+  		<if test="contactName != null">
+  			and contactName like concat('%',#{contactName,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="isVerify != null">
+  			and isVerify = #{isVerify,jdbcType=VARCHAR}
+  		</if>
+  		<if test="areaCode != null">
+  			and areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  		</if>
+  		<if test="createTime1 != null" >
+        	and createTime between #{createTime1,jdbcType=TIMESTAMP} and #{createTime2,jdbcType=TIMESTAMP},
+      	</if>
+  		<if test="modifyTime1 != null" >
+        	and modifyTime between #{modifyTime1,jdbcType=TIMESTAMP} and #{modifyTime2,jdbcType=TIMESTAMP},
+      	</if>
+  	</where>
+  </select>
+  <select id="selectByName" parameterType="map" resultType="int">
+ 	SELECT
+		COUNT(1)
+	FROM
+		provider
+	WHERE
+		providerName = #{providerName,jdbcType=VARCHAR}
+ </select>
+</mapper>

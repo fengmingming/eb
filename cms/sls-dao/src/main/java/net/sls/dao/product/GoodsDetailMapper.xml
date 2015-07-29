@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.product.GoodsDetailMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.product.GoodsDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="photoUrl1" property="photoUrl1" jdbcType="VARCHAR" />
+    <result column="photoUrl2" property="photoUrl2" jdbcType="VARCHAR" />
+    <result column="photoUrl3" property="photoUrl3" jdbcType="VARCHAR" />
+    <result column="photoUrl4" property="photoUrl4" jdbcType="VARCHAR" />
+    <result column="photoUrl" property="photoUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, goodsId, description, photoUrl1, photoUrl2, photoUrl3, photoUrl4, photoUrl
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.product.GoodsDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from goodsDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from goodsDetail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from goodsDetail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.product.GoodsDetailExample" >
+    delete from goodsDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.product.GoodsDetail" >
+    insert into goodsDetail (id, goodsId, description, 
+      photoUrl1, photoUrl2, photoUrl3, 
+      photoUrl4, photoUrl)
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{photoUrl1,jdbcType=VARCHAR}, #{photoUrl2,jdbcType=VARCHAR}, #{photoUrl3,jdbcType=VARCHAR}, 
+      #{photoUrl4,jdbcType=VARCHAR}, #{photoUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.product.GoodsDetail" >
+    insert into goodsDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsId != null" >
+        goodsId,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="photoUrl1 != null" >
+        photoUrl1,
+      </if>
+      <if test="photoUrl2 != null" >
+        photoUrl2,
+      </if>
+      <if test="photoUrl3 != null" >
+        photoUrl3,
+      </if>
+      <if test="photoUrl4 != null" >
+        photoUrl4,
+      </if>
+      <if test="photoUrl != null" >
+        photoUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl1 != null" >
+        #{photoUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl2 != null" >
+        #{photoUrl2,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl3 != null" >
+        #{photoUrl3,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl4 != null" >
+        #{photoUrl4,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null" >
+        #{photoUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.product.GoodsDetailExample" resultType="java.lang.Integer" >
+    select count(*) from goodsDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update goodsDetail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsId != null" >
+        goodsId = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl1 != null" >
+        photoUrl1 = #{record.photoUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl2 != null" >
+        photoUrl2 = #{record.photoUrl2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl3 != null" >
+        photoUrl3 = #{record.photoUrl3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl4 != null" >
+        photoUrl4 = #{record.photoUrl4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl != null" >
+        photoUrl = #{record.photoUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update goodsDetail
+    set id = #{record.id,jdbcType=BIGINT},
+      goodsId = #{record.goodsId,jdbcType=BIGINT},
+      description = #{record.description,jdbcType=VARCHAR},
+      photoUrl1 = #{record.photoUrl1,jdbcType=VARCHAR},
+      photoUrl2 = #{record.photoUrl2,jdbcType=VARCHAR},
+      photoUrl3 = #{record.photoUrl3,jdbcType=VARCHAR},
+      photoUrl4 = #{record.photoUrl4,jdbcType=VARCHAR},
+      photoUrl = #{record.photoUrl,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.product.GoodsDetail" >
+    update goodsDetail
+    <set >
+      <if test="goodsId != null" >
+        goodsId = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl1 != null" >
+        photoUrl1 = #{photoUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl2 != null" >
+        photoUrl2 = #{photoUrl2,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl3 != null" >
+        photoUrl3 = #{photoUrl3,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl4 != null" >
+        photoUrl4 = #{photoUrl4,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null" >
+        photoUrl = #{photoUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.product.GoodsDetail" >
+    update goodsDetail
+    set goodsId = #{goodsId,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      photoUrl1 = #{photoUrl1,jdbcType=VARCHAR},
+      photoUrl2 = #{photoUrl2,jdbcType=VARCHAR},
+      photoUrl3 = #{photoUrl3,jdbcType=VARCHAR},
+      photoUrl4 = #{photoUrl4,jdbcType=VARCHAR},
+      photoUrl = #{photoUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

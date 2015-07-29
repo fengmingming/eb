@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.pc.product.PCGoodsMapper">
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.product.CommodityDto" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsName" property="goodsName" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="marketPrice" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="photoUrl" property="photoUrl" jdbcType="VARCHAR" />
+    <result column="standard" property="standard" jdbcType="VARCHAR" />
+    <result column="place" property="place" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="isSale" property="isSale" jdbcType="INTEGER" />
+    <result column="isUseCoupon" property="isUseCoupon" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectGoods" parameterType="map" resultMap="BaseResultMap">
+	SELECT
+		DISTINCT goods.id,
+		goods.goodsName,
+		goods.sku,
+		goods.price,
+		goods.marketPrice,
+		goodsDetail.description,
+		goodsDetail.photoUrl,
+		goods.createtime,
+		goods.areaId,
+		goods.standard,
+		goods.place,
+		goods.remark,
+		goods.isSale,
+		goodsStock.virtualNumber
+	FROM
+		goods
+		left join goodsCategory on goodsCategory.goodsId = goods.id
+		left join goodsDetail on goodsDetail.goodsId = goods.id
+		left join goodsStock on goodsStock.goodsId = goods.id
+		left join goodsStatistics on goodsStatistics.goodsId = goods.id
+		left join activityGoods on activityGoods.goodsId = goods.id
+		left join activities on activityGoods.actId = activities.id
+	WHERE
+		goods.isSale = 1
+		AND areaId in  
+		<foreach collection="areaIds" item="id" open="(" close=")" separator=",">
+			#{id,jdbcType=INTEGER}
+		</foreach>
+  		<if test="actType != null">
+  			AND activityGoods.actType = #{actType,jdbcType=BIGINT}
+  			AND NOW() BETWEEN  activityGoods.startTime AND activityGoods.endTime
+			AND activities.state = 1
+			AND activities.isDel = 1
+  		</if>
+		<if test="hasGoods != null and hasGoods==1">
+			AND virtualNumber>0
+	  	</if>
+		<if test="minPrice != null and maxPrice != null ">
+			AND	price BETWEEN #{minPrice,jdbcType=DECIMAL}
+			AND #{maxPrice,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="minPrice != null and maxPrice == null ">
+			AND	price &gt;= #{minPrice,jdbcType=DECIMAL}
+	  	</if>
+	  	<if test="minPrice == null and maxPrice != null ">
+			AND	price &lt;= #{maxPrice,jdbcType=DECIMAL}
+	  	</if>
+		<if test="first != null and first != '' ">
+			AND oneId = #{first,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="second != null and second != '' ">
+			AND twoId = #{second,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="third != null and third != '' ">
+			AND threeId = #{third,jdbcType=BIGINT}
+	  	</if>
+	  	<choose>
+	  		<when test="sortPrice==0">
+	  			ORDER BY price ASC
+	  		</when>
+	  		<when test="sortPrice==1">
+	  			ORDER BY price DESC
+	  		</when>
+	  		<when test="sortNew==0">
+	  			ORDER BY createtime DESC
+	  		</when>
+	  		<when test="sortNew==1">
+	  			ORDER BY createtime ASC
+	  		</when>
+	  		<when test="sortSale==0">
+	  			ORDER BY monthNum DESC
+	  		</when>
+	  	</choose>
+	  	<if test="start != null and number != null">
+ 			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+ 		</if>
+  </select>
+  <select id="countGoods" parameterType="map" resultType="long">
+	  	SELECT 
+	  		count(DISTINCT goods.id) 
+	  	FROM
+			goods
+			left join goodsCategory on goodsCategory.goodsId = goods.id
+			left join goodsDetail on goodsDetail.goodsId = goods.id
+			left join goodsStock on goodsStock.goodsId = goods.id
+			left join goodsStatistics on goodsStatistics.goodsId = goods.id
+			left join activityGoods on activityGoods.goodsId = goods.id
+			left join activities on activityGoods.actId = activities.id
+		WHERE
+			goods.isSale = 1
+		AND areaId in  
+		<foreach collection="areaIds" item="id" open="(" close=")" separator=",">
+			#{id,jdbcType=INTEGER}
+		</foreach>
+  		<if test="actType != null">
+  			AND activityGoods.actType = #{actType,jdbcType=BIGINT}
+  			AND NOW() BETWEEN  activityGoods.startTime AND activityGoods.endTime
+			AND activities.state = 1
+			AND activities.isDel = 1
+  		</if>
+		<if test="hasGoods != null and hasGoods==1">
+			AND virtualNumber>0
+	  	</if>
+		<if test="minPrice != null and maxPrice != null ">
+			AND	price BETWEEN #{minPrice,jdbcType=DECIMAL}
+			AND #{maxPrice,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="minPrice != null and maxPrice == null ">
+			AND	price &gt;= #{minPrice,jdbcType=DECIMAL}
+	  	</if>
+	  	<if test="minPrice == null and maxPrice != null ">
+			AND	price &lt;= #{maxPrice,jdbcType=DECIMAL}
+	  	</if>
+		<if test="first != null and first != '' ">
+			AND oneId = #{first,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="second != null and second != '' ">
+			AND twoId = #{second,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="third != null and third != '' ">
+			AND threeId = #{third,jdbcType=BIGINT}
+	  	</if>
+  </select>
+
+   <select id="selectGoodsDetail" parameterType="long" resultType="net.sls.dto.pc.product.CommodityDto">
+		SELECT
+			goods.id,
+			goods.sku,
+			goods.goodsName,
+			goods.isSale,
+			goods.price,
+			goods.marketPrice,
+			goods.barCode,
+			brand.name as brandName,
+			goods.place,
+			goods.standard,
+			goods.remark,
+			goodsDetail.description,
+			goodsDetail.photoUrl1,
+			goodsDetail.photoUrl2,
+			goodsDetail.photoUrl3,
+			goodsDetail.photoUrl4,
+			goodsDetail.photoUrl,
+			goodsStock.virtualNumber as number,
+			goods.limittype,
+			goodsStatistics.monthNum as monthNum
+		FROM
+			goods
+			left join goodsDetail on goodsDetail.goodsId = goods.id
+			left join goodsStock on goodsStock.goodsId = goods.id
+			left join brand on brand.id = goods.brandId
+			left join goodsStatistics on goodsStatistics.goodsId = goods.id
+		WHERE
+		    goods.id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectGoodsDetailTip" parameterType="long" resultType="string">
+		SELECT dt1.remark 
+		FROM detailTip dt1 
+			 LEFT JOIN detailTipRel dtr1 ON dt1.id = dtr1.detailTipId
+		WHERE dt1.isDel = 1 AND dtr1.isDel = 1
+			  AND (NOW() BETWEEN  dt1.startdate AND dt1.enddate)
+			  AND dt1.type = 1 AND dtr1.activityId = #{id,jdbcType=BIGINT}
+		UNION ALL
+		SELECT dt2.remark
+		FROM detailTip dt2 
+			 LEFT JOIN detailTipRel dtr2 ON dt2.id = dtr2.detailTipId
+			 LEFT JOIN goods g2 ON dtr2.activityId = g2.brandId
+		WHERE dt2.isDel = 1 AND dtr2.isDel = 1
+			  AND (NOW() BETWEEN  dt2.startdate AND dt2.enddate)
+			  AND dt2.type =2 AND g2.id = #{id,jdbcType=BIGINT}
+		UNION ALL
+		SELECT dt3.remark
+		FROM detailTip dt3 
+			 LEFT JOIN detailTipRel dtr3 ON dt3.id = dtr3.detailTipId
+			 LEFT JOIN goods g3 ON dtr3.activityId = g3.providerId
+		WHERE dt3.isDel = 1 AND dtr3.isDel = 1
+			  AND (NOW() BETWEEN  dt3.startdate AND dt3.enddate)
+			  AND dt3.type = 3 AND g3.id = #{id,jdbcType=BIGINT}
+		UNION ALL
+		SELECT dt4.remark
+		FROM detailTip dt4 
+			 LEFT JOIN detailTipRel dtr4 ON dt4.id = dtr4.detailTipId
+			 LEFT JOIN goodsCategory gc4 ON dtr4.activityId IN(gc4.oneId,gc4.twoId,gc4.threeId)
+			 LEFT JOIN goods g4 ON g4.id = gc4.goodsId
+		WHERE dt4.isDel = 1 AND dtr4.isDel =1
+			  AND (NOW() BETWEEN  dt4.startdate AND dt4.enddate)
+			  AND dt4.type = 4 AND g4.id = #{id,jdbcType=BIGINT}
+		LIMIT 1
+  </select>
+  
+  <select id="selectGoodsCartDto" parameterType="map" resultType="net.sls.dto.pc.product.CommodityDto">
+		SELECT
+			goods.id,
+			goods.price,
+			goods.marketPrice,
+			goods.goodsName,
+			goods.remark,
+			goods.sku,
+			goods.isSale,
+			goodsDetail.description,
+			goodsDetail.photoUrl1,
+			goodsDetail.photoUrl2,
+			goodsDetail.photoUrl3,
+			goodsDetail.photoUrl4,
+			goodsDetail.photoUrl,
+			goodsStock.virtualNumber,
+			goodsArea.isLimit,
+			goodsArea.number
+		FROM
+			goods
+			left join goodsDetail on goodsDetail.goodsId = goods.id
+			left join goodsStock on goodsStock.goodsId = goods.id
+			left join goodsArea on goodsArea.goodsId = goods.id
+		WHERE
+			1=1
+  		<if test="ids != null"> AND goods.id IN 
+	 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+		 		#{id,jdbcType=BIGINT}
+		 	</foreach>
+ 		</if>
+  </select>
+  <select id="selectGoodDto" parameterType="long" resultType="net.sls.dto.pc.shopcart.GoodDto">
+	SELECT
+		id, sku, goodsName, isSale, price, marketPrice, barCode, createtime, operatorId, modifytime, providerId, brandId, isReal, place, areaId, limittype
+	FROM
+		goods
+	WHERE
+		id = #{id,jdbcType=BIGINT}
+		and isSale = 1
+  </select>
+  
+  <select id="selectSSettleGoods" resultType="net.sls.dto.pc.shopcart.SSettleGood">
+  	select
+	  	g.id,
+	  	g.goodsName,
+	  	g.sku,
+	  	g.isSale,
+	  	g.price,
+	  	g.marketPrice,
+	  	gd.photoUrl as photoUrl,
+	  	gs.virtualNumber,
+	  	g.providerId,
+	  	g.limittype,
+	  	g.isUseCoupon
+  	FROM goods g
+	  	left join goodsDetail gd on g.id = gd.goodsId
+	  	left join goodsStock gs on g.id = gs.goodsId
+  	where g.isSale = 1 and g.id in 
+  	<foreach collection="list" item="id" open="(" close=")" separator=",">
+ 		#{id,jdbcType=BIGINT}
+ 	</foreach>
+ 	order by g.id
+  </select>
+  
+  <select id="selectGoodsList" parameterType="map" resultMap="BaseResultMap">
+			SELECT
+				goods.id,
+				goods.goodsName,
+				goods.sku,
+				goods.price,
+				goods.marketPrice,
+				goodsDetail.description,
+				goodsDetail.photoUrl,
+				goods.createtime,
+				goods.areaId,
+				goods.standard,
+				goods.place,
+				goods.remark,
+				goods.isSale,
+				goodsStock.virtualNumber
+			FROM
+				goods
+				left join goodsDetail on goodsDetail.goodsId = goods.id
+				left join goodsStock on goodsStock.goodsId = goods.id
+				left join goodsCategory on goodsCategory.goodsId = goods.id
+				left join category on category.id = goodsCategory.twoId
+				left join goodsStatistics on goodsStatistics.goodsId = goods.id
+				left join activityGoods on activityGoods.goodsId = goods.id
+				left join activities on activityGoods.actId = activities.id
+			WHERE
+				goods.isSale = 1
+				AND areaId in  
+		<foreach collection="areaIds" item="id" open="(" close=")" separator=",">
+ 			#{id,jdbcType=INTEGER}
+ 		</foreach>
+ 			AND ((NOW() BETWEEN  activityGoods.startTime AND activityGoods.endTime) OR 
+	  					activityGoods.startTime IS NULL OR activityGoods.endTime IS NULL)
+			AND (activities.state = 1 OR activities.state IS NULL)
+			AND (activities.isDel = 1 OR activities.isDel IS NULL)
+ 			AND 
+ 		(
+		<foreach collection="contents" item="content" separator="AND">
+			(
+				goodsName like concat('%',#{content,jdbcType=VARCHAR},'%') 
+				OR goods.remark like concat('%',#{content,jdbcType=VARCHAR},'%') 
+				OR name like concat('%',#{content,jdbcType=VARCHAR},'%')
+			)
+ 		</foreach>
+ 		)
+		<if test="hasGoods != null and hasGoods==1">
+			AND virtualNumber>0
+	  	</if>
+		<if test="minPrice != null and maxPrice != null ">
+			AND	price BETWEEN #{minPrice,jdbcType=DECIMAL}
+			AND #{maxPrice,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="minPrice != null and maxPrice == null ">
+			AND	price &gt;= #{minPrice,jdbcType=DECIMAL}
+	  	</if>
+	  	<if test="minPrice == null and maxPrice != null ">
+			AND	price &lt;= #{maxPrice,jdbcType=DECIMAL}
+	  	</if>
+	  	
+	  	
+	  	<choose>
+	  		<when test="sortPrice==0">
+	  			ORDER BY price ASC
+	  		</when>
+	  		<when test="sortPrice==1">
+	  			ORDER BY price DESC
+	  		</when>
+	  		<when test="sortNew==0">
+	  			ORDER BY createtime DESC
+	  		</when>
+	  		<when test="sortNew==1">
+	  			ORDER BY createtime ASC
+	  		</when>
+	  		<when test="sortSale==0">
+	  			ORDER BY monthNum DESC
+	  		</when>
+	  	</choose>
+	 
+	  	
+	  	<if test="start != null and number != null">
+  			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  		</if>
+  </select>
+  <select id="countGoodsList" parameterType="map" resultType="long">
+		  	SELECT 
+		  		count(1) 
+		  	FROM
+				goods
+				left join goodsDetail on goodsDetail.goodsId = goods.id
+				left join goodsStock on goodsStock.goodsId = goods.id
+				left join goodsCategory on goodsCategory.goodsId = goods.id
+				left join category on category.id = goodsCategory.twoId
+				left join goodsStatistics on goodsStatistics.goodsId = goods.id
+				left join activityGoods on activityGoods.goodsId = goods.id
+				left join activities on activityGoods.actId = activities.id
+			WHERE
+				goods.isSale = 1
+				AND areaId in  
+		<foreach collection="areaIds" item="id" open="(" close=")" separator=",">
+ 			#{id,jdbcType=INTEGER}
+ 		</foreach>
+ 			AND ((NOW() BETWEEN  activityGoods.startTime AND activityGoods.endTime) OR 
+	  					activityGoods.startTime IS NULL OR activityGoods.endTime IS NULL)
+			AND (activities.state = 1 OR activities.state IS NULL)
+			AND (activities.isDel = 1 OR activities.isDel IS NULL)
+ 			AND
+ 		(
+		<foreach collection="contents" item="content" separator="AND">
+			(
+				goodsName like concat('%',#{content,jdbcType=VARCHAR},'%') 
+				OR goods.remark like concat('%',#{content,jdbcType=VARCHAR},'%') 
+				OR name like concat('%',#{content,jdbcType=VARCHAR},'%')
+			)
+ 		</foreach>
+ 		)
+		<if test="hasGoods != null and hasGoods==1">
+			AND virtualNumber>0
+	  	</if>
+		<if test="minPrice != null and maxPrice != null ">
+			AND	price BETWEEN #{minPrice,jdbcType=DECIMAL}
+			AND #{maxPrice,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="minPrice != null and maxPrice == null ">
+			AND	price &gt;= #{minPrice,jdbcType=DECIMAL}
+	  	</if>
+	  	<if test="minPrice == null and maxPrice != null ">
+			AND	price &lt;= #{maxPrice,jdbcType=DECIMAL}
+	  	</if>
+  </select>
+  
+  
+  <update id="updateGoodsStcokBatch">
+  	<foreach collection="list" item="dto" separator=";">
+  		update goodsStock set virtualNumber = virtualNumber - #{dto.number,jdbcType=INTEGER}, modifyTime = now()
+  		where goodsId = #{dto.id,jdbcType=BIGINT}
+  	</foreach>
+  </update>
+  
+  <select id="selectGoodsByIds" parameterType="map" resultMap="BaseResultMap">
+  	SELECT
+		goods.id,
+		goods.goodsName,
+		goods.sku,
+		goods.price,
+		goods.marketPrice,
+		goodsDetail.description,
+		goodsDetail.photoUrl,
+		goods.createtime,
+		goods.areaId,
+		goods.standard,
+		goods.place,
+		goods.remark,
+		goods.isSale,
+		goodsStock.virtualNumber
+	FROM
+		goods
+		left join goodsDetail on goodsDetail.goodsId = goods.id
+		left join goodsStock on goodsStock.goodsId = goods.id
+		left join goodsCategory on goodsCategory.goodsId = goods.id
+		left join category on category.id = goodsCategory.twoId
+		left join goodsStatistics on goodsStatistics.goodsId = goods.id
+	WHERE
+		goods.id in
+		<foreach collection="goodsIds" item="id" open="(" close=")" separator=",">
+			#{id,jdbcType=BIGINT}
+		</foreach>
+		and goods.isSale = 1
+		ORDER BY FIELD(goods.id, 
+		<foreach collection="goodsIds" item="id" open="" close="" separator=",">
+			#{id,jdbcType=BIGINT}
+		</foreach>
+		)
+  </select>
+  <select id="selectDynpageGoods" parameterType="map" resultMap="BaseResultMap">
+	SELECT
+		DISTINCT goods.id,
+		dynpage.title,
+		goods.goodsName,
+		goods.sku,
+		goods.price,
+		goods.marketPrice,
+		goodsDetail.description,
+		goodsDetail.photoUrl,
+		goods.createtime,
+		goods.areaId,
+		goods.standard,
+		goods.place,
+		goods.remark,
+		goods.isSale,
+		goodsStock.virtualNumber
+	FROM
+		dynpageGoods LEFT JOIN goods ON goods.id = dynpageGoods.goodsId
+		LEFT JOIN goodsDetail ON goodsDetail.goodsId = goods.id
+		LEFT JOIN goodsStock ON goodsStock.goodsId = goods.id
+		LEFT JOIN goodsStatistics ON goodsStatistics.goodsId = goods.id
+		LEFT JOIN dynpage ON dynpage.id = dynpageGoods.dynpageId 
+	WHERE
+		goods.isSale = 1
+		<if test="dynpageId != null and dynpageId !='' ">
+		AND  dynpageGoods.dynpageId = #{dynpageId,jdbcType=BIGINT}
+		</if>
+		AND dynpageGoods.isDel = 1  AND dynpage.isDel = 1
+		ORDER BY dynpageGoods.sort DESC
+	  	<if test="start != null and number != null">
+ 			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+ 		</if>
+  </select>
+  <select id="countDynpageGoods" parameterType="map" resultType="long">
+	  	SELECT 
+	  		count(DISTINCT goods.id) 
+	  	FROM
+			dynpageGoods LEFT JOIN goods ON goods.id = dynpageGoods.goodsId
+			LEFT JOIN goodsDetail ON goodsDetail.goodsId = goods.id
+			LEFT JOIN goodsStock ON goodsStock.goodsId = goods.id
+			LEFT JOIN goodsStatistics ON goodsStatistics.goodsId = goods.id
+			LEFT JOIN dynpage ON dynpage.id = dynpageGoods.dynpageId 
+		WHERE
+			goods.isSale = 1 AND dynpage.isDel = 1
+		<if test="dynpageId != null and dynpageId !='' ">
+		AND  dynpageGoods.dynpageId = #{dynpageId,jdbcType=BIGINT}
+		</if>
+		AND dynpageGoods.isDel = 1
+  </select>
+  
+  <select id="selectCategoryGoods4Coupon" parameterType="map" resultType="long">
+	SELECT goods.id
+	FROM
+		goods
+		left join goodsCategory on goodsCategory.goodsId = goods.id
+	WHERE
+		goods.isUseCoupon = 1
+		AND goods.id in  
+		<foreach collection="goodsIds" item="id" open="(" close=")" separator=",">
+			#{id,jdbcType=BIGINT}
+		</foreach>
+		AND (
+		goodsCategory.oneId in
+		<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+			#{categoryId,jdbcType=BIGINT}
+		</foreach>
+		OR goodsCategory.twoId in
+		<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+			#{categoryId,jdbcType=BIGINT}
+		</foreach>
+		OR goodsCategory.threeId in
+		<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+			#{categoryId,jdbcType=BIGINT}
+		</foreach>
+		)
+	</select>
+	<select id="selectDynpageGoodsByType" parameterType="map" resultMap="BaseResultMap">
+	SELECT
+		DISTINCT goods.id,
+		dynpage.title,
+		goods.goodsName,
+		goods.sku,
+		goods.price,
+		goods.marketPrice,
+		goodsDetail.description,
+		goods.createtime,
+		goods.areaId,
+		goods.standard,
+		goods.place,
+		goods.remark,
+		goods.isSale,
+		goodsDetail.photoUrl,
+		IFNULL (dynpageGoods.photoUrl ,goodsDetail.photoUrl ) AS defPhotoUrl,
+		goodsStock.virtualNumber
+	FROM
+		dynpageGoods LEFT JOIN goods ON goods.id = dynpageGoods.goodsId
+		LEFT JOIN goodsDetail ON goodsDetail.goodsId = goods.id
+		LEFT JOIN goodsStock ON goodsStock.goodsId = goods.id
+		LEFT JOIN goodsStatistics ON goodsStatistics.goodsId = goods.id
+		LEFT JOIN dynpage ON dynpage.id = dynpageGoods.dynpageId 
+	WHERE
+		goods.isSale = 1
+		<if test="type != null and type !='' ">
+		AND  dynpage.type = #{type,jdbcType=INTEGER}
+		</if>
+		AND dynpageGoods.dynpageId = dynpage.id
+		AND dynpageGoods.isDel = 1  AND dynpage.isDel = 1
+		ORDER BY dynpageGoods.sort DESC
+	  	<if test="start != null and number != null">
+ 			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+ 		</if>
+  </select>
+  <select id="countDynpageGoodsByType" parameterType="map" resultType="long">
+	  	SELECT 
+	  		count(DISTINCT goods.id) 
+	  	FROM
+			dynpageGoods LEFT JOIN goods ON goods.id = dynpageGoods.goodsId
+			LEFT JOIN goodsDetail ON goodsDetail.goodsId = goods.id
+			LEFT JOIN goodsStock ON goodsStock.goodsId = goods.id
+			LEFT JOIN goodsStatistics ON goodsStatistics.goodsId = goods.id
+			LEFT JOIN dynpage ON dynpage.id = dynpageGoods.dynpageId 
+		WHERE
+			goods.isSale = 1 AND dynpage.isDel = 1
+		<if test="type != null and type !='' ">
+		AND  dynpage.type = #{type,jdbcType=INTEGER}
+		</if>
+		AND dynpageGoods.dynpageId = dynpage.id
+		AND dynpageGoods.isDel = 1
+  </select>
+</mapper>

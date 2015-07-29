@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.activity.DynpageMapperExt">
+	
+	<insert id="insertDynpage" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="net.sls.dto.activity.Dynpage">
+		insert into dynpage (title,createtime,cmsUserId,type)
+		values (#{title,jdbcType=VARCHAR},#{createtime,jdbcType=TIMESTAMP},#{cmsUserId,jdbcType=BIGINT},#{type,jdbcType=INTEGER})
+	</insert>
+	
+	<insert id="insertDynpageGoods" parameterType="list">
+		insert into dynpageGoods (dynpageId,goodsId) values
+		<foreach collection="list" item="dg" separator=",">
+			(#{dg.dynpageId,jdbcType=BIGINT},#{dg.goodsId,jdbcType=BIGINT})
+		</foreach>
+	</insert>
+	
+	<select id="selectDynpage" parameterType="map" resultType="net.sls.dto.activity.Dynpage">
+		select * from dynpage where isDel = 1 order by id desc limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+	</select>
+	
+	<select id="countDynpage" resultType="long">
+		select count(1) from dynpage where isDel = 1
+	</select>
+	
+	<select id="selectDynpageGoods" parameterType="map" resultType="map">
+		select dg.id,g.goodsName,g.id as goodsId,g.isSale,g.price,g.marketPrice,dg.sort,gd.photoUrl as defUrl,dg.photoUrl
+		from dynpageGoods dg
+		left join goods g on dg.goodsId = g.id
+		left join goodsDetail gd on dg.goodsId = gd.goodsId
+		where dg.isDel = 1 and dg.dynpageId = #{dynpageId,jdbcType=BIGINT}
+		order by dg.sort desc
+		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+	</select>
+	
+	<select id="countDynpageGoods" parameterType="long" resultType="long">
+		select count(1)
+		from dynpageGoods dg
+		left join goods g on dg.goodsId = g.id
+		where dg.isDel = 1 and dg.dynpageId = #{value,jdbcType=BIGINT}
+	</select>
+	
+	<update id="updateDynpage" parameterType="net.sls.dto.activity.Dynpage">
+		update dynpage
+		<set> 
+			<if test="isDel != null">
+				isDel = 127,
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="deleteDynpageGoods" parameterType="long">
+		update dynpageGoods set isDel = 127 where id = #{value,jdbcType=BIGINT}
+	</update>
+	
+	<update id="updateDynpageGoods" parameterType="net.sls.dto.activity.DynpageGoods">
+		update dynpageGoods
+		<set>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<choose>
+				<when test="photoUrl != null">
+					photoUrl = #{photoUrl,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					photoUrl = null,
+				</otherwise>
+			</choose>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>

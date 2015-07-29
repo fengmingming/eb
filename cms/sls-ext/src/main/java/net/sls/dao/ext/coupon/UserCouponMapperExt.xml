@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.coupon.UserCouponMapperExt" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.activity.UserCoupon" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponId" jdbcType="BIGINT" />
+    <result column="usrId" property="usrId" jdbcType="BIGINT" />
+    <result column="genDate" property="genDate" jdbcType="TIMESTAMP" />
+    <result column="consumptionDate" property="consumptionDate" jdbcType="TIMESTAMP" />
+    <result column="orderId" property="orderId" jdbcType="BIGINT" />
+    <result column="orderNum" property="orderNum" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, code, couponId, usrId, genDate, consumptionDate, orderId, orderNum
+  </sql>
+
+  <select id="queryCount" resultType="long">
+    SELECT count(id) from userCoupon
+    <where>
+    	<if test="pid != null">
+    		and couponId=#{pid,jdbcType=BIGINT}
+    	</if>
+    	<if test="code != null">
+    		and code = #{code,jdbcType=VARCHAR}
+    	</if>
+    </where>
+  </select>
+  <select id="queryUsrCouponByPId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userCoupon
+    <where>
+    	<if test="pid != null">
+    		and couponId=#{pid,jdbcType=BIGINT}
+    	</if>
+    	<if test="code != null">
+    		and code = #{code,jdbcType=VARCHAR}
+    	</if>
+    </where>
+    order by id DESC
+    LIMIT #{idxStart},#{pgSize}
+  </select>
+</mapper>

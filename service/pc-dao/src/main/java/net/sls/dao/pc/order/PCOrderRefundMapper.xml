@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.order.PCOrderRefundMapper">
+	<insert id="insertOrderRefund" parameterType="map">
+		insert into orderRefund
+			(orderId, orderDetailId, 
+			origin, createTime, type, 
+			refundPrice, moneyWay, 
+			account, remark, photoUrl1, 
+			photoUrl2, photoUrl3, 
+			pickupWay, deliveryType, provinceIdT, 
+			cityIdT, districtIdT, communityIdT, 
+			pavilionIdT, remarkT, receiverT, 
+			mobileT, provinceIdF, cityIdF, 
+			districtIdF, communityIdF, 
+			pavilionIdF, remarkF, 
+			receiverF, mobileF) 
+		values			
+			(#{orderId, jdbcType=BIGINT},
+			#{orderDetailId, jdbcType=BIGINT},
+			#{origin, jdbcType=INTEGER},
+			now(),
+			#{type, jdbcType=INTEGER},
+			#{refundPrice, jdbcType=DECIMAL},
+			#{moneyWay, jdbcType=INTEGER},
+			#{account, jdbcType=VARCHAR},
+			#{remark, jdbcType=VARCHAR},
+			#{photoUrl1, jdbcType=VARCHAR},
+			#{photoUrl2, jdbcType=VARCHAR},
+			#{photoUrl3, jdbcType=VARCHAR},
+			#{pickupWay, jdbcType=INTEGER},
+			#{deliveryType, jdbcType=INTEGER},
+			#{provinceIdT, jdbcType=INTEGER},
+			#{cityIdT, jdbcType=INTEGER},
+			#{districtIdT, jdbcType=INTEGER},
+			#{communityIdT, jdbcType=INTEGER},
+			#{pavilionIdT, jdbcType=INTEGER},
+			#{remarkT, jdbcType=VARCHAR},
+			#{receiverT, jdbcType=VARCHAR},
+			#{mobileT, jdbcType=VARCHAR},
+			#{provinceIdF, jdbcType=INTEGER},
+			#{cityIdF, jdbcType=INTEGER},
+			#{districtIdF, jdbcType=INTEGER},
+			#{communityIdF, jdbcType=INTEGER},
+			#{pavilionIdF, jdbcType=INTEGER},
+			#{remarkF, jdbcType=VARCHAR},
+			#{receiverF, jdbcType=VARCHAR},
+			#{mobileF, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<select id="selectOrderRefundByODId" parameterType="map" resultType="net.sls.dto.pc.order.OrderRefund">
+		select * from orderRefund where orderId = #{orderId, jdbcType=BIGINT} and orderDetailId = #{orderDetailId, jdbcType=BIGINT};
+	</select>
+	
+	<update id="updateOrderRefund" parameterType="map">
+		update orderRefund set 
+			state = #{state, jdbcType=INTEGER},
+			origin = #{origin, jdbcType=INTEGER},
+			createTime = now(),
+			type = #{type, jdbcType=INTEGER},
+			refundPrice = #{refundPrice, jdbcType=DECIMAL},
+			moneyWay = #{moneyWay, jdbcType=INTEGER},
+			account = #{account, jdbcType=VARCHAR},
+			remark = #{remark, jdbcType=VARCHAR},
+			photoUrl1 = #{photoUrl1, jdbcType=VARCHAR},
+			photoUrl2 = #{photoUrl2, jdbcType=VARCHAR},
+			photoUrl3 = #{photoUrl3, jdbcType=VARCHAR},
+			pickupWay = #{pickupWay, jdbcType=INTEGER},
+			deliveryType = #{deliveryType, jdbcType=INTEGER},
+			provinceIdT = #{provinceIdT, jdbcType=INTEGER},
+			cityIdT = #{cityIdT, jdbcType=INTEGER},
+			districtIdT = #{districtIdT, jdbcType=INTEGER},
+			communityIdT = #{communityIdT, jdbcType=INTEGER},
+			pavilionIdT=#{pavilionIdT, jdbcType=INTEGER},
+			remarkT=#{remarkT, jdbcType=VARCHAR},
+			receiverT=#{receiverT, jdbcType=VARCHAR},
+			mobileT=#{mobileT, jdbcType=VARCHAR},
+			provinceIdF=#{provinceIdF, jdbcType=INTEGER},
+			cityIdF=#{cityIdF, jdbcType=INTEGER},
+			districtIdF=#{districtIdF, jdbcType=INTEGER},
+			communityIdF=#{communityIdF, jdbcType=INTEGER},
+			pavilionIdF=#{pavilionIdF, jdbcType=INTEGER},
+			remarkF=#{remarkF, jdbcType=VARCHAR},
+			receiverF=#{receiverF, jdbcType=VARCHAR},
+			mobileF=#{mobileF, jdbcType=VARCHAR}
+		where id = #{id, jdbcType=BIGINT}
+	</update>
+	
+	<update id="updateOrderRefundState" parameterType="map">
+		update orderRefund set state = #{state, jdbcType=INTEGER} where orderDetailId = #{orderDetailId, jdbcType=BIGINT} and orderId = #{orderId, jdbcType=BIGINT}
+	</update>
+	
+	<select id="selectOrderRefundByOrderId" parameterType="map" resultType="Integer">
+		select count(*) from orderRefund where orderId = #{orderId, jdbcType=BIGINT} and state = #{state, jdbcType=INTEGER}
+	</select>
+</mapper>

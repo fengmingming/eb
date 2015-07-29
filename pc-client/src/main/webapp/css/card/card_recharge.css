@@ -1,0 +1,23 @@
+
+#cc_div { width: 980px; float: left; margin-left: 10px; background: #fff; padding-bottom: 35px;}	
+	#cd_txt{ height: 34px; line-height: 34px; font-size: 16px; color: #666; padding-left: 18px; padding-top: 22px;}
+	table { margin-left: 300px; font-size: 14px; color: #666; margin-top: 28px;}
+		table tr { height: 50px;}
+			.td_fs { text-align: right; padding-right: 20px;}
+			.td_ts { text-align: left; padding-left: 20px;}
+
+.no_border { border: 0px; background: #f5f5f5; padding: 7px 6px; width: 170px;}
+.cr_inp { border: 1px solid #ddd; padding: 6px 5px; width: 170px;}
+.cr_check, .cr_rech { display: block; background: #ff9900; color: #fff; height: 34px; line-height: 34px; width: 74px; text-align: center;}
+.cr_fpwd { font-size: 12px; color: #005aa4;}
+.cr_fpwd:hover { text-decoration: underline;}
+.cr_rdo { position: relative; top: 2px; margin-right: 10px;}
+.cr_zfb { display: block; width: 27px; height: 27px; background: url(../../images/inner.png) no-repeat -73px 0px; position: absolute; top: 2px; right: 55px;}
+			
+/*提示消息样式*/
+#u_info .focus_ipt { border: solid 1px #7abd54;}
+#u_info .focus_eor_ipt { border: solid 1px red;}
+	.a_i_td { position: relative;}
+	.r_msg { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; width: 174px;}
+	.r_msg_w { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; min-width: 232px; white-space: nowrap;}
+		

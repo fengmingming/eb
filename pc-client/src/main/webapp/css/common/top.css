@@ -1,0 +1,14 @@
+@charset "utf-8";
+
+#top { height: 27px; border-bottom: solid 1px #ddd;}
+	#top_con { width: 1200px; height: 27px; margin: auto;}
+		#top_con_lf  { font-size: 12px; color: #666; float: left;}
+		#top_con_lf li { float: left; height: 27px; line-height: 27px;}
+		#top_con_lf li a { color: #666;}
+		#top_con_star { width: 20px; background: url(../../images/index.png) no-repeat 0px 6px; margin-left: 12px;}
+		#top_con_rt { float: right;}
+		#top_con_rt li { float: left; height: 27px; line-height: 27px; margin-right: 28px;}
+		#top_con_rt li a { font-size: 12px; color: #666; display: block;}
+		#top_con_rt li .tp_hover_a:hover { color: #ff7f00; text-decoration: underline;}
+		.tp_logout { color: #ff7f00; text-decoration: underline;}
+		

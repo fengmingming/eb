@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+#foot { width: 1200px; margin: auto; padding-bottom: 20px; padding-top: 30px;}
+	#ft_ul { font-size: 12px; padding-bottom: 18px;}
+	#ft_ul>li { float: left;}
+	.ft_ul_ul { margin-left: 125px;}
+	.ft_ul_ul li { line-height: 20px; color: #999;}
+		.ft_ul_ul a { color: #999;}
+		.ft_ul_ul a:hover { color: #ff9900; text-decoration: underline;}
+	#ft_ul_gwzn { margin-left: 85px;}
+	#ft_ul_ls { margin-left: 145px;}
+	#ft_hot_line { width: 235px; height: 80px; background: url(../../images/index.png) no-repeat -138px -88px;}
+	#ft_wx { width: 68px; height: 68px; background: url(../../images/index.png) no-repeat -428px -92px; margin: auto;}
+	#ft_wx_tit { margin-top: 6px; color: #999;}
+	.ft_ul_tit { font-weight: bold; color: #666;}
+	#foot p { font-size: 12px; color: #999; line-height: 22px; text-align: center;}
+	#foot p span { width: 27px; height: 1px; display: inline-block;}
+	#foot p a { color: #999;}
+	#foot p a:hover { text-decoration: underline;}

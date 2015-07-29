@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.order.PCOrderActGoodsInfoMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.order.OrderActGoodsInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="actId" property="actId" jdbcType="BIGINT" />
+    <result column="actType" property="actType" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="orderId" property="orderId" jdbcType="BIGINT" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, goodsId, actId, actType, number, orderId, userId
+  </sql>
+  
+  <select id="selectNumber" resultType="java.lang.Integer" parameterType="net.sls.dto.pc.order.OrderActGoodsInfo" >
+    select 
+    IFNULL(SUM(number),0) AS number
+    from orderActGoodsInfo
+    where 1=1
+    <if test="goodsId != null ">
+		AND goodsId = #{goodsId,jdbcType=BIGINT}
+  	</if>
+  	<if test="actId != null ">
+		AND actId = #{actId,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+	<select id="selectNumberByUserId" resultType="net.sls.dto.pc.order.OrderActGoodsInfo" parameterType="map">
+		SELECT oag.actId, oag.goodsId, SUM(oag.number) as number
+		FROM orderActGoodsInfo as oag
+		left join orders as o on o.id = oag.orderId
+		WHERE 1=1
+		<if test="userId != null ">
+			AND oag.userId = #{userId,jdbcType=BIGINT}
+			AND o.state = 1
+	  	</if>
+	  	<if test="actIds.size() != 0 ">
+		AND oag.actId in 
+		<foreach collection="actIds" item="id" open="(" close=")" separator=",">
+ 			#{id,jdbcType=BIGINT}
+ 		</foreach>
+ 		</if>
+ 		<if test="goodsId.size() != 0 ">
+		AND oag.goodsId in 
+		<foreach collection="goodsId" item="id" open="(" close=")" separator=",">
+ 			#{id,jdbcType=BIGINT}
+ 		</foreach>
+ 		</if>
+		GROUP BY oag.goodsId
+	</select>
+	
+	<insert id="insert" parameterType="net.sls.dto.pc.order.OrderActGoodsInfo">
+		insert into orderActGoodsInfo (goodsId, actId, actType, number, orderId, userId)
+		values (#{goodsId,jdbcType=BIGINT}, #{actId,jdbcType=BIGINT}, #{actType,jdbcType=INTEGER},
+				#{number,jdbcType=INTEGER}, #{orderId,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}
+		)
+	</insert>
+</mapper>

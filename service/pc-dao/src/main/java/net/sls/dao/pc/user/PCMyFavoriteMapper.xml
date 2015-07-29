@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.user.PCMyFavoriteMapper" >
+  
+  <sql id="Base_Column_List" >
+    id, userId, goodsId, isDel
+  </sql>
+  <insert id="insertMyFavorite" parameterType="net.sls.dto.pc.user.MyFavorite" >
+    insert into myFavorite (id, userId, goodsId, 
+      isDel,createTime)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, 
+      1,#{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from myFavorite
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <update id="updateMyFavorite" parameterType="net.sls.dto.pc.user.MyFavorite" >
+    update myFavorite
+    set userId = #{userId,jdbcType=BIGINT},
+      goodsId = #{goodsId,jdbcType=BIGINT},
+      isDel = #{isDel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateMyFavoriteIsDel" parameterType="map" >
+    update myFavorite
+    set 
+      isDel = 127
+    where 
+		userId = #{userId,jdbcType=BIGINT}
+		and	goodsId = #{goodsId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectIsExistByGoodsId" parameterType="net.sls.dto.pc.user.MyFavorite" resultType="net.sls.dto.pc.user.MyFavorite" >
+    select * from myFavorite
+    <where>1=1
+    	<if test="userId != null and userId != '' ">
+  			and	userId = #{userId,jdbcType=BIGINT}
+  		</if>
+  		<if test="goodsId != null and goodsId != '' ">
+  			and	goodsId = #{goodsId,jdbcType=BIGINT}
+  		</if>
+  	</where>
+  </select>
+  <select id="selectMyFavoriteListsByUserId" resultType="map" parameterType="map" >
+    select 
+    	gd.photoUrl ,
+    	g.goodsName ,
+    	g.id,
+    	g.isSale,
+    	g.price     ,
+    	g.remark,
+    	IF(gs.virtualNumber>0, '有货', '无货') AS stock,
+    	m.createTime
+    from 
+		myFavorite m
+		left join goods g on g.id = m.goodsId
+  		left join goodsDetail gd on gd.goodsId = g.id
+		left join goodsStock gs on gs.goodsId = g.id
+    <where> 
+		m.isDel=1
+		AND g.isSale != 127
+		<if test="userId != null and userId != '' ">
+  			AND	m.userId = #{userId,jdbcType=BIGINT}
+  		</if>
+		<if test="goodsName != null and goodsName != '' ">
+			AND g.goodsName like concat ('%',#{goodsName,jdbcType=VARCHAR},'%')
+	  	</if>
+	  	order by m.createTime
+  	 	desc
+	 </where>	
+	 <if test=" number != 0 ">
+	  	<if test="start != null ">
+  			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  		</if>
+  	 </if>	
+ 	 
+  </select>
+  <select id="countMyFavoriteByFilter" parameterType="map" resultType="long">
+	  	SELECT 
+	  		count(m.id) 
+	  	FROM
+			myFavorite m
+			left join goods g on g.id = m.goodsId
+			left join goodsStock gs on gs.goodsId = g.id
+		<where>
+			m.isDel=1
+			AND g.isSale != 127
+		<if test="userId != null and userId != '' ">
+  			AND	m.userId = #{userId,jdbcType=BIGINT}
+  		</if>
+		<if test="goodsName != null and goodsName != '' ">
+			AND g.goodsName like concat ('%',#{goodsName,jdbcType=VARCHAR},'%')
+	  	</if>
+		</where>
+  </select>
+</mapper>

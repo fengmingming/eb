@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.order.OrderMapperExt">
+  <select id="selectOrdersByUserFilter" parameterType="map" resultType="map">
+  	select 
+  	o.id AS id, o.userId, o.orderNum,o.paidPrice,o.payPrice,o.orderPrice,o.state,o.status, 
+  	o.createTime, o.amount, o.isPaid, u.userName, u.memberType, u.mobile, da.pavilionName,
+  	da.pavilionCode, op.payName, o.payTime,o.channelId
+  	from  orders o 
+  	left join user u on o.userId = u.id
+  	left join deliveryAddress da on o.id = da.orderId
+  	left join orderPay op on o.id = op.orderId 
+  	where 1=1
+  	<if test="type != null">
+  		<if test="type == 1">
+  			and shopType = 1
+  		</if>
+  		<if test="type == 2">
+  			and shopType = 2
+  		</if>
+  	</if>
+  	<if test="isMobile != null">
+  		and o.channelId = #{isMobile,jdbcType=INTEGER}
+  	</if>
+	<if test="isPaviOrder != null">
+  		<if test="isPaviOrder == 1">
+  			and da.pavilionId is not null
+  		</if>
+  		<if test="isPaviOrder == 2">
+  			and da.pavilionId is null
+  		</if>
+  	</if>
+  	<if test="areaCode != null">
+  		and da.pavilionCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+	<if test="userName != null">
+		and u.userName = #{userName,jdbcType=VARCHAR}
+	</if>
+	<if test="mobile != null">
+		and u.mobile = #{mobile,jdbcType=VARCHAR}
+	</if>
+	<if test="orderNum != null">
+		and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+	</if>
+	<if test="isPaid != null">
+		and	o.isPaid = #{isPaid,jdbcType=INTEGER}
+	</if>
+	<if test="state != null">
+		and o.state = #{state,jdbcType=INTEGER}
+	</if>
+	<if test="status != null">
+		and o.status = #{status,jdbcType=INTEGER}
+	</if>
+	<if test="pavilionId != null">
+		and da.pavilionId = #{pavilionId,jdbcType=INTEGER}
+	</if>
+	
+	<if test="startDate != null and endDate != null ">
+		AND	o.createtime BETWEEN #{startDate,jdbcType=DECIMAL}
+		AND #{endDate,jdbcType=BIGINT}
+  	</if>
+  	<if test="startDate != null and endDate == null ">
+		AND	o.createtime &gt;= #{startDate,jdbcType=DECIMAL}
+  	</if>
+  	<if test="startDate == null and endDate != null ">
+		AND	o.createtime &lt;= #{endDate,jdbcType=DECIMAL}
+  	</if>
+  	order by o.id DESC
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countOrdersByUserFilter" parameterType="map" resultType="long">
+  	select count(1) 
+  	from  orders o left join user u on o.userId = u.id
+  	left join deliveryAddress da on o.id = da.orderId
+  	where 1=1
+  	<if test="type != null">
+  		<if test="type == 1">
+  			and shopType = 1
+  		</if>
+  		<if test="type == 2">
+  			and shopType = 2
+  		</if>
+  	</if>
+  	<if test="isMobile != null">
+  		and o.channelId = #{isMobile,jdbcType=INTEGER}
+  	</if>
+  	<if test="isPaviOrder != null">
+  		<if test="isPaviOrder == 1">
+  			and da.pavilionId is not null
+  		</if>
+  		<if test="isPaviOrder == 2">
+  			and da.pavilionId is null
+  		</if>
+  	</if>
+  	<if test="areaCode != null">
+  		and da.pavilionCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+	<if test="userName != null">
+		and u.userName = #{userName,jdbcType=VARCHAR}
+	</if>
+	<if test="mobile != null">
+		and u.mobile = #{mobile,jdbcType=VARCHAR}
+	</if>
+	<if test="orderNum != null">
+		and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+	</if>
+	<if test="isPaid != null">
+		and	o.isPaid = #{isPaid,jdbcType=INTEGER}
+	</if>
+	<if test="state != null">
+		and o.state = #{state,jdbcType=INTEGER}
+	</if>
+	<if test="status != null">
+		and o.status = #{status,jdbcType=INTEGER}
+	</if>
+	<if test="pavilionId != null">
+		and da.pavilionId = #{pavilionId,jdbcType=INTEGER}
+	</if>
+	
+	<if test="startDate != null and endDate != null ">
+		AND	o.createtime BETWEEN #{startDate,jdbcType=DECIMAL}
+		AND #{endDate,jdbcType=BIGINT}
+  	</if>
+  	<if test="startDate != null and endDate == null ">
+		AND	o.createtime &gt;= #{startDate,jdbcType=DECIMAL}
+  	</if>
+  	<if test="startDate == null and endDate != null ">
+		AND	o.createtime &lt;= #{endDate,jdbcType=DECIMAL}
+  	</if>
+  </select>
+  
+  <select id="selectExportExcel" parameterType="map" resultType="net.sls.dto.ext.order.ExportOrderQueryDto">
+  	select o.orderNum,o.status,o.state,o.isPaid,o.createtime,o.amount,o.payPrice,o.paidPrice,o.discutPrice,
+  	o.deliveryType,o.useBalancePrice,u.userName,da.pavilionName,da.pavilionCode,da.remark,op.payName,o.payTime,o.shopType,o.channelId
+  	<if test="hasDetail !=null and hasDetail == 1">
+  		,od.price,gs.goodsName,p.providerName,gs.sku,od.number,od.goodsId,gc.oneId,gc.twoId,gc.threeId,od.isDelivery
+  	</if>
+  	from orders o 
+  	left join user u on o.userId = u.id
+  	left join deliveryAddress da on o.id = da.orderId
+  	left join orderPay op on o.id = op.orderId
+  	<if test="hasDetail !=null and hasDetail == 1">
+  		left join orderDetail od on o.id = od.orderId
+  		left join goods gs on od.goodsId = gs.id
+  		left join provider p on od.providerId = p.id
+  		left join goodsCategory gc on od.goodsId = gc.goodsId
+  	</if>
+  	where 1=1
+  	<if test="type != null">
+  		<if test="type == 1">
+  			and shopType = 1
+  		</if>
+  		<if test="type == 2">
+  			and shopType = 2
+  		</if>
+  	</if>
+  	<if test="isMobile != null">
+  		and o.channelId = #{isMobile,jdbcType=INTEGER}
+  	</if>
+	<if test="isPaviOrder != null">
+  		<if test="isPaviOrder == 1">
+  			and da.pavilionId is not null
+  		</if>
+  		<if test="isPaviOrder == 2">
+  			and da.pavilionId is null
+  		</if>
+  	</if>
+  	<if test="areaCode != null">
+  		and da.pavilionCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+	<if test="userName != null">
+		and u.userName = #{userName,jdbcType=VARCHAR}
+	</if>
+	<if test="mobile != null">
+		and u.mobile = #{mobile,jdbcType=VARCHAR}
+	</if>
+	<if test="orderNum != null">
+		and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+	</if>
+	<if test="isPaid != null">
+		and	o.isPaid = #{isPaid,jdbcType=INTEGER}
+	</if>
+	<if test="state != null">
+		and o.state = #{state,jdbcType=INTEGER}
+	</if>
+	<if test="status != null">
+		and o.status = #{status,jdbcType=INTEGER}
+	</if>
+	<if test="pavilionId != null">
+		and da.pavilionId = #{pavilionId,jdbcType=INTEGER}
+	</if>
+	
+	<if test="startDate != null and endDate != null ">
+		AND	o.createtime BETWEEN #{startDate,jdbcType=DECIMAL}
+		AND #{endDate,jdbcType=BIGINT}
+  	</if>
+  	<if test="startDate != null and endDate == null ">
+		AND	o.createtime &gt;= #{startDate,jdbcType=DECIMAL}
+  	</if>
+  	<if test="startDate == null and endDate != null ">
+		AND	o.createtime &lt;= #{endDate,jdbcType=DECIMAL}
+  	</if>
+  </select>
+  
+  <select id="selectPavilionComboxDto" parameterType="map" resultType="util.model.ComboxDto">
+  	select a.id as v,a.name as k from pavilionInfo p left join area a on p.pavilionCode = a.code
+  	where 1=1
+  	<if test="areaCode != null">
+  		and a.code like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="name != null">
+  		and a.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+  	</if>
+  	limit 0,100
+  </select>
+  
+  <update id="updateOrderPaid" parameterType="long">
+  	 update orders set paidPrice = paidPrice + payPrice, payPrice = 0.00, payTime = now(), isPaid = 2, modifyTime=now() where id = #{value,jdbcType=BIGINT} and isPaid = 1 and state = 1
+  </update>
+  
+  <update id="updateOrderStateOrStatus" parameterType="net.sls.dto.order.Orders">
+  	update orders set modifyTime = now()
+	<if test="state != null">
+		,state = #{state,jdbcType=INTEGER}
+	</if>
+	<if test="status != null">
+		,status = #{status,jdbcType=INTEGER}
+	</if>
+  	where id = #{id,jdbcType=BIGINT} and state = 1
+  </update>
+  
+  <select id="selectOrderCoupon" parameterType="long" resultType="map">
+  	select c.name
+  	from userCoupon uc left join coupon c on uc.couponId = c.id 
+  	where orderId = #{value,jdbcType=BIGINT}
+  </select>
+  
+  <select id="orderInfoByOrderNum" parameterType="string" resultType="map">
+  	select o.id as orderId,u.id as userId,u.userName,u.mobile,da.province as provinceId,da.city as cityId,da.district as districtId,da.community as communityId,
+  	da.pavilionId as pavilionId, da.remark, da.receiver, da.mobile as mobile2, da.postcode
+  	from orders o
+  	left join deliveryAddress da on o.id = da.orderId
+  	left join user u on o.userId = u.id
+  	where o.orderNum = #{value,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insertOrders" parameterType="net.sls.dto.order.Orders" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+  	insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNum != null" >
+        orderNum,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="orderPrice != null" >
+        orderPrice,
+      </if>
+      <if test="payPrice != null" >
+        payPrice,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="paidPrice != null" >
+        paidPrice,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="modifyTime != null" >
+        modifyTime,
+      </if>
+      <if test="payTime != null" >
+        payTime,
+      </if>
+      <if test="deliveryTime != null" >
+        deliveryTime,
+      </if>
+      <if test="receiveTime != null" >
+        receiveTime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="cart != null" >
+        cart,
+      </if>
+      <if test="discutPrice != null" >
+        discutPrice,
+      </if>
+      <if test="useBalancePrice != null" >
+        useBalancePrice,
+      </if>
+      <if test="deliveryType != null" >
+        deliveryType,
+      </if>
+      <if test="isPaid != null" >
+        isPaid,
+      </if>
+      <if test="deliverCode != null" >
+        deliverCode,
+      </if>
+      <if test="channelId != null" >
+        channelId,
+      </if>
+      <if test="createUserId != null" >
+        createUserId,
+      </if>
+      <if test="shopType != null" >
+        shopType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payPrice != null" >
+        #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="paidPrice != null" >
+        #{paidPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryTime != null" >
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null" >
+        #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cart != null" >
+        #{cart,jdbcType=VARCHAR},
+      </if>
+      <if test="discutPrice != null" >
+        #{discutPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="useBalancePrice != null" >
+        #{useBalancePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryType != null" >
+        #{deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="isPaid != null" >
+        #{isPaid,jdbcType=INTEGER},
+      </if>
+      <if test="deliverCode != null" >
+        #{deliverCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="shopType != null" >
+        #{shopType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

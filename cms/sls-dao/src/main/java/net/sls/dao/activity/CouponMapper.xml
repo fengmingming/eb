@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.activity.CouponMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.activity.Coupon" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parValue" property="parValue" jdbcType="INTEGER" />
+    <result column="minimum" property="minimum" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="limitType" property="limitType" jdbcType="INTEGER" />
+    <result column="validityStart" property="validityStart" jdbcType="DATE" />
+    <result column="validityEnd" property="validityEnd" jdbcType="DATE" />
+    <result column="limitCat" property="limitCat" jdbcType="BIGINT" />
+    <result column="genDate" property="genDate" jdbcType="TIMESTAMP" />
+    <result column="isDel" property="isDel" jdbcType="INTEGER" />
+    <result column="startdate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="enddate" property="enddate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="net.sls.dto.activity.Coupon" extends="BaseResultMap" >
+    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, parValue, minimum, total, num, limitType, validityStart, validityEnd, limitCat, 
+    genDate, isDel, startdate, enddate
+  </sql>
+  <sql id="Blob_Column_List" >
+    remark
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="net.sls.dto.activity.CouponExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.activity.CouponExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from coupon
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from coupon
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.activity.CouponExample" >
+    delete from coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.activity.Coupon" >
+    insert into coupon (id, name, parValue, 
+      minimum, total, num, 
+      limitType, validityStart, validityEnd, 
+      limitCat, genDate, isDel, 
+      startdate, enddate, remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{parValue,jdbcType=INTEGER}, 
+      #{minimum,jdbcType=INTEGER}, #{total,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, 
+      #{limitType,jdbcType=INTEGER}, #{validityStart,jdbcType=DATE}, #{validityEnd,jdbcType=DATE}, 
+      #{limitCat,jdbcType=BIGINT}, #{genDate,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER}, 
+      #{startdate,jdbcType=TIMESTAMP}, #{enddate,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.activity.Coupon" >
+    insert into coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parValue != null" >
+        parValue,
+      </if>
+      <if test="minimum != null" >
+        minimum,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="limitType != null" >
+        limitType,
+      </if>
+      <if test="validityStart != null" >
+        validityStart,
+      </if>
+      <if test="validityEnd != null" >
+        validityEnd,
+      </if>
+      <if test="limitCat != null" >
+        limitCat,
+      </if>
+      <if test="genDate != null" >
+        genDate,
+      </if>
+      <if test="isDel != null" >
+        isDel,
+      </if>
+      <if test="startdate != null" >
+        startdate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parValue != null" >
+        #{parValue,jdbcType=INTEGER},
+      </if>
+      <if test="minimum != null" >
+        #{minimum,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="limitType != null" >
+        #{limitType,jdbcType=INTEGER},
+      </if>
+      <if test="validityStart != null" >
+        #{validityStart,jdbcType=DATE},
+      </if>
+      <if test="validityEnd != null" >
+        #{validityEnd,jdbcType=DATE},
+      </if>
+      <if test="limitCat != null" >
+        #{limitCat,jdbcType=BIGINT},
+      </if>
+      <if test="genDate != null" >
+        #{genDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.activity.CouponExample" resultType="java.lang.Integer" >
+    select count(*) from coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update coupon
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parValue != null" >
+        parValue = #{record.parValue,jdbcType=INTEGER},
+      </if>
+      <if test="record.minimum != null" >
+        minimum = #{record.minimum,jdbcType=INTEGER},
+      </if>
+      <if test="record.total != null" >
+        total = #{record.total,jdbcType=INTEGER},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.limitType != null" >
+        limitType = #{record.limitType,jdbcType=INTEGER},
+      </if>
+      <if test="record.validityStart != null" >
+        validityStart = #{record.validityStart,jdbcType=DATE},
+      </if>
+      <if test="record.validityEnd != null" >
+        validityEnd = #{record.validityEnd,jdbcType=DATE},
+      </if>
+      <if test="record.limitCat != null" >
+        limitCat = #{record.limitCat,jdbcType=BIGINT},
+      </if>
+      <if test="record.genDate != null" >
+        genDate = #{record.genDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDel != null" >
+        isDel = #{record.isDel,jdbcType=INTEGER},
+      </if>
+      <if test="record.startdate != null" >
+        startdate = #{record.startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.enddate != null" >
+        enddate = #{record.enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update coupon
+    set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      parValue = #{record.parValue,jdbcType=INTEGER},
+      minimum = #{record.minimum,jdbcType=INTEGER},
+      total = #{record.total,jdbcType=INTEGER},
+      num = #{record.num,jdbcType=INTEGER},
+      limitType = #{record.limitType,jdbcType=INTEGER},
+      validityStart = #{record.validityStart,jdbcType=DATE},
+      validityEnd = #{record.validityEnd,jdbcType=DATE},
+      limitCat = #{record.limitCat,jdbcType=BIGINT},
+      genDate = #{record.genDate,jdbcType=TIMESTAMP},
+      isDel = #{record.isDel,jdbcType=INTEGER},
+      startdate = #{record.startdate,jdbcType=TIMESTAMP},
+      enddate = #{record.enddate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update coupon
+    set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      parValue = #{record.parValue,jdbcType=INTEGER},
+      minimum = #{record.minimum,jdbcType=INTEGER},
+      total = #{record.total,jdbcType=INTEGER},
+      num = #{record.num,jdbcType=INTEGER},
+      limitType = #{record.limitType,jdbcType=INTEGER},
+      validityStart = #{record.validityStart,jdbcType=DATE},
+      validityEnd = #{record.validityEnd,jdbcType=DATE},
+      limitCat = #{record.limitCat,jdbcType=BIGINT},
+      genDate = #{record.genDate,jdbcType=TIMESTAMP},
+      isDel = #{record.isDel,jdbcType=INTEGER},
+      startdate = #{record.startdate,jdbcType=TIMESTAMP},
+      enddate = #{record.enddate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.activity.Coupon" >
+    update coupon
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parValue != null" >
+        parValue = #{parValue,jdbcType=INTEGER},
+      </if>
+      <if test="minimum != null" >
+        minimum = #{minimum,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="limitType != null" >
+        limitType = #{limitType,jdbcType=INTEGER},
+      </if>
+      <if test="validityStart != null" >
+        validityStart = #{validityStart,jdbcType=DATE},
+      </if>
+      <if test="validityEnd != null" >
+        validityEnd = #{validityEnd,jdbcType=DATE},
+      </if>
+      <if test="limitCat != null" >
+        limitCat = #{limitCat,jdbcType=BIGINT},
+      </if>
+      <if test="genDate != null" >
+        genDate = #{genDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        isDel = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="startdate != null" >
+        startdate = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="net.sls.dto.activity.Coupon" >
+    update coupon
+    set name = #{name,jdbcType=VARCHAR},
+      parValue = #{parValue,jdbcType=INTEGER},
+      minimum = #{minimum,jdbcType=INTEGER},
+      total = #{total,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      limitType = #{limitType,jdbcType=INTEGER},
+      validityStart = #{validityStart,jdbcType=DATE},
+      validityEnd = #{validityEnd,jdbcType=DATE},
+      limitCat = #{limitCat,jdbcType=BIGINT},
+      genDate = #{genDate,jdbcType=TIMESTAMP},
+      isDel = #{isDel,jdbcType=INTEGER},
+      startdate = #{startdate,jdbcType=TIMESTAMP},
+      enddate = #{enddate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.activity.Coupon" >
+    update coupon
+    set name = #{name,jdbcType=VARCHAR},
+      parValue = #{parValue,jdbcType=INTEGER},
+      minimum = #{minimum,jdbcType=INTEGER},
+      total = #{total,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      limitType = #{limitType,jdbcType=INTEGER},
+      validityStart = #{validityStart,jdbcType=DATE},
+      validityEnd = #{validityEnd,jdbcType=DATE},
+      limitCat = #{limitCat,jdbcType=BIGINT},
+      genDate = #{genDate,jdbcType=TIMESTAMP},
+      isDel = #{isDel,jdbcType=INTEGER},
+      startdate = #{startdate,jdbcType=TIMESTAMP},
+      enddate = #{enddate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

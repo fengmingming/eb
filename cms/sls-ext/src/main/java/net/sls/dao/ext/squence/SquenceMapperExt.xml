@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.squence.SquenceMapperExt" >
+  <select id="selectSquenceByType" parameterType="int" resultType="long">
+  	select number from squence where type = #{value,jdbcType=INTEGER}
+  </select>
+  <update id="updateSquence" parameterType="int">
+  	update squence set number = number + 1 where type = #{value,jdbcType=INTEGER}
+  </update>
+</mapper>

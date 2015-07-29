@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+#category { background: #f2f2f2;}
+	#category_con { width: 1200px; margin: auto; overflow: hidden; position: relative;}
+		#cgy_ul { width: 210px; position: relative; z-index: 1; float: left;}
+			#cgy_ul li { height: 86px; width: 210px; cursor: default;}
+			#cgy_ul .vernier { float: right; display: inline-block; width: 0px; height: 30px; background: url(../images/index.png) no-repeat -479px -228px; position: relative; top: 50%; margin-top: -15px;}
+			.cgy_img { background: url(../images/fresh.png) no-repeat; width: 55px; height: 58px; float: left; margin-left: 28px;}
+			#cgy_hd { background: #fb9f65;}
+				#cgy_hd .cgy_img { background-position: 0px 6px; margin-top: 16px; }
+			#cgy_sc { background: #b9d585;}
+				#cgy_sc .cgy_img { background-position: 0px -57px; margin-top: 16px; }
+			#cgy_rl { background: #f1abc5;}
+				#cgy_rl .cgy_img { background-position: 0px -113px; margin-top: 13px; }
+			#cgy_sg { background: #f9cf77;}
+				#cgy_sg .cgy_img { background-position: 0px -169px; margin-top: 16px; height: 56px;}
+			#cgy_ly { background: #88c6dc;}
+				#cgy_ly .cgy_img { background-position: 0px -225px; margin-top: 16px; height: 56px;}
+			.cgy_btm { border-bottom: solid 1px #fff;}
+				.cgy_txt { float: right; height: 86px; line-height: 86px; font-size: 20px; color: #fff; margin-right: 44px;}
+				.cgy_div { /*width: 300px;*/ height: 434px; position: absolute; top: 0px; /*left: -90px;*/left: -240px; background: #fff; z-index: -2; /*opacity: 0; filter: alpha(opacity=0);*/}
+					.cgy_div_tit { font-size: 20px; height: 87px; line-height: 87px; padding-left: 48px; border-bottom: solid 1px #ddd;}
+						.cgy_div_tit a { color: #666;}
+						.cgy_div_tit a:hover { color: #ff7f00; text-decoration: underline;}
+					.cgy_div_tits { width: 150px; padding-top: 31px; padding-bottom: 34px; float: left; /*text-indent: 50px;*/ text-align: center;}
+						.cgy_div_tits a { color: #666;}
+						.cgy_div_tits a:hover { color: #ff7f00; text-decoration: underline;}
+				
+		#banners { float: left; width: 990px; height: 434px; background: #fff; position: relative; z-index: 0;}
+			.bn_ig { position: absolute; left: 0px; top: 0px; height: 434px; width: 990px; overflow: hidden;}
+			.bn_pg { float: right;  position: absolute; bottom: 20px; left: 50%; z-index: 4;}
+			.bn_pg li { float: left; width: 17px; height: 16px; margin-right: 11px; cursor: pointer; background: url(../images/index.png) no-repeat 0px -188px; font-size: 12px; color: #fff; font-weight: bold; text-align: center;}
+			.bn_pg li.cur { background: url(../images/index.png) no-repeat 0px -162px;}
+			
+		#kinds { position: absolute; top: 0px; left: 210px; width: 990px; height: 434px; z-index: 0; display: none;}
+			#kinds li { display: none;}
+		

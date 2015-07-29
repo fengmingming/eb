@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.pc.job.PCJobMapper">
+  <select id="countGoods" resultType="long">
+  	select count(1) from goods where isSale = 1
+  </select>
+	
+  <select id="selectGoodsInfo" parameterType="map" resultType="map">
+  	SELECT
+  		g.id,g.goodsName,g.price,g.place,g.remark,a.code as areaCode,g.createtime + 0 as createtime,p.providerName,b.name as brandName,gs.monthNum as number
+	FROM
+	goods g left join area a on g.areaId = a.id
+	left join goodsStatistics gs on gs.goodsId = g.id
+	left join brand b on g.brandId = b.id
+	left join provider p on g.providerId = p.id
+	where g.isSale = 1 
+	limit #{start,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+</mapper>

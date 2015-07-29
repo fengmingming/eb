@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.order.PCDeliveryAddressMapper">
+	<insert id="insert" parameterType="net.sls.dto.pc.order.DeliveryAddress">
+		insert into deliveryAddress (orderId, province,
+		city, district, community,
+		provinceName, cityName, districtName,
+		communityName, mobile, phone,
+		receiver, postcode, pavilionId,
+		pavilionCode, pavilionName, remark, startdate, enddate
+		)
+		values (#{orderId,jdbcType=BIGINT}, #{province,jdbcType=INTEGER},
+		#{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER},
+		#{community,jdbcType=INTEGER},
+		#{provinceName,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{districtName,jdbcType=VARCHAR},
+		#{communityName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{receiver,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{pavilionId,jdbcType=INTEGER},
+		#{pavilionCode,jdbcType=VARCHAR}, #{pavilionName,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},#{startdate,jdbcType=TIMESTAMP},#{enddate,jdbcType=TIMESTAMP}
+		)
+	</insert>
+</mapper>

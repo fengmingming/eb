@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+#head { height: 82px; width: 1200px; margin: auto;}
+	#head li { float: left;}
+	#hd_slslog { width: 115px; height: 70px; background: url(../../images/index.png) no-repeat -36px -82px; cursor:hand; cursor:pointer;}
+		#hd_slslog a { display: block; width: 70px; height: 70px;}
+	#hd_city { width: 155px; height: 75px; background: #fff;}
+		#hc_ul { margin-top: 15px; position: relative;}
+			#hc_ul li { clear: both;}
+			#hc_cur { font-size: 20px; color: #666; height: 28px; width: 68px; text-align: center; border: solid 1px #fff;}
+			#hc_cut { position: absolute; z-index: 12; width: 68px; border: solid 1px #fff; padding-top: 28px;}
+				#hc_cut_a { font-size: 14px; color: #3f658c; display: block; text-align: center;}
+				#hc_cut_a:hover { text-decoration: underline; color: #ff7f00;}
+			#hc_cut #hc_cys_div { position: absolute; top: 46px; left: -1px; width: 148px; /*height: 38px;*/ border: solid 1px #ddd; background: #fff; /*line-height: 36px;*/ color: #ff7f00; display: none; font-size: 14px; padding-bottom: 5px;}
+				#hc_cys_div a { display: inline-block; padding: 4px 6px; margin: 0px 17px; color: #3f658c;}
+				#hc_cys_div a:hover { color: #fff; background: #ff7f00;}
+				#hcd_line { height: 1px; background: #fff; width: 68px; margin-top: -1px; margin-bottom: 5px;}
+			/*#hc_cut div span { font-size: 20px;}*/
+	#hd_search { width: 455px; height: 38px; background: url(../../images/index.png) no-repeat -42px 0px; margin-top: 22px;}
+		#hd_search_txt { padding: 6px 0px; margin-top: 3px; border: 0px; margin-left: 16px; width: 390px; float: left; color: #999;}
+		#hd_search_a { display: inline-block; width: 25px; height: 26px; margin-top: 5px; margin-left: 8px; float: left;}
+	#hd_mysls, #hd_mycar { height: 36px; line-height: 36px; margin-top: 22px;}
+	#hd_mysls { margin-left: 190px;}
+	#hd_mycar { margin-left: 58px;}
+	#hd_mysls a, #hd_mycar a{ font-size: 14px; color: #b6b6b6; display: block;}
+		#hd_mysls a span, #hd_mycar a span { float: left;}
+		#hd_mycar a { position: relative;}
+		#hd_ms_i, #hd_mc_i { width: 22px; height: 22px; background: url(../../images/index.png) no-repeat; display: inline-block; margin-top: 8px; margin-right: 12px;}
+		#hd_ms_i { background-position: 0px -20px;}
+		#hd_mc_i { background-position: 0px -46px;}
+		
+		#hd_mycar a #hd_mc_qp { width: 24px; height: 16px; display: block; position: absolute; top: -6px; left: 10px; background: #ccc; background: url(../../images/index.png) no-repeat -471px -261px; font-size: 11px; line-height: normal; color: #fff; text-align: center; float: none; display: none;}
+		.hd_ms_a:hover { color: #ff7f00; text-decoration: underline;}

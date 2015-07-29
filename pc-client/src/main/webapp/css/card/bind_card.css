@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+#at_center { width: 980px; float: left; margin-left: 10px; background: #fff; padding-bottom: 206px;}
+	#at_center_txt { color: #666; padding-left: 18px; padding-top: 22px;}
+	#at_upd { border-bottom: solid 1px #ddd; padding: 30px 0px 30px 30px; margin-left: 100px; width: 752px; margin-top: 10px;}
+		#at_upd li { float: left; height: 32px; line-height: 32px; }
+		#au_gou { background: url(../../images/inner.png) no-repeat 0px -487px; width: 76px;}
+		.au_pwd { width: 104px; color: #666; border-right: solid 1px #ddd;}
+		.au_des { width: 480px; font-size: 12px; text-indent: 18px;}
+			#ag_des { color: #d90000;}
+			#au_a { display: block; width: 88px; height: 30px; line-height: 30px; text-align: center; border: solid 1px #ddd; border-radius: 3px; background: #f6f6f6; font-size: 12px; color: #666;}
+		
+	#at_zf { border-bottom: solid 1px #ddd; padding: 30px 0px 30px 30px; margin-left: 100px; width: 752px;}
+		#at_zf li { float: left; height: 32px; line-height: 32px;}
+		#az_gan { background: url(../../images/inner.png) no-repeat 0px -519px; width: 76px;}
+			#az_des { color: #9999b5;}
+			#az_a { display: block; width: 88px; height: 30px; line-height: 30px; text-align: center; border: solid 1px #ddd; border-radius: 3px; background: #ff9900; font-size: 12px; color: #fff;}
+
+/*修改登录密码：第一步：验证身份样式*/
+#at_identity { width: 980px; float: left; margin-left: 10px; background: #fff; height: 485px; overflow: hidden;}
+	#at_identity_txt { color: #666; padding-left: 18px; padding-top: 22px;}
+	#at_bc_tb { font-size: 14px; color: #666; margin: auto; margin-top: 30px;}
+		#at_bc_tb tr { height: 50px;}	
+		.at_bc_inp { width: 170px; padding: 6px 5px; border: solid 1px #ddd;}
+		#at_bc_fsm { display: block; width: 74px; height: 31px; border: solid 1px #ddd; line-height: 31px; text-align: center; background: #f5f5f5; font-size: 12px; color: #666; margin-left: 20px;}
+		#at_fw1_yzm { width: 98px; height: 31px; border: solid 1px #ddd; background: #ffcc99; margin-left: 20px; cursor: pointer; float: left;}
+		#czk_ex { float: left; height: 31px; line-height: 31px; margin-left: 10px;}
+			#czk_ex a { color: #005aa4;}
+			#czk_ex a:hover { text-decoration: underline;}
+		#at_bd_sub { display: block; width: 74px; height: 34px; line-height: 34px; text-align: center; background: #ff9900; color: #fff;}
+		.at_bc_td { text-align: right; padding-right: 20px;}
+		#at_bc_tb .bc_tr_h { height: 160px;}
+		
+/*提示消息样式*/
+#u_info .focus_ipt { border: solid 1px #7abd54;}
+#u_info .focus_eor_ipt { border: solid 1px red;}
+	.a_i_td { position: relative;}
+	.r_msg { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; width: 174px;}
+	.r_msg_w { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; min-width: 232px; white-space: nowrap;}
+		

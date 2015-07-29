@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.pc.product.PCPavilionAreaMapper">
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.product.PavilionArea">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pavilionId" jdbcType="INTEGER" property="pavilionId" />
+    <result column="paName" jdbcType="VARCHAR" property="paName" />
+    <result column="isUse" jdbcType="INTEGER" property="isUse" />
+    <result column="isDel" jdbcType="INTEGER" property="isDel" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, pavilionId, paName, isUse, isDel
+  </sql>
+  <select id="selectpavilionAreasById" parameterType="java.lang.Integer" resultType="map">
+    SELECT pa.paName,a.code,a.name,pavilionId FROM pavilionArea pa LEFT JOIN area a ON pa.pavilionId = a.id WHERE a.pid = 
+	 #{pavilionId,jdbcType=INTEGER}
+	 and a.isUse = 1 and pa.isUse = 1 and pa.isDel = 1;
+  </select>
+  
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.activity.PCUserCouponMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.act.UserCoupon" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="couponId" property="couponId" jdbcType="BIGINT" />
+    <result column="usrId" property="usrId" jdbcType="BIGINT" />
+    <result column="genDate" property="genDate" jdbcType="TIMESTAMP" />
+    <result column="consumptionDate" property="consumptionDate" jdbcType="TIMESTAMP" />
+    <result column="orderId" property="orderId" jdbcType="BIGINT" />
+    <result column="orderNum" property="orderNum" jdbcType="VARCHAR" />
+    <!-- 以下为非数据库字段，扩充字段方便处理 -->
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parValue" property="parValue" jdbcType="INTEGER" />
+    <result column="minimum" property="minimum" jdbcType="INTEGER" />
+    <result column="limitCat" property="limitCat" jdbcType="BIGINT" />
+    <result column="limitCatName" property="limitCatName" jdbcType="VARCHAR" />
+    <result column="validityEnd" property="validityEnd" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, code, couponId, usrId, genDate, consumptionDate, orderId, orderNum
+  </sql>
+  <select id="selectUnUseCouponListsByUserId" resultType="map" parameterType="map" >
+	SELECT 
+		uc.code , uc.id,uc.code,uc.couponId,uc.usrId ,c.name,c.parValue,
+		c.minimum,c.limitType,c.validityStart,c.validityEnd, IFNULL ( ( SELECT NAME FROM category WHERE id = c.limitCat ), '全部商品') AS limitCat
+	FROM
+	  	userCoupon uc LEFT JOIN coupon c ON uc.couponId = c.id
+	WHERE
+	 c.isDel=1 AND uc.orderNum IS NULL 
+	<if test="usrId != null and usrId !=''">
+		AND uc.usrId =#{usrId,jdbcType=BIGINT} 
+	</if> 
+		<![CDATA[AND c.validityEnd > NOW()]]>
+	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="countUnUseCouponListsByUserId" parameterType="map" resultType="long">
+  	select count(uc.id) from userCoupon uc LEFT JOIN coupon c ON uc.couponId = c.id
+  	<where>
+  		c.isDel=1 AND uc.orderNum IS NULL 
+  		<if test="usrId != null and usrId !=''">
+  			and uc.usrId = #{usrId,jdbcType=BIGINT}
+  		</if>
+  		<![CDATA[AND c.validityEnd > NOW()]]>
+  	</where>
+  </select>
+  <select id="selectUseCouponListsByUserId" resultType="map" parameterType="map" >
+	SELECT 
+		uc.code , uc.id, uc.code, uc.couponId, uc.usrId, c.name, c.parValue,
+		c.minimum,c.limitType,c.validityStart,c.validityEnd, IFNULL ( ( SELECT NAME FROM category WHERE id = c.limitCat ), '全部商品') AS limitCat,uc.consumptionDate,
+  		uc.orderId,uc.orderNum
+	FROM
+	  	userCoupon uc LEFT JOIN coupon c ON uc.couponId = c.id
+	WHERE
+	 c.isDel=1 AND uc.orderNum IS NOT NULL 
+	<if test="usrId != null and usrId !=''">
+		AND uc.usrId =#{usrId,jdbcType=BIGINT} 
+	</if> 
+	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  <select id="countUseCouponListsByUserId" parameterType="map" resultType="long">
+  	select count(uc.id) from userCoupon uc LEFT JOIN coupon c ON uc.couponId = c.id
+  	<where>
+  		c.isDel=1 AND uc.orderNum IS NOT NULL 
+  		<if test="usrId != null and usrId !=''">
+  			and uc.usrId = #{usrId,jdbcType=BIGINT}
+  		</if>
+  	</where>
+  </select>
+
+  <insert id="insertUserCoupon" parameterType="map">
+  	insert into userCoupon
+  		(couponId, usrId, genDate)
+  	values 
+  		(#{couponId,jdbcType=BIGINT},#{usrId,jdbcType=BIGINT},now())
+  </insert> 		 		
+
+  <select id="selectExpireCouponListsByUserId" resultType="map" parameterType="map" >
+	SELECT 
+		uc.code , uc.id,uc.code,uc.couponId,uc.usrId ,c.name,c.parValue,
+		c.minimum,c.limitType,c.validityStart,c.validityEnd, IFNULL ( ( SELECT NAME FROM category WHERE id = c.limitCat ), '全部商品') AS limitCat
+	FROM
+	  	userCoupon uc LEFT JOIN coupon c ON uc.couponId = c.id
+	WHERE
+	 c.isDel=1 AND uc.orderNum IS NULL 
+	<if test="usrId != null and usrId !=''">
+		AND uc.usrId =#{usrId,jdbcType=BIGINT} 
+	</if> 
+		<![CDATA[ AND c.validityEnd < NOW()]]>
+	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <select id="countExpireCouponListsByUserId" parameterType="map" resultType="long">
+  	select count(uc.id) from userCoupon uc LEFT JOIN coupon c ON uc.couponId = c.id
+  	<where>
+  		c.isDel=1 AND uc.orderNum IS NULL 
+  		<if test="usrId != null and usrId !=''">
+  			and uc.usrId = #{usrId,jdbcType=BIGINT}
+  		</if>
+  		<![CDATA[ AND c.validityEnd < NOW()]]>
+  	</where>
+  </select>
+  
+  	<select id="selectUnUseCoupons" parameterType="map" resultMap="BaseResultMap">
+		select uc.*, c.name, c.parValue, c.minimum, c.validityEnd, c.limitCat, 
+				IFNULL ( ( SELECT NAME FROM category WHERE id = c.limitCat ), '全部商品') AS limitCatName
+		FROM
+	  		userCoupon uc
+			left join coupon c on uc.couponId = c.id
+ 		where c.isDel=1 AND uc.orderNum IS NULL
+ 		<if test="usrId != null">
+			and uc.usrId = #{usrId,jdbcType=BIGINT}
+		</if>
+		<if test="id != null">
+			and uc.id = #{id,jdbcType=BIGINT}
+		</if>
+		and NOW() BETWEEN c.validityStart AND c.validityEnd
+	</select>
+	
+	<select id="selectUnUseCouponByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select uc.*, c.name, c.parValue, c.minimum, c.validityEnd, c.limitCat, 
+				IFNULL ( ( SELECT NAME FROM category WHERE id = c.limitCat ), '全部商品') AS limitCatName
+		FROM
+	  		userCoupon uc
+			left join coupon c on uc.couponId = c.id
+ 		where c.isDel=1 AND uc.orderNum IS NULL and uc.usrId = 0
+		<if test="code != null and code !=''">
+			and uc.code = #{code,jdbcType=VARCHAR}
+		</if>
+		and NOW() BETWEEN c.startdate AND c.enddate
+	</select>
+  
+  	<update id="updateUserCouponById" parameterType="map">
+  		update userCoupon set orderId = #{orderId,jdbcType=BIGINT}, orderNum = #{orderNum,jdbcType=BIGINT}, consumptionDate = NOW()
+	  	where id = #{id,jdbcType=BIGINT}
+  	</update>
+  	
+  	<update id="updateUserCouponByOrderId" parameterType="map">
+  		update userCoupon set orderId = NULL, orderNum = NULL, consumptionDate = NULL
+	  	where orderId = #{orderId,jdbcType=BIGINT}
+  	</update>
+  	
+	<update id="updateUserCouponByCode" parameterType="map">
+  		update userCoupon
+  		set usrId = #{id, jdbcType=BIGINT}, genDate = NOW()
+  		where code = #{code, jdbcType=VARCHAR}
+  	</update>
+  	
+  	<select id="selectCouponByCode" parameterType="long" resultType="net.sls.dto.pc.act.Coupon">
+		select c.* from userCoupon uc, coupon c where uc.code = #{code,jdbcType=VARCHAR} and uc.usrId = 0 and uc.couponId = c.id and c.isdel = 1 <![CDATA[ AND c.validityEnd > NOW()]]>
+	</select>
+</mapper>

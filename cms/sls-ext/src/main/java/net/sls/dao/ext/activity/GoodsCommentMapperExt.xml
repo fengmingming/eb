@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.activity.GoodsCommentMapperExt">
+
+	<select id="selectGoodsComments" parameterType="map" resultType="net.sls.dto.ext.product.GoodsCommentDto">
+		SELECT
+			g.goodsName,
+			com.id,
+			com.orderId,
+			com.userId,
+			com.goodsId,
+			com.content,
+			com.reply,
+			com.grade,
+			com.isAnonymous,
+			com.pics,
+			com.isVerify,
+			com.createTime,
+			com.isDel
+		FROM
+			goodsComment AS com
+		LEFT JOIN goods AS g ON com.goodsId = g.id
+		WHERE isDel=1
+		<if test="goodsId != null">
+			AND	com.goodsId = #{goodsId,jdbcType=INTEGER}
+		</if>
+		<if test="goodsName != null">
+			AND g.goodsName like concat('%',#{goodsName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="status != null">
+			AND com.isVerify = #{status,jdbcType=INTEGER}
+		</if>
+		order by com.createTime DESC
+		<if test="start != null and number != null">
+			limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+		</if>
+	</select>
+
+
+	<select id="countGoodsComments" parameterType="map" resultType="long" >
+    		SELECT
+			count(*)
+		FROM
+			goodsComment AS com
+		LEFT JOIN goods AS g ON com.goodsId = g.id
+		WHERE isDel=1
+		<if test="goodsId != null">
+			AND	com.goodsId = #{goodsId,jdbcType=INTEGER}
+		</if>
+		<if test="goodsName != null">
+			AND g.goodsName like
+			concat('%',#{goodsName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="status != null">
+			AND com.isVerify = #{status,jdbcType=INTEGER}
+		</if>
+  </select>
+  
+  <update id="updateBatchStatus" parameterType="map"  >
+		update goodsComment set isVerify=1 
+		where 1=1 
+		<if test="ids!=null">
+			and id in 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		
+		</if> 
+	</update>
+	
+  <update id="deleteBatchComment" parameterType="map" >
+		update goodsComment set isDel=127 
+		where 1=1 
+		<if test="ids!=null">
+			and id in 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		
+		</if> 
+	</update>
+	
+	<update id="updateReply" parameterType="map"  >
+		update goodsComment set reply=#{reply,jdbcType=VARCHAR} 
+		where id=#{id,jdbcType=BIGINT} 
+	</update>
+</mapper>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration  
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">  
+<generatorConfiguration>  
+<!-- 数据库驱动-->  
+    <classPathEntry  location="E:\\apache\\maven_repository\\mysql\\mysql-connector-java\\5.1.6\\mysql-connector-java-5.1.6.jar"/>  
+    <context id="sls"  targetRuntime="MyBatis3">  
+        <commentGenerator>  
+            <property name="suppressDate" value="true"/>  
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->  
+            <property name="suppressAllComments" value="true"/>  
+            <property name="useActualColumnNames" value="true"/>
+        </commentGenerator>  
+        <!--数据库链接URL，用户名、密码 -->  
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.0.143/slsdb" userId="root" password="123321">  
+        </jdbcConnection>  
+        <javaTypeResolver>  
+            <property name="forceBigDecimals" value="true"/>  
+        </javaTypeResolver>  
+        <!-- 生成模型的包名和位置-->  
+        <javaModelGenerator targetPackage="net.sls.dto.order" targetProject="src/main/java">  
+            <property name="enableSubPackages" value="false"/>  
+            <property name="trimStrings" value="true"/>  
+        </javaModelGenerator>  
+        <!-- 生成映射文件的包名和位置-->  
+        <sqlMapGenerator targetPackage="net.sls.dao.order" targetProject="src/main/java">  
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>  
+        <!-- 生成DAO的包名和位置-->  
+        <javaClientGenerator type="XMLMAPPER" targetPackage="net.sls.dao.order" targetProject="src/main/java">  
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>  
+        <!-- 要生成哪些表-->  
+        
+        <!-- <table tableName="user" domainObjectName="User" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="amountOrder" domainObjectName="AmountOrder" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="userAddress" domainObjectName="UserAddress" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="cmsUser" domainObjectName="CmsUser" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="function" domainObjectName="Function" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="myFavorite" domainObjectName="MyFavorite" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="role" domainObjectName="Role" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="roleFunction" domainObjectName="RoleFunction" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="amountLog" domainObjectName="AmountLog" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table> -->
+       	
+       	<!-- <table tableName="advert" domainObjectName="Advert" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>	
+       	</table>
+       	<table tableName="brand" domainObjectName="Brand" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="category" domainObjectName="Category" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="dict" domainObjectName="Dict" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="goods" domainObjectName="Goods" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="goodsArea" domainObjectName="GoodsArea" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="goodsCategory" domainObjectName="GoodsCategory" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="goodsDetail" domainObjectName="GoodsDetail" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="goodsStock" domainObjectName="GoodsStock" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="provider" domainObjectName="Provider" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="shopCart" domainObjectName="ShopCart" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table> 
+       	<table tableName="area" domainObjectName="Area" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="pavilionInfo" domainObjectName="PavilionInfo" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table> -->
+       	
+       	<!-- <table tableName="deliveryAddress" domainObjectName="DeliveryAddress" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="orders" domainObjectName="Orders" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="orderDetail" domainObjectName="OrderDetail" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+      	<table tableName="orderPay" domainObjectName="OrderPay" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+      		<property name="useActualColumnNames" value="true"/>
+      	</table>
+      	<table tableName="ordersLog" domainObjectName="OrderLog" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+      		<property name="useActualColumnNames" value="true"/>
+      	</table> 
+      	<table tableName="exportOrderDetail" domainObjectName="ExportOrderDetail" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+      		<property name="useActualColumnNames" value="true"/>
+      	</table>
+      	<table tableName="exportOrderRecord" domainObjectName="ExportOrderRecord" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+      		<property name="useActualColumnNames" value="true"/>
+      	</table>
+      	<table tableName="orderActGoodsInfo" domainObjectName="OrderActGoodsInfo" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+      	
+      	
+      	<table tableName="detailTipRel" domainObjectName="DetailTipRel" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="broadcast" domainObjectName="Broadcast" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+      	<table tableName="detailTip" domainObjectName="DetailTip" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="goodsTop" domainObjectName="GoodsTop" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table> 
+       	<table tableName="activityGoods" domainObjectName="ActivityGoods" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="activities" domainObjectName="Activities" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="activityLog" domainObjectName="ActivityLog" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	<table tableName="coupon" domainObjectName="Coupon" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	
+       	<table tableName="userCoupon" domainObjectName="UserCoupon" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	-->
+       	
+        <!-- <table tableName="prepaidCard" domainObjectName="PrepaidCard" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table> -->
+       	
+       	<!-- <table tableName="addComment" domainObjectName="AddComment" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	
+       	<table tableName="goodsComment" domainObjectName="GoodsComment" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table> -->
+       	
+       	<!-- <table tableName="pavilionArea" domainObjectName="PavilionArea" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table> -->
+       	
+       	<!-- <table tableName="dynpage" domainObjectName="Dynpage" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	
+       	<table tableName="dynpageGoods" domainObjectName="DynpageGoods" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	</table>
+       	 -->
+       	 
+       	 <table tableName="orderRefund" domainObjectName="OrderRefund" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+       		<property name="useActualColumnNames" value="true"/>
+       	 </table>
+    </context>  
+</generatorConfiguration>

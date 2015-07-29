@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.product.PCGoodsStockMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.product.GoodsStock" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="providerId" property="providerId" jdbcType="BIGINT" />
+    <result column="virtualNumber" property="virtualNumber" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, goodsId, providerId, virtualNumber, createTime, modifyTime
+  </sql>
+  
+  <select id="selectGoodsStock" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from goodsStock
+    where goodsId = #{goodsId,jdbcType=BIGINT}
+  </select>
+  
+  <update id="updateGoodsStock" parameterType="map">
+    update goodsStock
+	    <set >
+		    <if test="num != null" >
+				virtualNumber = virtualNumber-#{num,jdbcType=INTEGER}
+		    </if>
+	    </set>
+    where goodsId = #{goodsId,jdbcType=BIGINT}
+	    <if test="num != null" >
+	   		and virtualNumber >= #{num,jdbcType=INTEGER}
+	    </if>
+    
+  </update>
+  
+  <update id="updateGoodsStockAdd" parameterType="java.util.List">
+	  <foreach collection="orderDetailList" item="item"  open="" close="" separator=";">
+	    update goodsStock
+		    set
+				virtualNumber = virtualNumber+#{item.number,jdbcType=INTEGER}
+	    where goodsId = #{item.goodsId,jdbcType=BIGINT}
+	  </foreach>
+  </update>
+  
+</mapper>

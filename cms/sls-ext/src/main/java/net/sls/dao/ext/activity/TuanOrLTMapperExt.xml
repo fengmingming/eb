@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.activity.TuanOrLTMapperExt">
+	<insert id="insertTuanOrLT" parameterType="net.sls.dto.activity.Activities"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into
+		activities
+		(actType, actName,
+		remark, startTime, endTime,
+		createTime,
+		createUserId,
+		areaCode
+		)
+		values (#{actType,jdbcType=INTEGER},
+		#{actName,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{createUserId,jdbcType=BIGINT},
+		#{areaCode,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertTuanOrLTDetails" parameterType="list">
+		insert into
+		activityGoods (actId, actType,
+		goodsId, actPrice, startTime,
+		endTime, number)
+		values
+		<foreach collection="list" item="d" separator=",">
+			(#{d.actId,jdbcType=BIGINT},
+			#{d.actType,jdbcType=INTEGER},
+			#{d.goodsId,jdbcType=BIGINT}, #{d.actPrice,jdbcType=DECIMAL},
+			#{d.startTime,jdbcType=TIMESTAMP},
+			#{d.endTime,jdbcType=TIMESTAMP},
+			#{d.number,jdbcType=INTEGER})
+		</foreach>
+	</insert>
+	
+	<update id="updateTuanOrLTDetails" parameterType="list">
+		<foreach collection="list" item="d" separator=";">
+			update activityGoods set actPrice = #{d.actPrice,jdbcType=DECIMAL},number = #{d.number,jdbcType=INTEGER}
+			where id = #{d.id,jdbcType=BIGINT}
+		</foreach>
+	</update>
+	
+	<select id="selectTuanOrLT" parameterType="map" resultType="net.sls.dto.activity.Activities">
+		select id, actType, actName, remark, startTime, endTime, createTime, modifyTime, createUserId, 
+    	verifyUserId, verifyTime, isVerify, state, isDel, areaCode
+    	from activities
+    	where isDel = 1 and areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+    	<if test="actName != null">
+    		and actName like concat('%',#{actName,jdbcType=VARCHAR},'%')
+    	</if>
+    	<if test="verify != null">
+    		and isVerify = #{verify,jdbcType=BIT}
+    	</if>
+    	<if test="state != null">
+    		and state = #{state,jdbcType=INTEGER}
+    	</if>
+    	<if test="startTime != null">
+    		and startTime <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="endTime != null">
+    		and endTime <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="ing != null">
+    		<if test="ing == 2">
+    			and startTime <![CDATA[ > ]]> now()
+    		</if>
+    		<if test="ing == 1">
+    			and now() between startTime and endTime
+    		</if>
+    		<if test="ing == 0">
+    			and endTime <![CDATA[ < ]]> now()
+    		</if>
+    	</if>
+    	<if test="ing == null">
+    		and endTime <![CDATA[ > ]]> now()
+    	</if>
+    	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+	</select>
+	
+	<select id="countTuanOrLT" parameterType="map" resultType="long">
+		select count(1)
+    	from activities
+    	where isDel = 1 and areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+    	<if test="actName != null">
+    		and actName like concat('%',#{actName,jdbcType=VARCHAR},'%')
+    	</if>
+    	<if test="verify != null">
+    		and isVerify = #{verify,jdbcType=BIT}
+    	</if>
+    	<if test="state != null">
+    		and state = #{state,jdbcType=INTEGER}
+    	</if>
+    	<if test="startTime != null">
+    		and startTime <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="endTime != null">
+    		and endTime <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
+    	</if>
+    	<if test="ing != null">
+    		<if test="ing == 2">
+    			and startTime <![CDATA[ > ]]> now()
+    		</if>
+    		<if test="ing == 1">
+    			and now() between startTime and endTime
+    		</if>
+    		<if test="ing == 0">
+    			and endTime <![CDATA[ < ]]> now()
+    		</if>
+    	</if>
+    	<if test="ing == null">
+    		and endTime <![CDATA[ > ]]> now()
+    	</if>
+	</select>
+	
+	<select id="selectTuanOrLTDetail" parameterType="map" resultType="map">
+		select ag.id, ag.actId, ag.actType, ag.goodsId, ag.actPrice, ag.startTime, ag.endTime, ag.number,
+		g.goodsName,gs.virtualNumber,g.sku,g.price
+		from activityGoods ag left join goods g on ag.goodsId = g.id left join goodsStock gs on ag.goodsId = gs.goodsId
+		where actId = #{actId,jdbcType=BIGINT}
+		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+	</select>
+	
+	<select id="countTuanOrLTDetail" parameterType="long" resultType="long">
+		select count(1)
+		from activityGoods
+		where actId = #{value,jdbcType=BIGINT}
+	</select>
+	
+	<update id="updateTuanOrLT" parameterType="map">
+		update activities
+		<set>
+			<if test="state != null">
+				state = #{state,jdbcType=INTEGER},
+			</if>
+			<if test="isVerify != null">
+				isVerify = #{isVerify,jdbcType=BIT},
+			</if>
+			<if test="isDel != null">
+				isDel = #{isDel,jdbcType=INTEGER}
+			</if>
+		</set>
+		where id = #{actId,jdbcType=BIGINT}
+		<if test="state != null">
+			and isVerify = 1
+		</if>
+	</update>
+	
+	<select id="isExistGoodsActTuanOrLT" parameterType="map" resultType="string">
+		select distinct g.goodsName
+		from activityGoods a left join goods g on a.goodsId = g.id left join activities act on a.actId = act.id
+		where act.isDel = 1 and a.goodsId in 
+		<foreach collection="list" item="gid" open="(" close=")" separator=",">
+			#{gid,jdbcType=BIGINT}
+		</foreach>
+		and ((a.startTime <![CDATA[ <= ]]> #{startTime,jdbcType=TIMESTAMP} and a.endTime <![CDATA[ >= #{endTime,jdbcType=TIMESTAMP}]]>)
+		or (a.startTime <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP} and a.endTime <![CDATA[ <= #{endTime,jdbcType=TIMESTAMP}]]>)
+		or (a.startTime <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP} and a.startTime <![CDATA[ <= #{endTime,jdbcType=TIMESTAMP}]]>)
+		or (a.endTime <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP} and a.endTime <![CDATA[ <= #{endTime,jdbcType=TIMESTAMP}]]>))
+	</select>
+</mapper>

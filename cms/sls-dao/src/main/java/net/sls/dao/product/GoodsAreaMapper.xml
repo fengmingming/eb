@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.product.GoodsAreaMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.product.GoodsArea" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+    <result column="cityId" property="cityId" jdbcType="INTEGER" />
+    <result column="districtId" property="districtId" jdbcType="INTEGER" />
+    <result column="communityId" property="communityId" jdbcType="INTEGER" />
+    <result column="pavilionId" property="pavilionId" jdbcType="INTEGER" />
+    <result column="limitCode" property="limitCode" jdbcType="VARCHAR" />
+    <result column="isLimit" property="isLimit" jdbcType="BIT" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="isDel" property="isDel" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, goodsId, provinceId, cityId, districtId, communityId, pavilionId, limitCode, 
+    isLimit, number, isDel, createTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.product.GoodsAreaExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from goodsArea
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from goodsArea
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from goodsArea
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.product.GoodsAreaExample" >
+    delete from goodsArea
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.product.GoodsArea" >
+    insert into goodsArea (id, goodsId, provinceId, 
+      cityId, districtId, communityId, 
+      pavilionId, limitCode, isLimit, 
+      number, isDel, createTime
+      )
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{provinceId,jdbcType=INTEGER}, 
+      #{cityId,jdbcType=INTEGER}, #{districtId,jdbcType=INTEGER}, #{communityId,jdbcType=INTEGER}, 
+      #{pavilionId,jdbcType=INTEGER}, #{limitCode,jdbcType=VARCHAR}, #{isLimit,jdbcType=BIT}, 
+      #{number,jdbcType=INTEGER}, #{isDel,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.product.GoodsArea" >
+    insert into goodsArea
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsId != null" >
+        goodsId,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="districtId != null" >
+        districtId,
+      </if>
+      <if test="communityId != null" >
+        communityId,
+      </if>
+      <if test="pavilionId != null" >
+        pavilionId,
+      </if>
+      <if test="limitCode != null" >
+        limitCode,
+      </if>
+      <if test="isLimit != null" >
+        isLimit,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="isDel != null" >
+        isDel,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="districtId != null" >
+        #{districtId,jdbcType=INTEGER},
+      </if>
+      <if test="communityId != null" >
+        #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionId != null" >
+        #{pavilionId,jdbcType=INTEGER},
+      </if>
+      <if test="limitCode != null" >
+        #{limitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isLimit != null" >
+        #{isLimit,jdbcType=BIT},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.product.GoodsAreaExample" resultType="java.lang.Integer" >
+    select count(*) from goodsArea
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update goodsArea
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsId != null" >
+        goodsId = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.provinceId != null" >
+        provinceId = #{record.provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityId != null" >
+        cityId = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.districtId != null" >
+        districtId = #{record.districtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.communityId != null" >
+        communityId = #{record.communityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pavilionId != null" >
+        pavilionId = #{record.pavilionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.limitCode != null" >
+        limitCode = #{record.limitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isLimit != null" >
+        isLimit = #{record.isLimit,jdbcType=BIT},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDel != null" >
+        isDel = #{record.isDel,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update goodsArea
+    set id = #{record.id,jdbcType=BIGINT},
+      goodsId = #{record.goodsId,jdbcType=BIGINT},
+      provinceId = #{record.provinceId,jdbcType=INTEGER},
+      cityId = #{record.cityId,jdbcType=INTEGER},
+      districtId = #{record.districtId,jdbcType=INTEGER},
+      communityId = #{record.communityId,jdbcType=INTEGER},
+      pavilionId = #{record.pavilionId,jdbcType=INTEGER},
+      limitCode = #{record.limitCode,jdbcType=VARCHAR},
+      isLimit = #{record.isLimit,jdbcType=BIT},
+      number = #{record.number,jdbcType=INTEGER},
+      isDel = #{record.isDel,jdbcType=INTEGER},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.product.GoodsArea" >
+    update goodsArea
+    <set >
+      <if test="goodsId != null" >
+        goodsId = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="districtId != null" >
+        districtId = #{districtId,jdbcType=INTEGER},
+      </if>
+      <if test="communityId != null" >
+        communityId = #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionId != null" >
+        pavilionId = #{pavilionId,jdbcType=INTEGER},
+      </if>
+      <if test="limitCode != null" >
+        limitCode = #{limitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isLimit != null" >
+        isLimit = #{isLimit,jdbcType=BIT},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null" >
+        isDel = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.product.GoodsArea" >
+    update goodsArea
+    set goodsId = #{goodsId,jdbcType=BIGINT},
+      provinceId = #{provinceId,jdbcType=INTEGER},
+      cityId = #{cityId,jdbcType=INTEGER},
+      districtId = #{districtId,jdbcType=INTEGER},
+      communityId = #{communityId,jdbcType=INTEGER},
+      pavilionId = #{pavilionId,jdbcType=INTEGER},
+      limitCode = #{limitCode,jdbcType=VARCHAR},
+      isLimit = #{isLimit,jdbcType=BIT},
+      number = #{number,jdbcType=INTEGER},
+      isDel = #{isDel,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

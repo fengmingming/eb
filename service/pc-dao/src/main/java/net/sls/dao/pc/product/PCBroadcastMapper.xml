@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.product.PCBroadcastMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.product.Broadcast" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="imgUrl" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+	<result column="sort" property="sort" jdbcType="INTEGER" />
+	<result column="cmsUserId" property="cmsUserId" jdbcType="BIGINT" />
+	<result column="areaCode" property="areaCode" jdbcType="VARCHAR" />
+	<result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
+	<result column="modifytime" property="modifyTime" jdbcType="TIMESTAMP" />
+	<result column="isUse" property="isUse" jdbcType="INTEGER" />
+	<result column="isDel" property="isDel" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, imgUrl, url, sort, cmsUserId, areaCode, createTime, modifyTime, isUse, isDel
+  </sql>
+  
+  <select id="getBroadcastList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+   	b.url, 
+   	b.imgUrl 
+    from broadcast b
+    where areaCode = #{areaCode,jdbcType=VARCHAR}
+    and channelId = #{channelId,jdbcType=INTEGER}
+    and b.isUse = 1 and b.isDel = 1
+    order by b.sort
+    asc
+  </select>
+ 
+</mapper>

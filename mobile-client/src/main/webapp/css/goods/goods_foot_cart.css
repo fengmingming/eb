@@ -1,0 +1,20 @@
+#foot { border-top: solid 1px #bfbebd; height: 50px; margin: 0px auto; bottom: 0px; background: #f2f2f2; max-width: 640px; min-width: 300px; width: 100%; z-index: 50;}
+	#foot ul li { float: left; height: 50px;}
+		.w_16 { width: 16%;}
+		.w_34 { width: 34%;}
+			.ft_sc { font-size: 12px; display: block;}
+				.ft_sc i { display: block; width: 27px; height: 28px; background: url(../../images/sls_mz.png) no-repeat 0px -250px; background-size: 650px; margin: auto; margin-top: 2px;}
+				.ft_sc span { width: 100%; display: block; text-align: center; color: #666;}
+				
+			.ft_num { display: inline-block; margin-top: 8px;}
+				#foot .ft_num li { float: left; height: 32px;}
+					.ft_num li a { width: 32px; display: block; text-align: center; height: 32px; line-height: 26px; border: solid 1px #e0dfdf; font-size: 20px; font-weight: bold; color: #666;}
+				.ft_num input { text-align: center; width: 34px; height: 32px; border: solid 1px #e0dfdf; border-left: 0px; border-right: 0px;}
+				
+			.ft_add_car { display: block; width: 105px; height: 42px; line-height: 42px; background: #ee7c18; text-align: center; color: #fff; margin: auto; border-radius: 3px; margin-top: 3px;}
+			.ft_de_car { display: block; width: 105px; height: 42px; line-height: 42px; background: #aeaeae; text-align: center; color: #fff; margin: auto; border-radius: 3px; margin-top: 3px;}
+			
+			.ft_car { font-size: 12px; display: block;}
+				.ft_car .ft_car_bg_img { display: block; width: 27px; height: 20px; background: url(../../images/sls_mz.png) no-repeat 0px -285px; background-size: 650px; margin: auto; margin-top: 10px; position: relative;}
+					.ft_car .ft_car_bg_img span { position: absolute; top: -8px; left: 15px; padding: 0px 5px; background: #d5393b; color: #fff; font-size: 8px; border-radius: 6px; display: none;}
+				.ft_car .ft_car_txt { width: 100%; display: block; text-align: center; color: #666;}

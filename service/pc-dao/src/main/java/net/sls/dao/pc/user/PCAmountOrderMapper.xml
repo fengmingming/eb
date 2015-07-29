@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.pc.user.PCAmountOrderMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.pc.user.AmountOrder" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="voucherOrderNum" property="voucherOrderNum" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="thirdOrderNum" property="thirdOrderNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, voucherOrderNum, userId, money, status, createTime, remark, thirdOrderNum
+  </sql>
+  <select id="selectAmountOrderByVoucherOrderNum" resultMap="BaseResultMap" parameterType="net.sls.dto.pc.user.AmountOrder" >
+    select
+    <include refid="Base_Column_List" />
+    from amountOrder
+    where 
+        voucherOrderNum = #{voucherOrderNum,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from amountOrder
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from amountOrder
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insertAmountOrder" parameterType="net.sls.dto.pc.user.AmountOrder" >
+    insert into amountOrder (id, voucherOrderNum, userId, 
+      money, status, createTime, 
+      remark, thirdOrderNum)
+    values (#{id,jdbcType=BIGINT}, #{voucherOrderNum,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{money,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{thirdOrderNum,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <update id="updateByExample" parameterType="map" >
+    update amountOrder
+    set id = #{record.id,jdbcType=BIGINT},
+      voucherOrderNum = #{record.voucherOrderNum,jdbcType=VARCHAR},
+      userId = #{record.userId,jdbcType=BIGINT},
+      money = #{record.money,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=INTEGER},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      thirdOrderNum = #{record.thirdOrderNum,jdbcType=VARCHAR}
+    
+  </update>
+  <update id="updateAmountOrderStatus" parameterType="net.sls.dto.pc.user.AmountOrder" >
+    update amountOrder
+    <set >
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdOrderNum != null" >
+        thirdOrderNum = #{thirdOrderNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.pc.user.AmountOrder" >
+    update amountOrder
+    set voucherOrderNum = #{voucherOrderNum,jdbcType=VARCHAR},
+      userId = #{userId,jdbcType=BIGINT},
+      money = #{money,jdbcType=DECIMAL},
+      status = #{status,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      thirdOrderNum = #{thirdOrderNum,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

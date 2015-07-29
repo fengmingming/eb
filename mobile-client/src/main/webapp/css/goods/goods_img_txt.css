@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+.viewport { padding-bottom: 60px;}
+	
+	.cut_tab { padding: 10px 10px;}
+		.cut_tab li { float: left; width: 50%; text-align: center; height: 30px; line-height: 30px;}
+			.cut_tab li a { display: block; color: #ddd; height: 40px;}
+			.cut_tab li a.cur { border-bottom: solid 2px #ff9900; color: #ff9900;}
+	
+	.ul_imgs { }
+		.ul_imgs li { font-size: 0px; padding: 10px 10px 0px 10px;}
+		.ul_imgs img { width: 100%;}

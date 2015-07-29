@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.ext.order.ExportOrderDetailMapperExt" >
+  <insert id="insertExportOrderDetail" parameterType="net.sls.dto.order.ExportOrderDetail" >
+    insert into exportOrderDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="exportId != null" >
+        exportId,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="orderNum != null" >
+        orderNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="exportId != null" >
+        #{exportId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="insertExportOrderRecord" parameterType="net.sls.dto.order.ExportOrderRecord" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+  	insert into exportOrderRecord (exportNum, createTime, state, operId, startdate, enddate)
+    values (#{exportNum,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER},#{operId,jdbcType=BIGINT}, #{startdate,jdbcType=TIMESTAMP}, #{enddate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <select id="selectExportOrderRecords" parameterType="map" resultType="map">
+  	select
+  	e.id, e.exportNum, e.createTime, e.number, e.state, e.lastExportTime, e.operId, cu.userName, e.startdate, e.enddate, e.isDel
+  	from exportOrderRecord e left join cmsUser cu on e.operId = cu.id
+  	where e.isDel = 1 
+  	<if test="areaCode != null">
+  		and e.exportNum like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+  	order by e.id DESC
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countExportOrderRecords" resultType="long" parameterType="string">
+  	select count(1)
+  	from exportOrderRecord e left join cmsUser cu on e.operId = cu.id
+  	where e.isDel = 1
+  	<if test="_parameter != null">
+  		and e.exportNum like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+  </select>
+  
+  <select id="selectExportOrderDetail" parameterType="map" resultType="map">
+  	select distinct
+  	eod.id,eod.exportId, eod.orderId, eod.orderNum,eod.isSelect,o.status,o.state,o.isPaid,o.createTime,o.remark
+  	from exportOrderDetail eod 
+  	left join orders o on eod.orderId = o.id
+  	<if test="goodsId != null or goodsName != null or sku != null or providerId != null">
+  		left join orderDetail od on eod.orderId = od.orderId
+  	</if>
+  	where exportId = #{exportId,jdbcType=BIGINT} and eod.isDel = 1
+  	<if test="goodsId != null or goodsName != null or sku != null or providerId != null">
+  		<if test="goodsId != null">
+  			and od.goodsId = #{goodsId,jdbcType=BIGINT}
+  		</if>
+  		<if test="goodsName != null">
+  			and od.goodsId in (select id from goods where goodsName = #{goodsName,jdbcType=VARCHAR})
+  		</if>
+  		<if test="sku != null">
+  			and od.goodsId in (select id from goods where sku = #{sku,jdbcType=VARCHAR})
+  		</if>
+  		<if test="providerId != null">
+  			and od.providerId = #{providerId,jdbcType=INTEGER}
+  		</if>
+  	</if>
+  	<if test="isSelect != null">
+  		and eod.isSelect = #{isSelect,jdbcType=INTEGER}
+  	</if>
+  	<if test="orderNum != null">
+  		and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+  	</if>
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countExportOrderDetail" parameterType="map" resultType="long">
+  	select count(1) from (select distinct
+  	eod.id,eod.exportId, eod.orderId, eod.orderNum,eod.isSelect,o.status,o.state,o.isPaid,o.createTime,o.remark
+  	from exportOrderDetail eod 
+  	left join orders o on eod.orderId = o.id
+  	<if test="goodsId != null or goodsName != null or sku != null or providerId != null">
+  		left join orderDetail od on eod.orderId = od.orderId
+  	</if>
+  	where exportId = #{exportId,jdbcType=BIGINT} and eod.isDel = 1
+  	<if test="goodsId != null or goodsName != null or sku != null or providerId != null">
+  		<if test="goodsId != null">
+  			and od.goodsId = #{goodsId,jdbcType=BIGINT}
+  		</if>
+  		<if test="goodsName != null">
+  			and od.goodsId in (select id from goods where goodsName = #{goodsName,jdbcType=VARCHAR})
+  		</if>
+  		<if test="sku != null">
+  			and od.goodsId in (select id from goods where sku = #{sku,jdbcType=VARCHAR})
+  		</if>
+  		<if test="providerId != null">
+  			and od.providerId = #{providerId,jdbcType=INTEGER}
+  		</if>
+  	</if>
+  	<if test="isSelect != null">
+  		and eod.isSelect = #{isSelect,jdbcType=INTEGER}
+  	</if>
+  	<if test="orderNum != null">
+  		and o.orderNum = #{orderNum,jdbcType=VARCHAR}
+  	</if>) t
+  </select>
+  
+  <update id="updateOrderStatusBeforeInsertExportOrderDetails" parameterType="map">
+  	update orders set status = 3,modifyTime = now() where createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP} and status = 2 and state = 1 and isPaid = 2
+  </update>
+  
+  <insert id="insertExportOrderDetails" parameterType="map">
+  	insert into exportOrderDetail (exportId,orderId,orderNum) 
+  	select #{exportId,jdbcType=BIGINT} as exportId, id as orderId, orderNum from orders 
+  	where createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  	and state = 1 and isPaid = 2 and status = 3
+  </insert>
+  
+  <update id="deleteExportOrderDetatil" parameterType="map">
+  	update exportOrderDetail set isDel = 127,isSelect = 0 where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectExportProviders" parameterType="long" resultType="net.sls.dto.product.Provider">
+  	select distinct od.providerId as id, p.providerName from orderDetail od left join provider p on od.providerId = p.id
+  	where exists(select eod.orderId from exportOrderDetail eod where eod.orderId = od.orderId and eod.isDel = 1 and eod.exportId = #{exportId,jdbcType=BIGINT})
+  </select>
+  
+  <select id="selectExportExcel" parameterType="map" resultType="net.sls.dto.ext.order.ExportDto">
+  	select 
+  	g.sku as sku,
+  	g.goodsName as goodsName,
+  	od.number as number,
+  	da.pavilionCode as pavilionCode,
+  	da.pavilionName as pavilionName,
+  	o.orderNum
+  	from orderDetail od 
+  	left join orders o on od.orderId = o.id
+  	left join goods g on od.goodsId = g.id
+  	left join deliveryAddress da on od.orderId = da.orderId
+  	left join provider p on od.providerId = p.id
+  	where exists(select eod.orderId from exportOrderDetail eod where eod.orderId = od.orderId and isDel = 1 and isSelect = 1 and eod.exportId = #{exportId,jdbcType=BIGINT}) and od.providerId = #{providerId,jdbcType=BIGINT}
+  	and o.state = 1 and o.status = 3
+  	order by da.pavilionCode
+  </select>
+  
+  <update id="updateOrderStatusAfterExport" parameterType="long">
+  	update orders o set o.status = 4,modifyTime = now() where exists (select eod.orderId from exportOrderDetail eod where eod.orderId = o.id and eod.isSelect = 1 and eod.exportId = #{exportId,jdbcType=BIGINT}) and o.status = 3 and o.state = 1
+  </update>
+  
+  <update id="updateExportOrderRecordNumber" parameterType="long">
+  	update exportOrderRecord set number = number + 1,state = 1,lastExportTime = now() where id = #{value,jdbcType=BIGINT} 
+  </update>
+  
+  <update id="updateExportOrderRecordOk" parameterType="long">
+  	update exportOrderRecord set state = 2 where id = #{value,jdbcType=BIGINT} 
+  </update>
+  
+  <update id="deleteExportOrderAfter" parameterType="long">
+  	update orders o set o.status = 2,modifyTime = now() where exists(select eod.orderId from exportOrderDetail eod where eod.exportId = #{value,jdbcType=BIGINT} and eod.orderId = o.id) and o.status = 3
+  </update>
+  
+  <update id="changeSelect" parameterType="map">
+  	update exportOrderDetail
+  	<if test="type == 1">
+  		set isSelect = 0
+  	</if>
+  	<if test="type == 0">
+  		set isSelect = 1
+  	</if>
+  	where id in 
+  	<foreach collection="list" item="id" open="(" close=")" separator=",">
+  		#{id,jdbcType=BIGINT}
+  	</foreach>
+  </update>
+  
+  <select id="selectExportOrderCG" parameterType="long" resultType="net.sls.dto.ext.order.ExportOrderCG">
+  	select t.brandId,t.brandName,t.goodsName,t.providerName,sum(t.number) as number
+  	from(
+  	select 
+  	b.id as brandId,
+  	b.name as brandName,
+  	g.goodsName as goodsName,
+  	p.providerName as providerName,
+  	od.number as number
+  	from orderDetail od 
+  	left join orders o on od.orderId = o.id
+  	left join goods g on od.goodsId = g.id
+  	left join provider p on od.providerId = p.id
+  	left join brand b on g.brandId = b.id
+  	where od.isDelivery = 0 and exists(select eod.orderId from exportOrderDetail eod where eod.orderId = od.orderId and eod.isDel = 1 and eod.isSelect = 1 and eod.exportId = #{exportId,jdbcType=BIGINT})
+  	and o.state = 1 and o.status = 3) t
+  	group by t.brandId,t.goodsName
+  </select>
+  
+  <select id="selectExportOrderFH" parameterType="long" resultType="net.sls.dto.ext.order.ExportOrderFH">
+  	select t.pavilionName,t.goodsName,sum(t.number) as number
+  	from(
+  	select 
+  	a.name as pavilionName,
+  	g.goodsName as goodsName,
+  	od.number as number
+  	from orderDetail od 
+  	left join orders o on od.orderId = o.id 
+  	left join goods g on od.goodsId = g.id
+  	left join deliveryAddress da on od.orderId = da.orderId
+  	left join area a on da.pavilionCode = a.code
+  	where od.isDelivery = 0 and exists(select eod.orderId from exportOrderDetail eod where eod.orderId = od.orderId and eod.isDel = 1 and eod.isSelect = 1 and eod.exportId = #{exportId,jdbcType=BIGINT})
+  	and o.state = 1 and o.status = 3) t
+  	group by t.pavilionName,t.goodsName
+  </select>
+</mapper>

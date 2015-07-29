@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.user.UserMapperExt">
+
+  <sql id="Base_Column_List" >
+    id, userName,  email, mobile, rank, sex, alias, createTime, lastLoginTime, modifyTime, province, 
+     city,district, pavilionId, lastLoginip, amount,points, totalConsume,community,
+    unionToken,memberType,unionType,channelId
+  </sql>
+  
+  <select id="selectUsersByFilter" parameterType="map" resultType="net.sls.dto.user.User">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from user
+  	where pavilionCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	<if test="memberType != null">
+  		and memberType = #{memberType,jdbcType=INTEGER}
+  	</if>
+	<if test="userName != null">
+		and userName like CONCAT('%' , #{userName,jdbcType=VARCHAR}, '%')
+	</if>
+	<if test="mobile != null">
+		and	mobile = #{mobile,jdbcType=VARCHAR}
+	</if>
+	<if test="pavilionId != null">
+		<choose>
+			<when test="pavilionId == 0">
+				and pavilionId is null
+			</when>
+			<otherwise>
+				and pavilionId = #{pavilionId,jdbcType=BIGINT}
+			</otherwise>
+		</choose>
+	</if>
+	<if test="startDate != null">
+		<if test="endDate != null">
+			and createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		</if>
+	</if>
+  	order by id desc
+  	<if test="start != null and number != null">
+  		limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <select id="selectUserById" parameterType="map" resultType="Map">
+  	select 
+  	<include refid="Base_Column_List"/> 
+  	from user
+  	<where>1=1
+  		<if test="id != null">
+  			and id = #{id,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="map" resultType="net.sls.dto.user.User">
+  	select 
+  	<include refid="Base_Column_List"/> 
+  	from user
+  	<where>1=1
+  		<if test="id != null">
+  			and id = #{id,jdbcType=INTEGER}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="countUsersByFilter" parameterType="map" resultType="long">
+  	select count(1) from user
+  	where pavilionCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	<if test="memberType != null">
+  		and memberType = #{memberType,jdbcType=INTEGER}
+  	</if>
+	<if test="userName != null">
+		and userName like CONCAT('%' , #{userName,jdbcType=VARCHAR}, '%')
+	</if>
+	<if test="mobile != null">
+		and	mobile = #{mobile,jdbcType=VARCHAR}
+	</if>
+	<if test="pavilionId != null">
+		<choose>
+			<when test="pavilionId == 0">
+				and pavilionId is null
+			</when>
+			<otherwise>
+				and pavilionId = #{pavilionId,jdbcType=BIGINT}
+			</otherwise>
+		</choose>
+	</if>
+	<if test="startDate != null">
+		<if test="endDate != null">
+			and createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		</if>
+	</if>
+  </select>
+  
+  <select id="selectUserInfo" parameterType="map" resultType="map">
+  	select 
+  	<include refid="Base_Column_List"/> 
+  	from user
+  	<where>1=1
+  		<if test="userName != null and userName != '' ">
+  			and userName = #{userName,jdbcType=VARCHAR}
+  		</if>
+  		<if test="mobile != null and mobile !='' ">
+  			and	mobile = #{mobile,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  </select>
+  
+  <select id="selectMemberInfo" parameterType="map" resultType="net.sls.dto.user.User">
+  	select 
+  	<include refid="Base_Column_List"/> 
+  	from user
+  	<where>1=1
+  		<if test="userName != null and userName !=''">
+  			and userName like CONCAT('%' , #{userName,jdbcType=VARCHAR}, '%')
+  		</if>
+  		<if test="mobile != null and mobile !=''">
+  			and	mobile = #{mobile,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  </select>
+  
+  <update id="updateUnbindMobile" parameterType="map">
+  	update user set mobile = #{mobile,jdbcType=VARCHAR} where id = #{userId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectAmountOrders" parameterType="map" resultType="net.sls.dto.user.AmountOrder">
+  	select 
+  	id, voucherOrderNum, userId, money, status, createTime, remark, thirdOrderNum
+  	from amountOrder
+  	where userId = #{userId,jdbcType=BIGINT}
+  	order by createTime DESC
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countAmountOrders" parameterType="long" resultType="long">
+  	select count(1)
+  	from amountOrder
+  	where userId = #{userId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectAmountLogs" parameterType="map" resultType="map">
+  	select
+  	a.id, a.userId, a.money, CASE a.origin WHEN 1 THEN u.userName ELSE (SELECT cu.userName FROM cmsUser cu WHERE cu.id = a.operator) END as operator,
+  	a.type, a.createTime, a.remark, a.curAmount, a.origin
+  	from amountLog a left join user u on a.operator = u.id
+  	where userId = #{userId,jdbcType=BIGINT}
+  	<if test="startDate != null">
+  		<if test="endDate != null">
+  			and a.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  		</if>
+  	</if>
+  	order by createTime DESC
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="excelAmountLogs" parameterType="map" resultType="map">
+  	select
+  	u.userName as userName, a.money, CASE a.origin WHEN 1 THEN u2.userName ELSE (SELECT cu.userName FROM cmsUser cu WHERE cu.id = a.operator) END as operator,
+  	a.type, a.createTime, a.remark, a.curAmount, a.origin
+  	from amountLog a 
+  	left join user u2 on a.operator = u2.id
+  	left join user u on a.userId = u.id
+  	where 1=1
+  	<if test="userId != null">
+  		and a.userId = #{userId,jdbcType=BIGINT}
+  	</if>
+  	<if test="startDate != null">
+  		<if test="endDate != null">
+  			and a.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  		</if>
+  	</if>
+  	order by createTime DESC
+  </select>
+  
+  <select id="excelAmountLogsByIds" parameterType="map" resultType="map">
+  	select
+  	u.userName as userName, a.money, CASE a.origin WHEN 1 THEN u2.userName ELSE (SELECT cu.userName FROM cmsUser cu WHERE cu.id = a.operator) END as operator,
+  	a.type, a.createTime, a.remark, a.curAmount, a.origin
+  	from amountLog a 
+  	left join user u2 on a.operator = u2.id
+  	left join user u on a.userId = u.id
+  	where a.userId in
+  	<foreach collection="ids" open="(" close=")" separator="," item="userId">
+  		#{userId,jdbcType=BIGINT}
+  	</foreach>
+  	<if test="startDate != null">
+  		<if test="endDate != null">
+  			and a.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  		</if>
+  	</if>
+  	order by createTime DESC
+  </select>
+  
+  <select id="countAmountLogs" parameterType="map" resultType="long">
+  	select count(1)
+  	from amountLog
+  	where userId = #{userId,jdbcType=BIGINT}
+  	<if test="startDate != null">
+  		<if test="endDate != null">
+  			and createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+  		</if>
+  	</if>
+  </select>
+  
+  <update id="updateAccountOrderStatus">
+  	update amountOrder set status = 1 where id = #{value,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateMemberAmount" parameterType="map">
+  	update user set amount = amount + #{money,jdbcType=DECIMAL} where id = #{userId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="countByMobile" resultType="int" parameterType="string">
+  	select count(*) 
+  	from user where mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="financeRechange" parameterType="map">
+  	update user set amount = amount + #{money,jdbcType=DECIMAL},modifyTime = now() where id = #{userId,jdbcType=BIGINT} and memberType = 2
+  </update>
+  
+  <update id="updateUserAmountByOrderRefund" parameterType="map">
+  	update user set amount = amount + #{money,jdbcType=DECIMAL},modifyTime = now() where id = #{userId,jdbcType=BIGINT} and memberType = 1
+  </update>
+  
+  <select id="analysisUser" parameterType="long" resultType="map">
+  	SELECT  COUNT(1) AS num, da.pavilionName,da.pavilionId,SUM(o.paidPrice) as total
+  	FROM deliveryAddress da 
+  	LEFT JOIN orders o ON da.orderId = o.id
+  	WHERE o.userId = #{value,jdbcType=BIGINT} AND o.state = 1 AND o.isPaid = 2 AND o.status > 3
+  	GROUP BY da.pavilionId
+  </select>
+  
+  <select id="user_excel" parameterType="map" resultType="map">
+  	select u.username,a.name as pavilionName,u.createTime,u.mobile
+  	from user u left join area a on u.pavilionId = a.id
+  	where u.memberType = 1
+	<if test="pavilionId != null">
+		and u.pavilionId = #{pavilionId,jdbcType=BIGINT}
+	</if>
+	<if test="startDate != null">
+		<if test="endDate != null">
+			and u.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		</if>	
+	</if>
+	order by u.pavilionId, u.createTime desc
+  </select>
+  
+</mapper>

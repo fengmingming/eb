@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+#nav { height: 51px; border-bottom: solid 1px #ddd;}
+	#nav_con { height: 51px; width: 1200px; margin: auto;}
+	#nav_con li { float: left; height: 50px; line-height: 50px; /*text-shadow: 0px 0px 1px #ccc;*/}
+	#nv_all_gs { height: 50px; width: 210px; border-bottom: solid 1px #fff; background: #f2f2f2; font-size: 16px; color: #666; text-align: center;}
+	.nv_gd_nm { padding: 0px 30px;}
+	.nv_gd_nm_a { color: #999;}
+	.nv_gd_nm a:hover, .nv_gd_nm_a_cur { color: #ff7f00; text-shadow: 0px 0px 1px #ffdfbf;}

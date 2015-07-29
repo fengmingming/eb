@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.ext.product.GoodsMapperExt">
+  <sql id="Base_Column_List" >
+     id, sku, goodsName, isSale, price, marketPrice, barCode, createtime, operatorId, 
+     modifytime, providerId, brandId, isReal, place, areaId, limittype, remark
+  </sql>
+  
+  <insert id="insertGoodsExt" parameterType="net.sls.dto.product.Goods" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+  	insert into goods (id, sku, goodsName, 
+      isSale, price, marketPrice, 
+      barCode, createtime, operatorId, 
+      modifytime, providerId, brandId, 
+      isReal, place, areaId, areaCode,
+      limittype, remark,standard)
+    values (#{id,jdbcType=BIGINT}, #{sku,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
+      #{isSale,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{marketPrice,jdbcType=DECIMAL}, 
+      #{barCode,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=BIGINT}, 
+      #{modifytime,jdbcType=TIMESTAMP}, #{providerId,jdbcType=BIGINT}, #{brandId,jdbcType=INTEGER}, 
+      #{isReal,jdbcType=INTEGER}, #{place,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, #{areaCode,jdbcType=VARCHAR},
+      #{limittype,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},#{standard,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="selectGoodsListByProvider" resultType="util.model.ComboxDto">
+ 		select id as v,goodsName as k from goods
+ 		<where>1=1
+	  		<if test="providerId != null and providerId != '' ">
+	  			and	providerId = #{providerId,jdbcType=VARCHAR}
+	  		</if>
+  		</where>
+ 	</select>
+ 	
+  <select id="selectGoodsListByCategoryId"  parameterType="map" resultType="net.sls.dto.product.Goods">
+		SELECT 
+			goods.id,
+			goods.sku,
+			goods.goodsName,
+			goods.price,
+			goods.marketPrice,
+			goods.createtime,
+			goods.isReal,
+			goods.areaId,
+			goods.place,
+			goods.remark,
+			goods.isUseCoupon
+		FROM
+			goodsCategory,
+			goods
+		WHERE goods.id = goodsCategory.goodsId 
+		
+		<if test="oneId != null and oneId != '' ">
+			AND oneId = #{oneId,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="twoId != null and twoId != '' ">
+			AND twoId = #{twoId,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="threeId != null and threeId != '' ">
+			AND threeId = #{threeId,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="areaCode != null and areaCode != '' ">
+			AND areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+	  	</if>
+	  	order by goods.id desc
+	  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+ 	</select>
+ 	
+ 	 <select id="countGoodsListByCategoryId" parameterType="map" resultType="long">
+	  	select 
+	  		count(1) 
+	  	from 
+	  		goodsCategory , goods
+	  	where 
+	  		goods.id = goodsCategory.goodsId
+	  	<if test="areaCode != null and areaCode != '' ">
+			AND areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+	  	</if>
+	  	<if test="providerId != null">
+	  		goods.providerId = #{providerId,jdbcType=BIGINT}
+	  	</if>
+  		<if test="oneId != null and oneId != '' ">
+			AND oneId = #{oneId,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="twoId != null and twoId != '' ">
+			AND twoId = #{twoId,jdbcType=BIGINT}
+	  	</if>
+	  	<if test="threeId != null and threeId != '' ">
+			AND threeId = #{threeId,jdbcType=BIGINT}
+	  	</if>
+  </select>
+  
+  <select id="selectGoodsByFilter" parameterType="map" resultType="map">
+  	select
+  	g.id as id,
+  	g.sku as sku,
+  	g.goodsName as goodsName,
+  	g.isSale as isSale,
+  	g.price as price,
+  	g.marketPrice as marketPrice,
+  	g.barCode as barCode,
+  	g.createtime as createtime,
+  	g.isUseCoupon as isUseCoupon,
+  	cu.name as operatorName,
+  	g.modifytime as modifytime,
+  	p.providerName as providerName,
+  	g.providerId as providerId,
+  	g.isReal as isReal,
+  	g.place as place,
+  	g.remark as remark,
+  	g.limittype as limittype,
+  	a.name as areaName,
+  	g.areaId as areaId,
+  	a.pid as areaPid,
+  	b.name as brandName,
+  	g.brandId as brandId,
+  	gs.virtualNumber as virtualNumber
+  	from goods g 
+  	left join goodsDetail gd on g.id = gd.goodsId 
+  	left join goodsStock gs on g.id = gs.goodsId 
+  	left join cmsUser cu on g.operatorId = cu.id 
+  	left join provider p on g.providerId = p.id
+  	left join brand b on g.brandId = b.id 
+  	left join area a on g.areaId = a.id
+  	where 1=1
+  	<if test="goodsId != null">
+  		and g.id = #{goodsId,jdbcType=BIGINT}
+  	</if>
+  	<if test="sku != null">
+  		and g.sku = #{sku,jdbcType=VARCHAR}
+  	</if>
+  	<if test="name != null">
+  		and g.goodsName like concat('%',#{name,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="provider != null">
+  		and g.providerId = #{provider,jdbcType=INTEGER}
+  	</if>
+  	<if test="areaCode != null">
+  		and g.areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="price != null and price2 != null ">
+		AND	g.price BETWEEN #{price,jdbcType=DECIMAL}
+		AND #{price2,jdbcType=BIGINT}
+  	</if>
+  	<if test="price != null and price2 == null ">
+		AND	g.price &gt;= #{price,jdbcType=DECIMAL}
+  	</if>
+  	<if test="price == null and price2 != null ">
+		AND	g.price &lt;= #{price2,jdbcType=DECIMAL}
+  	</if>
+  	<if test="isSale != null">
+  		AND g.isSale = #{isSale,jdbcType=INTEGER}
+  	</if>
+  	<if test="isSale == null">
+  		AND g.isSale = 1
+  	</if>
+  	order by g.id desc
+  	limit #{start,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countGoodsByFilter" parameterType="map" resultType="long">
+  	select count(1)
+  	from goods g left join goodsDetail gd on g.id = gd.goodsId
+  	where 1=1
+  	<if test="goodsId != null">
+  		and g.id = #{goodsId,jdbcType=BIGINT}
+  	</if>
+  	<if test="sku != null">
+  		and g.sku = #{sku,jdbcType=VARCHAR}
+  	</if>
+  	<if test="name != null">
+  		and g.goodsName like concat('%',#{name,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="provider != null">
+  		and g.providerId = #{provider,jdbcType=INTEGER}
+  	</if>
+  	<if test="areaCode != null">
+  		and g.areaCode like concat(#{areaCode,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="price != null and price2 != null ">
+		AND	price BETWEEN #{price,jdbcType=DECIMAL}
+		AND #{price2,jdbcType=BIGINT}
+  	</if>
+  	<if test="price != null and price2 == null ">
+		AND	price &gt;= #{price,jdbcType=DECIMAL}
+  	</if>
+  	<if test="price == null and price2 != null ">
+		AND	price &lt;= #{price2,jdbcType=DECIMAL}
+  	</if>
+  	<if test="isSale != null">
+  		AND g.isSale = #{isSale,jdbcType=INTEGER}
+  	</if>
+  	<if test="isSale == null">
+  		AND g.isSale = 1
+  	</if>
+  </select>
+  
+  <select id="countGoodsFragment" parameterType="map" resultType="long">
+  	select
+  	count(1)
+  	from goods g left join provider p on g.providerId = p.id
+  	where 1=1
+  	<if test="id != null">
+  		and g.id = #{id,jdbcType=BIGINT}
+  	</if>
+  	<if test="goodsName != null">
+  		and g.goodsName like concat('%',#{goodsName,jdbcType=VARCHAR},'%') 
+  	</if>
+  	<if test="sku != null">
+  		and g.sku = #{sku,jdbcType=VARCHAR}
+  	</if>
+  </select>
+  
+  <select id="selectUpdateGoodsInfo" resultType="map" parameterType="long">
+  	select
+  	g.id as id,
+  	g.sku as sku,
+  	g.goodsName as goodsName,
+  	g.isSale as isSale,
+  	g.standard as standard,
+  	g.price as price,
+  	g.marketPrice as marketPrice,
+  	g.barCode as barCode,
+  	g.providerId as providerId,
+  	p.providerName as providerName,
+  	g.brandId as brandId,
+  	g.isReal as isReal,
+  	g.place as place,
+  	g.limittype as limittype,
+  	g.remark as remark,
+  	gd.description as description,
+  	gd.photoUrl as photoUrl,
+  	gd.photoUrl1 as photoUrl1,
+  	gd.photoUrl2 as photoUrl2,
+  	gd.photoUrl3 as photoUrl3,
+  	gd.photoUrl4 as photoUrl4,
+  	gs.virtualNumber as virtualNumber,
+  	gc.oneId as oneId,
+  	gc.twoId as twoId,
+  	gc.threeId as threeId
+  	from goods g
+  	left join goodsDetail gd on g.id = gd.goodsId
+  	left join goodsStock gs on g.id = gs.goodsId
+  	left join goodsCategory gc on g.id = gc.goodsId
+  	left join provider p on g.providerId = p.id
+  	where g.id=#{value,jdbcType=BIGINT}
+  </select>
+  
+  <update id="updateBatchGoodsIsSale" parameterType="map">
+  	update goods set isSale = #{isSale,jdbcType=INTEGER} where id in 
+  	<foreach collection="ids" item="id" open="(" close=")" separator=",">
+  		#{id,jdbcType=BIGINT}
+  	</foreach>
+  </update>
+  
+  <select id="flushBuyNum">
+  	{call goods_statistics()}
+  </select>
+  
+  <update id="batchUseCoupon" parameterType="list">
+  	update goods set isUseCoupon = 1 where id in 
+  	<foreach collection="list" item="id" open="(" close=")" separator=",">
+  		#{id,jdbcType=BIGINT}
+  	</foreach>
+  </update>
+  
+  <update id="batchNoUseCoupon" parameterType="list">
+  	update goods set isUseCoupon = 0 where id in 
+  	<foreach collection="list" item="id" open="(" close=")" separator=",">
+  		#{id,jdbcType=BIGINT}
+  	</foreach>
+  </update>
+</mapper>

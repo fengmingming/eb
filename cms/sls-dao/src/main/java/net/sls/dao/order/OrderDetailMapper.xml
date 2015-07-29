@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.order.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.order.OrderDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="orderId" property="orderId" jdbcType="BIGINT" />
+    <result column="providerId" property="providerId" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="marketPrice" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="isDelivery" property="isDelivery" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="effPay" property="effPay" jdbcType="DECIMAL" />
+    <result column="isRefund" property="isRefund" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderId, providerId, goodsId, price, marketPrice, number, isDelivery, createTime, 
+    effPay, isRefund
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.order.OrderDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from orderDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from orderDetail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from orderDetail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.order.OrderDetailExample" >
+    delete from orderDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.order.OrderDetail" >
+    insert into orderDetail (id, orderId, providerId, 
+      goodsId, price, marketPrice, 
+      number, isDelivery, createTime, 
+      effPay, isRefund)
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{providerId,jdbcType=BIGINT}, 
+      #{goodsId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{marketPrice,jdbcType=DECIMAL}, 
+      #{number,jdbcType=INTEGER}, #{isDelivery,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{effPay,jdbcType=DECIMAL}, #{isRefund,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.order.OrderDetail" >
+    insert into orderDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="providerId != null" >
+        providerId,
+      </if>
+      <if test="goodsId != null" >
+        goodsId,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="marketPrice != null" >
+        marketPrice,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="isDelivery != null" >
+        isDelivery,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="effPay != null" >
+        effPay,
+      </if>
+      <if test="isRefund != null" >
+        isRefund,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="providerId != null" >
+        #{providerId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="isDelivery != null" >
+        #{isDelivery,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effPay != null" >
+        #{effPay,jdbcType=DECIMAL},
+      </if>
+      <if test="isRefund != null" >
+        #{isRefund,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.order.OrderDetailExample" resultType="java.lang.Integer" >
+    select count(*) from orderDetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orderDetail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderId != null" >
+        orderId = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.providerId != null" >
+        providerId = #{record.providerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.goodsId != null" >
+        goodsId = #{record.goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.marketPrice != null" >
+        marketPrice = #{record.marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelivery != null" >
+        isDelivery = #{record.isDelivery,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.effPay != null" >
+        effPay = #{record.effPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isRefund != null" >
+        isRefund = #{record.isRefund,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orderDetail
+    set id = #{record.id,jdbcType=BIGINT},
+      orderId = #{record.orderId,jdbcType=BIGINT},
+      providerId = #{record.providerId,jdbcType=BIGINT},
+      goodsId = #{record.goodsId,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DECIMAL},
+      marketPrice = #{record.marketPrice,jdbcType=DECIMAL},
+      number = #{record.number,jdbcType=INTEGER},
+      isDelivery = #{record.isDelivery,jdbcType=INTEGER},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      effPay = #{record.effPay,jdbcType=DECIMAL},
+      isRefund = #{record.isRefund,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.order.OrderDetail" >
+    update orderDetail
+    <set >
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="providerId != null" >
+        providerId = #{providerId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        goodsId = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="marketPrice != null" >
+        marketPrice = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="isDelivery != null" >
+        isDelivery = #{isDelivery,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effPay != null" >
+        effPay = #{effPay,jdbcType=DECIMAL},
+      </if>
+      <if test="isRefund != null" >
+        isRefund = #{isRefund,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.order.OrderDetail" >
+    update orderDetail
+    set orderId = #{orderId,jdbcType=BIGINT},
+      providerId = #{providerId,jdbcType=BIGINT},
+      goodsId = #{goodsId,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
+      marketPrice = #{marketPrice,jdbcType=DECIMAL},
+      number = #{number,jdbcType=INTEGER},
+      isDelivery = #{isDelivery,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      effPay = #{effPay,jdbcType=DECIMAL},
+      isRefund = #{isRefund,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

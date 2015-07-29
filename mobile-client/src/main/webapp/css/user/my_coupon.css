@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+.item { margin: 10px; position: relative;}
+	#yhq_inp { padding-left: 15px; border: 1px solid #d7d7d7; color: #a9a9a9; font-size: 16px; height: 44px; width: 100%;}
+	#yhq_btn { background: #ff9900 none repeat scroll 0 0; color: #fff; height: 44px; line-height: 44px; position: absolute; right: 0; text-align: center; top: 0; width: 120px;}
+
+.oc_opt { background: #eee none repeat scroll 0 0; border-bottom: 1px solid #ddd;}
+	.oc_opt li { float: left; height: 50px; line-height: 50px; width: 33.3%;}
+		.oc_opt li .oc_cur_a { border-bottom: 2px solid #ff9900; color: #ff9900;}
+		.oc_opt li a { color: #666; display: block; font-size: 14px; height: 51px; text-align: center;}
+		
+.yhq_dv { height: 135px; border: solid 1px #ddd; margin: 10px; position: relative;}
+	.yhq_tp_1 { background: url(../../images/yohq.png) repeat-x; background-size: 8px; height: 19px;}
+	.yhq_tp_2 { background: url(../../images/yohq.png) repeat-x; background-size: 8px; height: 19px; background-position: 0 -20px;}
+		.yq_u li { float: left; font-size: 14px;}
+		.yq_u_l { margin-top: 8px; margin-left: 15px;}
+		.yq_u .yq_u_r { margin-top: 8px; margin-right: 28px; float: right; width: 155px; text-align: center;}
+		.yq_pe { font-size: 36px; margin-left: 5px; margin-top: 2px;}
+		
+		.yq_cn { position: absolute; top: 72px; right: 28px;}
+			.yq_cn li { width: 155px;}
+			.yc_line { background: #d9d9d9; height: 1px;}
+			.yc_txt { font-size: 18px; text-align: center; margin-top: 2px; height: 40px; line-height: 36px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; word-wrap: normal;}
+			.yc_dta { font-size: 10px; height: 18px; line-height: 19px; text-align: center;}
+		
+		.yq_kb { height: 18px;}	
+		.yq_dh_ln { height: 1px; border-bottom: dashed 1px #cbcbcb;}
+		
+		.yq_color_0 { color: #666;}
+		.yq_color_1 { color: #f29600;}
+		.yq_color_2 { color: #ccc;}
+		

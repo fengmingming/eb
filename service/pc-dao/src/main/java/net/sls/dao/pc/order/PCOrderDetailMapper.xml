@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.sls.dao.pc.order.PCOrderDetailMapper">
+<resultMap id="BaseResultMap" type="net.sls.dto.pc.order.OrderDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="orderId" property="orderId" jdbcType="BIGINT" />
+    <result column="providerId" property="providerId" jdbcType="BIGINT" />
+    <result column="goodsId" property="goodsId" jdbcType="BIGINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="marketPrice" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="effPay" property="effPay" jdbcType="DECIMAL" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="isDelivery" property="isDelivery" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, orderId, providerId, goodsId, price, marketPrice, number, isDelivery, createTime
+  </sql>
+  <select id="selectOrderDetailList" parameterType="map" resultType="map">
+  	SELECT 
+  		od.goodsId, g.goodsName, gd.photoUrl, od.number
+	FROM
+		orderDetail od
+		left join goods g on g.id = od.goodsId
+		left join goodsDetail gd on gd.goodsId = od.goodsId
+	<where> 
+	 	1=1
+	 	<if test="orderId != null and orderId != '' ">
+  			and	od.orderId = #{orderId,jdbcType=BIGINT}
+  		</if>
+	</where>	
+  </select>
+  
+  <select id="selectOrderDetailInfoList" parameterType="map" resultType="map">
+  	SELECT 
+  		od.id,
+  		od.price,
+  		od.number,
+  		od.isDelivery,
+  		od.goodsId,
+  		g.goodsName,
+  		g.sku,
+  		gd.photoUrl
+	FROM
+		orderDetail od
+		left join goods g on g.id = od.goodsId
+		left join goodsDetail gd on gd.goodsId = od.goodsId
+	<where> 
+	 	1=1
+	 	<if test="orderId != null and orderId != '' ">
+  			and	od.orderId = #{orderId,jdbcType=BIGINT}
+  		</if>
+	</where>	
+  </select>
+  
+  <select id="selectOrderDetailListByOrderId" parameterType="map" resultType="net.sls.dto.pc.order.OrderDetail">
+  	SELECT 
+  		<include refid="Base_Column_List" />
+	FROM
+		orderDetail 
+		
+	<where> 
+	 	1=1
+	 	<if test="orderId != null and orderId != '' ">
+  			and	orderId = #{orderId,jdbcType=BIGINT}
+  		</if>
+	</where>	
+  </select>
+  
+    <insert id="insert" parameterType="net.sls.dto.pc.order.OrderDetail" >
+    insert into orderDetail (orderId, providerId, 
+      goodsId, price, marketPrice, 
+      number, isDelivery, createTime
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{providerId,jdbcType=BIGINT}, 
+      #{goodsId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{marketPrice,jdbcType=DECIMAL}, 
+      #{number,jdbcType=INTEGER}, #{isDelivery,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <insert id="insertBatch">
+	  insert into orderDetail (orderId, providerId, 
+	      goodsId, price, marketPrice, effPay, 
+	      number, isDelivery, createTime
+	      ) values
+  	<foreach collection="list" separator="," item="detail">
+  		(#{detail.orderId,jdbcType=BIGINT}, #{detail.providerId,jdbcType=BIGINT}, #{detail.goodsId,jdbcType=BIGINT}, 
+  		 #{detail.price,jdbcType=DECIMAL}, #{detail.marketPrice,jdbcType=DECIMAL}, #{detail.effPay,jdbcType=DECIMAL}, 
+  		 #{detail.number,jdbcType=INTEGER}, #{detail.isDelivery,jdbcType=INTEGER}, #{detail.createTime,jdbcType=TIMESTAMP}
+     	 )
+  	</foreach>
+  </insert>
+  
+  <update id="confirmAll" parameterType="long">
+  	update orderDetail set isDelivery = 1 where orderId = #{value,jdbcType=BIGINT}
+  </update>
+  
+  <update id="confirm" parameterType="long">
+  	update orderDetail set isDelivery = 1 where id = #{value,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectOrderDetailByOrderIds" parameterType="map" resultType="map">
+  	SELECT 
+  		od.orderId, od.goodsId, g.goodsName, gd.photoUrl, od.number
+	FROM
+		orderDetail od
+		left join goods g on g.id = od.goodsId
+		left join goodsDetail gd on gd.goodsId = od.goodsId
+	<where> 
+	 	1=1
+	 	<if test="orderIds != null">
+  			and	od.orderId in
+				<foreach item="orderId" collection="orderIds" open="(" separator="," close=")">
+					#{orderId, jdbcType=BIGINT}
+				</foreach>
+  		</if>
+	</where>	
+  </select>
+  
+  <select id="getReturnOrderInfo" parameterType="map" resultType="map">
+  	select 
+  		op.payCode, od.orderId, od.id as orderDetailId, g.goodsName, o.orderNum, o.status, gd.photoUrl, da.province, da.city, da.district, da.community, da.provinceName, da.cityName, da.districtName, da.communityName, da.pavilionId, da.pavilionName, da.receiver, da.mobile, da.remark as address, da.pavilionCode, oe.id, oe.state, oe.type, oe.moneyWay, oe.remark, oe.photoUrl1, oe.photoUrl2, oe.photoUrl3, oe.pickupWay, oe.deliveryType, oe.provinceIdT, oe.cityIdT, oe.districtIdT, oe.communityIdT, oe.pavilionIdT, oe.remarkT, oe.receiverT, oe.mobileT, oe.provinceIdF, oe.cityIdF, oe.districtIdF, oe.communityIdF, oe.pavilionIdF, oe.remarkF, oe.receiverF, oe.mobileF, (select area.code from area where area.id = oe.pavilionIdT) as pavilionCodeT, (select area.code from area where area.id = oe.pavilionIdF) as pavilionCodeF 
+  	from 
+  		orderDetail od
+  		left join orders o on od.orderId = o.id
+  		left join goodsDetail gd on od.goodsId = gd.goodsId
+  		left join goods g on g.id = gd.goodsId
+  		left join deliveryAddress da on od.orderId = da.orderId
+  		left join orderRefund oe on od.id = oe.orderDetailId
+  		left join orderPay op on o.id = op.orderId
+  	where
+  		od.id = #{orderDetailId, jdbcType=BIGINT}
+  		<if test="userId != null">
+  			and o.userId = #{userId, jdbcType=BIGINT}
+  		</if>
+  		<if test="createUserId != null">
+  			and o.createUserId = #{createUserId, jdbcType=BIGINT}
+  		</if>
+  	
+  </select>
+  
+  <select id="getOrderInfoByOrderDetailId" parameterType="map" resultType="map">
+  	select 
+  		o.id, od.effPay, op.account, od.number
+  	from orderDetail od
+  		left join orders o on od.orderId = o.id
+  		left join orderPay op on op.orderId = o.id
+  	where
+  		od.id = #{orderDetailId, jdbcType=BIGINT}
+  </select>
+  
+  <update id="updateOrderDetailByid">
+  	update orderDetail set isRefund = #{isRefund, jdbcType=BIGINT} where id = #{orderDetailId,jdbcType=BIGINT }
+  </update>
+</mapper>

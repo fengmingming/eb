@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.sls.dao.order.OrderRefundMapper" >
+  <resultMap id="BaseResultMap" type="net.sls.dto.order.OrderRefund" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="orderId" property="orderId" jdbcType="BIGINT" />
+    <result column="newOrderId" property="newOrderId" jdbcType="BIGINT" />
+    <result column="orderDetailId" property="orderDetailId" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="origin" property="origin" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="refundPrice" property="refundPrice" jdbcType="DECIMAL" />
+    <result column="moneyWay" property="moneyWay" jdbcType="INTEGER" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="photoUrl1" property="photoUrl1" jdbcType="VARCHAR" />
+    <result column="photoUrl2" property="photoUrl2" jdbcType="VARCHAR" />
+    <result column="photoUrl3" property="photoUrl3" jdbcType="VARCHAR" />
+    <result column="pickupWay" property="pickupWay" jdbcType="INTEGER" />
+    <result column="deliveryType" property="deliveryType" jdbcType="INTEGER" />
+    <result column="provinceIdT" property="provinceIdT" jdbcType="INTEGER" />
+    <result column="cityIdT" property="cityIdT" jdbcType="INTEGER" />
+    <result column="districtIdT" property="districtIdT" jdbcType="INTEGER" />
+    <result column="communityIdT" property="communityIdT" jdbcType="INTEGER" />
+    <result column="pavilionIdT" property="pavilionIdT" jdbcType="INTEGER" />
+    <result column="remarkT" property="remarkT" jdbcType="VARCHAR" />
+    <result column="receiverT" property="receiverT" jdbcType="VARCHAR" />
+    <result column="mobileT" property="mobileT" jdbcType="VARCHAR" />
+    <result column="provinceIdF" property="provinceIdF" jdbcType="INTEGER" />
+    <result column="cityIdF" property="cityIdF" jdbcType="INTEGER" />
+    <result column="districtIdF" property="districtIdF" jdbcType="INTEGER" />
+    <result column="communityIdF" property="communityIdF" jdbcType="INTEGER" />
+    <result column="pavilionIdF" property="pavilionIdF" jdbcType="INTEGER" />
+    <result column="remarkF" property="remarkF" jdbcType="VARCHAR" />
+    <result column="receiverF" property="receiverF" jdbcType="VARCHAR" />
+    <result column="mobileF" property="mobileF" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderId, newOrderId, orderDetailId, state, origin, createTime, type, refundPrice, 
+    moneyWay, account, remark, photoUrl1, photoUrl2, photoUrl3, pickupWay, deliveryType, 
+    provinceIdT, cityIdT, districtIdT, communityIdT, pavilionIdT, remarkT, receiverT, 
+    mobileT, provinceIdF, cityIdF, districtIdF, communityIdF, pavilionIdF, remarkF, receiverF, 
+    mobileF
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.sls.dto.order.OrderRefundExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from orderRefund
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from orderRefund
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from orderRefund
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.sls.dto.order.OrderRefundExample" >
+    delete from orderRefund
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.sls.dto.order.OrderRefund" >
+    insert into orderRefund (id, orderId, newOrderId, 
+      orderDetailId, state, origin, 
+      createTime, type, refundPrice, 
+      moneyWay, account, remark, 
+      photoUrl1, photoUrl2, photoUrl3, 
+      pickupWay, deliveryType, provinceIdT, 
+      cityIdT, districtIdT, communityIdT, 
+      pavilionIdT, remarkT, receiverT, 
+      mobileT, provinceIdF, cityIdF, 
+      districtIdF, communityIdF, pavilionIdF, 
+      remarkF, receiverF, mobileF
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{newOrderId,jdbcType=BIGINT}, 
+      #{orderDetailId,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, #{origin,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, #{refundPrice,jdbcType=DECIMAL}, 
+      #{moneyWay,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{photoUrl1,jdbcType=VARCHAR}, #{photoUrl2,jdbcType=VARCHAR}, #{photoUrl3,jdbcType=VARCHAR}, 
+      #{pickupWay,jdbcType=INTEGER}, #{deliveryType,jdbcType=INTEGER}, #{provinceIdT,jdbcType=INTEGER}, 
+      #{cityIdT,jdbcType=INTEGER}, #{districtIdT,jdbcType=INTEGER}, #{communityIdT,jdbcType=INTEGER}, 
+      #{pavilionIdT,jdbcType=INTEGER}, #{remarkT,jdbcType=VARCHAR}, #{receiverT,jdbcType=VARCHAR}, 
+      #{mobileT,jdbcType=VARCHAR}, #{provinceIdF,jdbcType=INTEGER}, #{cityIdF,jdbcType=INTEGER}, 
+      #{districtIdF,jdbcType=INTEGER}, #{communityIdF,jdbcType=INTEGER}, #{pavilionIdF,jdbcType=INTEGER}, 
+      #{remarkF,jdbcType=VARCHAR}, #{receiverF,jdbcType=VARCHAR}, #{mobileF,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.sls.dto.order.OrderRefund" >
+    insert into orderRefund
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        orderId,
+      </if>
+      <if test="newOrderId != null" >
+        newOrderId,
+      </if>
+      <if test="orderDetailId != null" >
+        orderDetailId,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="origin != null" >
+        origin,
+      </if>
+      <if test="createTime != null" >
+        createTime,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="refundPrice != null" >
+        refundPrice,
+      </if>
+      <if test="moneyWay != null" >
+        moneyWay,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="photoUrl1 != null" >
+        photoUrl1,
+      </if>
+      <if test="photoUrl2 != null" >
+        photoUrl2,
+      </if>
+      <if test="photoUrl3 != null" >
+        photoUrl3,
+      </if>
+      <if test="pickupWay != null" >
+        pickupWay,
+      </if>
+      <if test="deliveryType != null" >
+        deliveryType,
+      </if>
+      <if test="provinceIdT != null" >
+        provinceIdT,
+      </if>
+      <if test="cityIdT != null" >
+        cityIdT,
+      </if>
+      <if test="districtIdT != null" >
+        districtIdT,
+      </if>
+      <if test="communityIdT != null" >
+        communityIdT,
+      </if>
+      <if test="pavilionIdT != null" >
+        pavilionIdT,
+      </if>
+      <if test="remarkT != null" >
+        remarkT,
+      </if>
+      <if test="receiverT != null" >
+        receiverT,
+      </if>
+      <if test="mobileT != null" >
+        mobileT,
+      </if>
+      <if test="provinceIdF != null" >
+        provinceIdF,
+      </if>
+      <if test="cityIdF != null" >
+        cityIdF,
+      </if>
+      <if test="districtIdF != null" >
+        districtIdF,
+      </if>
+      <if test="communityIdF != null" >
+        communityIdF,
+      </if>
+      <if test="pavilionIdF != null" >
+        pavilionIdF,
+      </if>
+      <if test="remarkF != null" >
+        remarkF,
+      </if>
+      <if test="receiverF != null" >
+        receiverF,
+      </if>
+      <if test="mobileF != null" >
+        mobileF,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="newOrderId != null" >
+        #{newOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderDetailId != null" >
+        #{orderDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="origin != null" >
+        #{origin,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="refundPrice != null" >
+        #{refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyWay != null" >
+        #{moneyWay,jdbcType=INTEGER},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl1 != null" >
+        #{photoUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl2 != null" >
+        #{photoUrl2,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl3 != null" >
+        #{photoUrl3,jdbcType=VARCHAR},
+      </if>
+      <if test="pickupWay != null" >
+        #{pickupWay,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryType != null" >
+        #{deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="provinceIdT != null" >
+        #{provinceIdT,jdbcType=INTEGER},
+      </if>
+      <if test="cityIdT != null" >
+        #{cityIdT,jdbcType=INTEGER},
+      </if>
+      <if test="districtIdT != null" >
+        #{districtIdT,jdbcType=INTEGER},
+      </if>
+      <if test="communityIdT != null" >
+        #{communityIdT,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionIdT != null" >
+        #{pavilionIdT,jdbcType=INTEGER},
+      </if>
+      <if test="remarkT != null" >
+        #{remarkT,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverT != null" >
+        #{receiverT,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileT != null" >
+        #{mobileT,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceIdF != null" >
+        #{provinceIdF,jdbcType=INTEGER},
+      </if>
+      <if test="cityIdF != null" >
+        #{cityIdF,jdbcType=INTEGER},
+      </if>
+      <if test="districtIdF != null" >
+        #{districtIdF,jdbcType=INTEGER},
+      </if>
+      <if test="communityIdF != null" >
+        #{communityIdF,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionIdF != null" >
+        #{pavilionIdF,jdbcType=INTEGER},
+      </if>
+      <if test="remarkF != null" >
+        #{remarkF,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverF != null" >
+        #{receiverF,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileF != null" >
+        #{mobileF,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.sls.dto.order.OrderRefundExample" resultType="java.lang.Integer" >
+    select count(*) from orderRefund
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orderRefund
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderId != null" >
+        orderId = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.newOrderId != null" >
+        newOrderId = #{record.newOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderDetailId != null" >
+        orderDetailId = #{record.orderDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.origin != null" >
+        origin = #{record.origin,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.refundPrice != null" >
+        refundPrice = #{record.refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.moneyWay != null" >
+        moneyWay = #{record.moneyWay,jdbcType=INTEGER},
+      </if>
+      <if test="record.account != null" >
+        account = #{record.account,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl1 != null" >
+        photoUrl1 = #{record.photoUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl2 != null" >
+        photoUrl2 = #{record.photoUrl2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photoUrl3 != null" >
+        photoUrl3 = #{record.photoUrl3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pickupWay != null" >
+        pickupWay = #{record.pickupWay,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliveryType != null" >
+        deliveryType = #{record.deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="record.provinceIdT != null" >
+        provinceIdT = #{record.provinceIdT,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityIdT != null" >
+        cityIdT = #{record.cityIdT,jdbcType=INTEGER},
+      </if>
+      <if test="record.districtIdT != null" >
+        districtIdT = #{record.districtIdT,jdbcType=INTEGER},
+      </if>
+      <if test="record.communityIdT != null" >
+        communityIdT = #{record.communityIdT,jdbcType=INTEGER},
+      </if>
+      <if test="record.pavilionIdT != null" >
+        pavilionIdT = #{record.pavilionIdT,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarkT != null" >
+        remarkT = #{record.remarkT,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverT != null" >
+        receiverT = #{record.receiverT,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileT != null" >
+        mobileT = #{record.mobileT,jdbcType=VARCHAR},
+      </if>
+      <if test="record.provinceIdF != null" >
+        provinceIdF = #{record.provinceIdF,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityIdF != null" >
+        cityIdF = #{record.cityIdF,jdbcType=INTEGER},
+      </if>
+      <if test="record.districtIdF != null" >
+        districtIdF = #{record.districtIdF,jdbcType=INTEGER},
+      </if>
+      <if test="record.communityIdF != null" >
+        communityIdF = #{record.communityIdF,jdbcType=INTEGER},
+      </if>
+      <if test="record.pavilionIdF != null" >
+        pavilionIdF = #{record.pavilionIdF,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarkF != null" >
+        remarkF = #{record.remarkF,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverF != null" >
+        receiverF = #{record.receiverF,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileF != null" >
+        mobileF = #{record.mobileF,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orderRefund
+    set id = #{record.id,jdbcType=BIGINT},
+      orderId = #{record.orderId,jdbcType=BIGINT},
+      newOrderId = #{record.newOrderId,jdbcType=BIGINT},
+      orderDetailId = #{record.orderDetailId,jdbcType=BIGINT},
+      state = #{record.state,jdbcType=INTEGER},
+      origin = #{record.origin,jdbcType=INTEGER},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=INTEGER},
+      refundPrice = #{record.refundPrice,jdbcType=DECIMAL},
+      moneyWay = #{record.moneyWay,jdbcType=INTEGER},
+      account = #{record.account,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      photoUrl1 = #{record.photoUrl1,jdbcType=VARCHAR},
+      photoUrl2 = #{record.photoUrl2,jdbcType=VARCHAR},
+      photoUrl3 = #{record.photoUrl3,jdbcType=VARCHAR},
+      pickupWay = #{record.pickupWay,jdbcType=INTEGER},
+      deliveryType = #{record.deliveryType,jdbcType=INTEGER},
+      provinceIdT = #{record.provinceIdT,jdbcType=INTEGER},
+      cityIdT = #{record.cityIdT,jdbcType=INTEGER},
+      districtIdT = #{record.districtIdT,jdbcType=INTEGER},
+      communityIdT = #{record.communityIdT,jdbcType=INTEGER},
+      pavilionIdT = #{record.pavilionIdT,jdbcType=INTEGER},
+      remarkT = #{record.remarkT,jdbcType=VARCHAR},
+      receiverT = #{record.receiverT,jdbcType=VARCHAR},
+      mobileT = #{record.mobileT,jdbcType=VARCHAR},
+      provinceIdF = #{record.provinceIdF,jdbcType=INTEGER},
+      cityIdF = #{record.cityIdF,jdbcType=INTEGER},
+      districtIdF = #{record.districtIdF,jdbcType=INTEGER},
+      communityIdF = #{record.communityIdF,jdbcType=INTEGER},
+      pavilionIdF = #{record.pavilionIdF,jdbcType=INTEGER},
+      remarkF = #{record.remarkF,jdbcType=VARCHAR},
+      receiverF = #{record.receiverF,jdbcType=VARCHAR},
+      mobileF = #{record.mobileF,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.sls.dto.order.OrderRefund" >
+    update orderRefund
+    <set >
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="newOrderId != null" >
+        newOrderId = #{newOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderDetailId != null" >
+        orderDetailId = #{orderDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="origin != null" >
+        origin = #{origin,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="refundPrice != null" >
+        refundPrice = #{refundPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyWay != null" >
+        moneyWay = #{moneyWay,jdbcType=INTEGER},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl1 != null" >
+        photoUrl1 = #{photoUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl2 != null" >
+        photoUrl2 = #{photoUrl2,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl3 != null" >
+        photoUrl3 = #{photoUrl3,jdbcType=VARCHAR},
+      </if>
+      <if test="pickupWay != null" >
+        pickupWay = #{pickupWay,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryType != null" >
+        deliveryType = #{deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="provinceIdT != null" >
+        provinceIdT = #{provinceIdT,jdbcType=INTEGER},
+      </if>
+      <if test="cityIdT != null" >
+        cityIdT = #{cityIdT,jdbcType=INTEGER},
+      </if>
+      <if test="districtIdT != null" >
+        districtIdT = #{districtIdT,jdbcType=INTEGER},
+      </if>
+      <if test="communityIdT != null" >
+        communityIdT = #{communityIdT,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionIdT != null" >
+        pavilionIdT = #{pavilionIdT,jdbcType=INTEGER},
+      </if>
+      <if test="remarkT != null" >
+        remarkT = #{remarkT,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverT != null" >
+        receiverT = #{receiverT,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileT != null" >
+        mobileT = #{mobileT,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceIdF != null" >
+        provinceIdF = #{provinceIdF,jdbcType=INTEGER},
+      </if>
+      <if test="cityIdF != null" >
+        cityIdF = #{cityIdF,jdbcType=INTEGER},
+      </if>
+      <if test="districtIdF != null" >
+        districtIdF = #{districtIdF,jdbcType=INTEGER},
+      </if>
+      <if test="communityIdF != null" >
+        communityIdF = #{communityIdF,jdbcType=INTEGER},
+      </if>
+      <if test="pavilionIdF != null" >
+        pavilionIdF = #{pavilionIdF,jdbcType=INTEGER},
+      </if>
+      <if test="remarkF != null" >
+        remarkF = #{remarkF,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverF != null" >
+        receiverF = #{receiverF,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileF != null" >
+        mobileF = #{mobileF,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.sls.dto.order.OrderRefund" >
+    update orderRefund
+    set orderId = #{orderId,jdbcType=BIGINT},
+      newOrderId = #{newOrderId,jdbcType=BIGINT},
+      orderDetailId = #{orderDetailId,jdbcType=BIGINT},
+      state = #{state,jdbcType=INTEGER},
+      origin = #{origin,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER},
+      refundPrice = #{refundPrice,jdbcType=DECIMAL},
+      moneyWay = #{moneyWay,jdbcType=INTEGER},
+      account = #{account,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      photoUrl1 = #{photoUrl1,jdbcType=VARCHAR},
+      photoUrl2 = #{photoUrl2,jdbcType=VARCHAR},
+      photoUrl3 = #{photoUrl3,jdbcType=VARCHAR},
+      pickupWay = #{pickupWay,jdbcType=INTEGER},
+      deliveryType = #{deliveryType,jdbcType=INTEGER},
+      provinceIdT = #{provinceIdT,jdbcType=INTEGER},
+      cityIdT = #{cityIdT,jdbcType=INTEGER},
+      districtIdT = #{districtIdT,jdbcType=INTEGER},
+      communityIdT = #{communityIdT,jdbcType=INTEGER},
+      pavilionIdT = #{pavilionIdT,jdbcType=INTEGER},
+      remarkT = #{remarkT,jdbcType=VARCHAR},
+      receiverT = #{receiverT,jdbcType=VARCHAR},
+      mobileT = #{mobileT,jdbcType=VARCHAR},
+      provinceIdF = #{provinceIdF,jdbcType=INTEGER},
+      cityIdF = #{cityIdF,jdbcType=INTEGER},
+      districtIdF = #{districtIdF,jdbcType=INTEGER},
+      communityIdF = #{communityIdF,jdbcType=INTEGER},
+      pavilionIdF = #{pavilionIdF,jdbcType=INTEGER},
+      remarkF = #{remarkF,jdbcType=VARCHAR},
+      receiverF = #{receiverF,jdbcType=VARCHAR},
+      mobileF = #{mobileF,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
