@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+.common_wrapper { font-size: 16px; margin: 0 auto; max-width: 640px; min-width: 300px; width: 100%; padding: 20px;}
+	.common_wrapper .item { margin-bottom: 20px; position: relative;}
+	.common_wrapper .item .txt_input { border: 1px solid #d7d7d7; color: #a9a9a9; font-size: 16px; height: 44px; padding: 0; width: 100%;}
+	.common_wrapper .item .txt_username { padding-left: 15px;}
+	.common_wrapper .item .txt_password { padding-left: 15px;}
+	.common_wrapper .item .txt_vcode { padding-left: 15px;}
+	.common_wrapper .item #get_dxvcode { position: absolute; top: 0px; right: 0px; height: 44px; width: 120px; background: #ff9900; line-height: 44px; text-align: center; color: #fff;}
+	.common_wrapper .item #get_vcode { position: absolute; top: 5px; right: 20px; font-size: 0px; border-left: solid 1px #666; padding-left: 10px;}
+	.common_wrapper .item #get_vcode img { width: 100px; height: 34px; background: #fff;}
+	
+	.zcxy { font-size: 12px; color: #999;}
+		.zcxy span { font-size: 14px; color: #444;}
+		
+	.reg_btn { display: block; width: 100px; height: 44px; line-height: 44px; margin: 40px auto; background: #ff9900; text-align: center; color: #fff; border-radius: 3px;}
+
+/*提示消息样式*/
+.viewport .focus_ipt { border: solid 1px #7abd54;}
+.viewport .focus_eor_ipt { border: solid 1px red;}
+	.a_i_td { position: relative;}
+	.r_msg { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; width: /*174px*/ 100%;z-index: 1;}
+	.r_msg_w { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; min-width: 232px; white-space: nowrap;}
+			

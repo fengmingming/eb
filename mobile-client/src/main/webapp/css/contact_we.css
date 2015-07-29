@@ -1,0 +1,6 @@
+@charset "utf-8";
+
+.phone_logo { width: 52px; height: 52px; background: url(../images/sls_mz.png) no-repeat -40px -378px; background-size: 500px; margin: 20px auto; margin-top: 80px;}
+.cw_phone { font-size: 14px; color: #666; text-align: center; margin-top: 70px;}
+.sls_logo { width: 40px; height: 40px; background: url(../images/sls_mz.png) no-repeat 2px 5px; background-size: 500px auto; margin: auto; margin-top: 140px;}
+.pr_ft { font-size: 14px; color: #666; text-align: center; margin-top: 3px;}

@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+body { background: #f3f3f3}
+
+.cay_ul { padding: 12px 0px 12px 12px; border-bottom: solid 1px #d8d8d8; background: #fff; -webkit-tap-highlight-color:rgba(0,0,0,0);}
+	.cay_ul li { float: left; height: 50px;}
+		.cay_1_img { width: 50px; background: url(../images/category.png) -50px 0px no-repeat;}
+		.cay_7_img { width: 50px; background: url(../images/category.png) -50px -50px no-repeat;}
+		.cay_8_img { width: 50px; background: url(../images/category.png) -50px -100px no-repeat;}
+		.cay_9_img { width: 50px; background: url(../images/category.png) -50px -150px no-repeat;}
+		.cay_48_img { width: 50px; background: url(../images/category.png) -50px -200px no-repeat;}
+		.cay_49_img { width: 50px; background: url(../images/category.png) -50px -250px no-repeat;}
+		.cay_66_img { width: 50px; background: url(../images/category.png) -50px -300px no-repeat;}
+		.cay_txt { color: #666; font-size: 15px; line-height: 46px; padding-left: 15px; cursor: pointer;}
+		.cay_ul .cay_jiantou { float: right; width: 15px; background: url(../images/sls_mz.png) no-repeat; background-size: 400px; height: 10px; margin: 18px 18px 0px 0px;}
+		.cay_ul .jt_x { background-position: 0px -114px;}
+		.cay_ul .jt_s { background-position: 0px -126px;}
+		
+		.cay_ul_lis { background: #fff; border-bottom: solid 1px #d8d8d8; display: none; position: relative;}
+			.cay_ul_lis li { width: 33.3%; float: left; text-align: center; margin: 20px 0px; border-right: solid 1px #a3a3a3;}
+			.cay_ul_lis .cay_ul_ds { position: absolute; width: 2px; background: #fff; top: 0px; right: 0px; height: 100%; margin: 0px; border: 0px;}	
+				.cay_ul_lis li a { color: #a3a3a3; font-size: 14px; display: block; padding: 6px;}
+					
+
+	
+	

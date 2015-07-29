@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+.common_wrapper { font-size: 16px; margin: 0 auto; max-width: 640px; min-width: 300px; width: 100%; padding: 20px;}
+	.common_wrapper .item { margin-bottom: 20px; position: relative;}
+	.common_wrapper .item .txt_input { border: 1px solid #d7d7d7; color: #a9a9a9; font-size: 16px; height: 44px; padding: 0; width: 100%;}
+	.common_wrapper .item .txt_username { padding-left: 15px;}
+	.common_wrapper .item .txt_password { padding-left: 15px;}
+	.common_wrapper .item .btn_login {background: #ff9900; color: #fff; display: inline-block; font-size: 16px; height: 40px; line-height: 39px; text-align: center; width: 100%}
+	
+	.c_w_jz li { float: left;}
+		.c_w_jz_txt { font-size: 12px; color: #666;}
+	
+	.m_z_s { margin-top: 20px;}
+	.m_z_s .mfzc { float: left;}
+	.m_z_s .zhmm { float: right;}
+	.mfzc a, .zhmm a { font-size: 14px; color: #666; text-decoration: underline;}
+	
+	.dsfdl { color: #666; margin-top: 60px;}
+	.dsf_ul { margin-top: 10px;}
+	.dsf_ul li { float: left; width: 50px; height: 50px; margin-right: 10px;}
+		.l_qq { background: url(../../images/sls_mz.png) no-repeat -214px 0px; background-size: 600px;}
+		.l_wx { background: url(../../images/sls_mz.png) no-repeat -214px -52px; background-size: 600px;}
+	
+/*提示消息样式*/
+.viewport .focus_ipt { border: solid 1px #7abd54;}
+.viewport .focus_eor_ipt { border: solid 1px red;}
+	.a_i_td { position: relative;}
+	.r_msg { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; width: /*174px*/ 100%;}
+	/*.r_msg_w { border: solid 1px #ffbdbf; background: #ffebec; position: absolute; top: 38px; left: 0px; font-size: 12px; color: red; padding: 0px 3px; min-width: 232px; white-space: nowrap;}*/
+			

@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.od_mes { font-size: 14px; color: #666; line-height: 24px; padding: 6px 0px 6px 16px;}
+.od_opt { text-align: center;}
+	.od_opt a { display: inline-block; width: 130px; height: 28px; line-height: 26px; background: #ccc; font-size: 14px; margin: 2px; color: #fff;}
+	
+.od_shrxx, .od_zfps { background: #eee; font-size: 14px; color: #666; margin: 10px 10px 0px 10px; padding: 5px 10px;}
+	.od_zfps { margin-bottom: 10px;}
+	.od_shrxx li, .od_zfps li { line-height: 24px;}
+	.ods_tit { font-size: 16px; color: #000;}
+	
+.co_orders { }
+	.co_od_li { margin: 0px 10px 10px 10px; background: #f4f2f4; padding: 10px; font-size: 0px;}
+		.co_orders .od_a_img { font-size: 0px; display: inline-block; float: left; margin-right: 6px; margin-top: 1px;}
+		.co_orders .od_img  { width: 80px; height: 80px; background: #ccc; }
+		.co_od_li p { font-size: 14px; color: #666; }
+		.co_od_li .od_txt { min-height: 19px; max-height: 38px; overflow: hidden; margin-bottom: 6px;}
+
+.vew_all { display: none;}
+
+.od_total { height: 50px; line-height: 50px; font-size: 14px; color: #666; text-align: center; background: #eee; margin: 0px 10px;}
